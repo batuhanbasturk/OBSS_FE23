@@ -68,79 +68,7 @@
         </div>
       </header>
       <!--Card-->
-      <section class="container mt-5">
-        <a href="" class="link-styled"
-          ><div class="card m-4">
-            <div class="card-body">
-              <div class="row">
-                <div class="col-md-8">
-                  <h4 class="card-title text-gradient d-inline">Project-1</h4>
-                  <p class="card-text text-muted pt-2">
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                    Minus, totam nihil labore eum ea ut rerum esse, autem
-                    voluptates maxime iste eius. Sed sint quaerat cumque ut
-                    nihil. Est, veritatis?
-                  </p>
-                </div>
-                <div class="col-md-4">
-                  <img
-                    src="assets/dummyproject.jpg"
-                    class="card-img"
-                    alt="Image"
-                  />
-                </div>
-              </div>
-            </div></div
-        ></a>
-
-        <a href="" class="link-styled"
-          ><div class="card m-4">
-            <div class="card-body">
-              <div class="row">
-                <div class="col-md-8">
-                  <h4 class="card-title text-gradient d-inline">Project-2</h4>
-                  <p class="card-text text-muted pt-2">
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                    Minus, totam nihil labore eum ea ut rerum esse, autem
-                    voluptates maxime iste eius. Sed sint quaerat cumque ut
-                    nihil. Est, veritatis?
-                  </p>
-                </div>
-                <div class="col-md-4">
-                  <img
-                    src="assets/dummyproject.jpg"
-                    class="card-img"
-                    alt="Image"
-                  />
-                </div>
-              </div>
-            </div></div
-        ></a>
-
-        <a href="" class="link-styled"
-          ><div class="card m-4">
-            <div class="card-body">
-              <div class="row">
-                <div class="col-md-8">
-                  <h4 class="card-title text-gradient d-inline">Project-3</h4>
-                  <p class="card-text text-muted pt-2">
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                    Minus, totam nihil labore eum ea ut rerum esse, autem
-                    voluptates maxime iste eius. Sed sint quaerat cumque ut
-                    nihil. Est, veritatis?
-                  </p>
-                </div>
-                <div class="col-md-4">
-                  <img
-                    src="assets/dummyproject.jpg"
-                    class="card-img"
-                    alt="Image"
-                  />
-                </div>
-              </div>
-            </div></div
-        ></a>
-      </section>
+      <section id="apiData" class="container mt-5"></section>
     </main>
 
     <!-- Footer-->
@@ -162,6 +90,43 @@
         </div>
       </div>
     </footer>
+    <!--<script src="animation.js"></script>-->
     <script src="animation.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script>
+      $.get("https://dummyjson.com/products", function (data) {
+        var resultHTML = "";
+
+        data.products.forEach(function (productData) {
+          var title = productData.title;
+          var description = productData.description;
+          var image = productData.thumbnail;
+
+          resultHTML += '  <div class="card m-4">';
+          resultHTML += '    <div class="card-body">';
+          resultHTML += '      <div class="row">';
+          resultHTML += '        <div class="col-md-8">';
+          resultHTML +=
+            '          <h4 class="card-title text-gradient d-inline">';
+          resultHTML += "            " + title;
+          resultHTML += "          </h4>";
+          resultHTML += '          <p class="card-text text-muted pt-2">';
+          resultHTML += "            " + description;
+          resultHTML += "          </p>";
+          resultHTML += "        </div>";
+          resultHTML += '        <div class="col-md-4">';
+          resultHTML +=
+            '          <img src="' +
+            image +
+            '" class="card-img" alt="Thumbnail">';
+          resultHTML += "        </div>";
+          resultHTML += "      </div>";
+          resultHTML += "    </div>";
+          resultHTML += "  </div>";
+        });
+        $("#apiData").html(resultHTML);
+        showCards();
+      });
+    </script>
   </body>
 </html>
