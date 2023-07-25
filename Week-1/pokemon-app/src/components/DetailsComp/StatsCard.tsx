@@ -1,6 +1,7 @@
 import React from "react";
+import { Stats } from "../../types";
 
-const ListItem = ({ stat }: any) => {
+const StatsCard = ({ stat }: { stat: Stats }) => {
   return (
     <li key={stat.stat.name}>
       {stat.stat.name}: {stat.base_stat}
@@ -8,4 +9,4 @@ const ListItem = ({ stat }: any) => {
   );
 };
 
-export default ListItem;
+export default StatsCard;

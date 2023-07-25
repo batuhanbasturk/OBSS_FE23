@@ -11,6 +11,7 @@ import axios from "axios";
 import { HomePage, PokemonPage } from "./pages";
 import "./App.css";
 import Api from "./API/Api";
+//TODO:Page change with React router
 function App() {
   return (
     <div>

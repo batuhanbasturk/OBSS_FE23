@@ -29,6 +29,15 @@ export interface Img {
   front_default: string;
 }
 
+interface Ability {
+  name: string;
+  url: string;
+}
+export interface PokemonAbilities {
+  ability: Ability;
+  is_hidden: boolean;
+}
+
 export interface PokemonDetails {
   types: Types[];
   height: number;
@@ -37,4 +46,5 @@ export interface PokemonDetails {
   id: number;
   sprites: Img;
   name: string;
+  abilities: PokemonAbilities[];
 }
