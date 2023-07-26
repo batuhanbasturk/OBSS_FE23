@@ -1,50 +1,26 @@
 import { useEffect, useState } from "react";
 import { PokemonDetails } from "../types";
-import {
-  getPokemonList,
-  fetchPokemonDetails,
-} from "../services/pokemon.services";
+
 import PokemonCard from "../components/HomeComp/PokemonCard";
 import { Link } from "react-router-dom";
+
+import fetchPokemonsAPI from "./fetchPokemons";
 
 const Api = () => {
   const [pokemonList, setPokemonList] = useState<PokemonDetails[]>([]);
   const [nextUrl, setNextUrl] = useState<string | null>(null);
-  const [selectedPokemon, setSelectedPokemon] = useState<PokemonDetails | null>(
-    null
-  );
-  const initialUrl = "https://pokeapi.co/api/v2/pokemon/?offset=0&limit=20";
 
-  const fetchPokemons = async (url: string = initialUrl) => {
-    try {
-      const { results, next } = await getPokemonList(url);
-
-      const pokemonDetailsPromises = results.map(async (pokemon) => {
-        const response = await fetchPokemonDetails(pokemon.url);
-        return response;
-      });
-
-      const pokemonDetailsResponses = await Promise.all(pokemonDetailsPromises);
-
-      setPokemonList((prevPokemonList) =>
-        url === initialUrl
-          ? [...pokemonDetailsResponses]
-          : [...prevPokemonList, ...pokemonDetailsResponses]
-      );
-      setNextUrl(next);
-    } catch (error) {
-      console.error("Error fetching Pokemon data:", error);
-    }
+  const fetchPokemons = (next?: string) => {
+    fetchPokemonsAPI(next)
+      .then(({ results, next }) => {
+        setPokemonList([...pokemonList, ...results]);
+        setNextUrl(next);
+      })
+      .catch(console.log);
   };
 
   const handleLoadMore = () => {
-    if (nextUrl) {
-      fetchPokemons(nextUrl);
-    }
-  };
-
-  const handlePokemonClick = (selectedPokemon: PokemonDetails) => {
-    setSelectedPokemon(selectedPokemon);
+    nextUrl && fetchPokemons(nextUrl);
   };
 
   useEffect(() => {
@@ -52,22 +28,16 @@ const Api = () => {
   }, []);
 
   return (
-    <div>
-      {!selectedPokemon && (
-        <>
-          {pokemonList.map((pokemon, index) => (
-            <div key={index}>
-              <button onClick={() => handlePokemonClick(pokemon)}>
-                <Link to={`/pokemon/${pokemon.id}`}>
-                  <PokemonCard pokemon={pokemon} />
-                </Link>
-              </button>
-            </div>
-          ))}
-          {nextUrl && <button onClick={handleLoadMore}>Load More</button>}
-        </>
-      )}
-    </div>
+    <>
+      {pokemonList.map((pokemon) => (
+        <Link key={pokemon.id} to={`/pokemon/${pokemon.id}`}>
+          <div style={{ border: "1px solid hotpink" }}>
+            <PokemonCard pokemon={pokemon} />
+          </div>
+        </Link>
+      ))}
+      {nextUrl && <button onClick={handleLoadMore}>Load More</button>}
+    </>
   );
 };
 export default Api;

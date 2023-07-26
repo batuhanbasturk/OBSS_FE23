@@ -6,13 +6,13 @@ const Pokemon = ({
   pokemon: PokemonDetails;
 }) => {
   return (
-    <div>
+    <>
       <div>
         <img src={sprites.front_default} alt={name} />
       </div>
       <div>#{id}</div>
       <div>{name}</div>
-    </div>
+    </>
   );
 };
 
