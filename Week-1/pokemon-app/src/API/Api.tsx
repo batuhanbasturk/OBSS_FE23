@@ -13,22 +13,28 @@ const Api = () => {
   const [selectedPokemon, setSelectedPokemon] = useState<PokemonDetails | null>(
     null
   );
+  const initialUrl = "https://pokeapi.co/api/v2/pokemon/?offset=0&limit=20";
 
-  const fetchPokemons = async (
-    url: string = "https://pokeapi.co/api/v2/pokemon/?offset=0&limit=20"
-  ) => {
-    const { results, next } = await getPokemonList(url);
+  const fetchPokemons = async (url: string = initialUrl) => {
+    try {
+      const { results, next } = await getPokemonList(url);
 
-    const pokemonDetailsPromises = results.map(async (pokemon) => {
-      const response = await fetchPokemonDetails(pokemon.url);
-      return response;
-    });
+      const pokemonDetailsPromises = results.map(async (pokemon) => {
+        const response = await fetchPokemonDetails(pokemon.url);
+        return response;
+      });
 
-    const pokemonDetailsResponses = await Promise.all(pokemonDetailsPromises);
-    console.log(pokemonDetailsResponses);
+      const pokemonDetailsResponses = await Promise.all(pokemonDetailsPromises);
 
-    setPokemonList(pokemonDetailsResponses);
-    setNextUrl(next);
+      setPokemonList((prevPokemonList) =>
+        url === initialUrl
+          ? [...pokemonDetailsResponses]
+          : [...prevPokemonList, ...pokemonDetailsResponses]
+      );
+      setNextUrl(next);
+    } catch (error) {
+      console.error("Error fetching Pokemon data:", error);
+    }
   };
 
   const handleLoadMore = () => {
