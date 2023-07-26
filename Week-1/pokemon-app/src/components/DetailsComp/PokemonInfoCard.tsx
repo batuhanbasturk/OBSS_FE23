@@ -1,5 +1,5 @@
-import React from "react";
 import { PokemonDetails } from "../../types";
+
 const PokemonInfoCard = ({
   selectedPokemon: { height, weight, abilities },
 }: {

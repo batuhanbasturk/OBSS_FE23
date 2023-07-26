@@ -1,4 +1,3 @@
-import React from "react";
 import { PokemonDetails } from "../../types";
 
 const PokemonTypes = ({

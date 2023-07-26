@@ -1,6 +1,6 @@
-import React from "react";
 import { PokemonDetails } from "../../types";
 import StatsCard from "./StatsCard";
+
 const PokemonStatsCard = ({
   selectedPokemon: { stats },
 }: {

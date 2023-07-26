@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { PokemonDetails } from "../types";
 import {
   getPokemonList,
   fetchPokemonDetails,
 } from "../services/pokemon.services";
-import DetailsCard from "../pages/DetailsCard";
 import PokemonCard from "../components/HomeComp/PokemonCard";
+import { Link } from "react-router-dom";
 
 const Api = () => {
   const [pokemonList, setPokemonList] = useState<PokemonDetails[]>([]);
@@ -58,16 +58,16 @@ const Api = () => {
           {pokemonList.map((pokemon, index) => (
             <div key={index}>
               <button onClick={() => handlePokemonClick(pokemon)}>
-                <PokemonCard pokemon={pokemon} />
+                <Link to={`/pokemon/${pokemon.id}`}>
+                  <PokemonCard pokemon={pokemon} />
+                </Link>
               </button>
             </div>
           ))}
           {nextUrl && <button onClick={handleLoadMore}>Load More</button>}
         </>
       )}
-      {selectedPokemon && <DetailsCard selectedPokemon={selectedPokemon} />}
     </div>
   );
 };
-
 export default Api;

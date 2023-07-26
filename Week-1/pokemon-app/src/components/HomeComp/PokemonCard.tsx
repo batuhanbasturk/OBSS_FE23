@@ -1,4 +1,3 @@
-import React from "react";
 import { PokemonDetails } from "../../types";
 import PokemonType from "./PokemonType";
 import Pokemon from "./Pokemon";

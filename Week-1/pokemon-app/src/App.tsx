@@ -1,12 +1,6 @@
-import React from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  Link,
-  BrowserRouter,
-} from "react-router-dom";
+import { Route, Routes, BrowserRouter } from "react-router-dom";
 import Api from "./API/Api";
+import DetailsCard from "./pages/DetailsCard";
 import "./App.css";
 
 const App = () => {
@@ -14,6 +8,7 @@ const App = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Api />} />
+        <Route path="/pokemon/:id" element={<DetailsCard />} />
       </Routes>
     </BrowserRouter>
   );
