@@ -1,35 +1,22 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
+import React from "react";
 import {
   BrowserRouter as Router,
-  Switch,
   Route,
-  Redirect,
+  Routes,
+  Link,
+  BrowserRouter,
 } from "react-router-dom";
-import axios from "axios";
-import { HomePage, PokemonPage } from "./pages";
-import "./App.css";
 import Api from "./API/Api";
-//TODO:Page change with React router
-function App() {
+import "./App.css";
+
+const App = () => {
   return (
-    <div>
-      <Api />
-    </div>
-    /*
-    <Router>
-      <Switch>
-        <Route path="/PokemonPage">
-          {loggedIn ? <PokemonPage /> : <Redirect to="/" />}
-        </Route>
-        <Route path="/HomePage">
-          {loggedIn ? <Redirect to="/PokemonPage" /> : <HomePage />}
-        </Route>
-      </Switch>
-    </Router>
-    */
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Api />} />
+      </Routes>
+    </BrowserRouter>
   );
-}
+};
 
 export default App;

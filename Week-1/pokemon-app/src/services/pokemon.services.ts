@@ -1,5 +1,5 @@
 import axios from "axios";
-import { PokemonList, PokemonDetails } from "../types";
+import { PokemonList, PokemonDetails } from "../../src/types";
 
 const getPokemonList = (url: string) => {
   return axios.get<PokemonList>(url).then((res) => res.data);

@@ -53,15 +53,18 @@ const Api = () => {
 
   return (
     <div>
-      {pokemonList.map((pokemon, index) => (
-        <div key={index}>
-          <button onClick={() => handlePokemonClick(pokemon)}>
-            <PokemonCard pokemon={pokemon} />
-          </button>
-        </div>
-      ))}
-      {nextUrl && <button onClick={handleLoadMore}>Load More</button>}
-
+      {!selectedPokemon && (
+        <>
+          {pokemonList.map((pokemon, index) => (
+            <div key={index}>
+              <button onClick={() => handlePokemonClick(pokemon)}>
+                <PokemonCard pokemon={pokemon} />
+              </button>
+            </div>
+          ))}
+          {nextUrl && <button onClick={handleLoadMore}>Load More</button>}
+        </>
+      )}
       {selectedPokemon && <DetailsCard selectedPokemon={selectedPokemon} />}
     </div>
   );
