@@ -11,60 +11,66 @@ const App = () => {
   const [planeAngle, setPlaneAngle] = useState(0);
   const [speed, setSpeed] = useState(0);
   const [battery, setBattery] = useState(100);
-  //const [batteryBlink, setBatteryBlink] = useState(false);
+  const [socket, setSocket] = useState(null);
+  const [blink, setBlink] = useState(false);
 
+  // Create the WebSocket connection when the component mounts
   useEffect(() => {
-    const socket = new W3CWebSocket("ws://localhost:5175");
+    const newSocket = new W3CWebSocket("ws://localhost:5175");
 
-    socket.onopen = () => {
+    newSocket.onopen = () => {
       console.log("WebSocket connected");
     };
 
-    socket.onmessage = (event) => {
-      console.log("Received data from WebSocket:", event.data);
-      const data = JSON.parse(event.data);
-      console.log("Parsed data object:", data);
-      if (data.eventName === "PLANE_ANGLE") {
-        setPlaneAngle(parseFloat(data.data.angle));
-      } else if (data.eventName === "PLANE_SPEED") {
+    newSocket.onmessage = (e) => {
+      const data = JSON.parse(e.data);
+      if (data.eventName === "PLANE_SPEED") {
         setSpeed(parseFloat(data.data.speed));
+      } else if (data.eventName === "PLANE_ANGLE") {
+        setPlaneAngle(parseFloat(data.data.angle));
       } else if (data.eventName === "PLANE_BATTERY") {
         const batteryValue = parseInt(data.data.battery);
         setBattery(batteryValue);
-        //setBatteryBlink(batteryValue < 20);
+        batteryValue < 20 && setBlink(true);
       }
     };
 
-    socket.onclose = () => {
+    newSocket.onclose = () => {
       console.log("Disconnected from the WebSocket server");
     };
+    setSocket(newSocket);
 
     return () => {
-      socket.close();
+      newSocket.close();
     };
   }, []);
 
   const handleStartButtonClick = () => {
-    const socket = new WebSocket("ws://localhost:5175");
-    socket.onopen = () => {
+    if (socket && socket.readyState === socket.OPEN) {
       console.log("WebSocket connection established");
       socket.send("START");
-    };
+    }
   };
 
   const handleStopButtonClick = () => {
-    const socket = new WebSocket("ws://localhost:5175");
-    socket.onopen = () => {
+    if (socket && socket.readyState === socket.OPEN) {
       console.log("WebSocket connection established");
       socket.send("STOP");
-    };
+    }
   };
 
   return (
     <div className="container">
-      <Plane angle={planeAngle} />
-      <Speedometer speed={speed} />
-      <Battery battery={battery} />
+      <div>
+        <Plane angle={planeAngle} />
+      </div>
+      <div>
+        <Speedometer speed={speed} />
+      </div>
+      <div>
+        <Battery battery={battery} blink={blink} />
+      </div>
+
       <div className="button-container">
         <button onClick={handleStartButtonClick}>Start</button>
         <button onClick={handleStopButtonClick}>Stop</button>

@@ -1,6 +1,6 @@
 import React from "react";
 
-const Battery = ({ battery }) => {
+const Battery = ({ battery, blink }) => {
   return <div>{battery}%</div>;
 };
 
