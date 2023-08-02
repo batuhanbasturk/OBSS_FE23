@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { fetchCountries } from "../services/fetchCountries";
 import { addMessage } from "../services/addMessage";
+import contact from "../images/contact.svg";
 import {
   Grid,
   Typography,
@@ -72,6 +73,9 @@ const ContactForm = () => {
       style={{ height: "100vh" }}
     >
       <Grid item xs={10} sm={6} md={5}>
+        <Box sx={{ textAlign: "center" }}>
+          <img src={contact} alt="logo" style={{ height: 200, width: 200 }} />
+        </Box>
         <Card>
           <CardContent>
             <Typography
@@ -130,14 +134,14 @@ const ContactForm = () => {
             <TextareaAutosize
               aria-label="Message"
               placeholder="Message"
-              error={Boolean(errorMessage)}
               value={message}
-              helperText={errorMessage}
               onChange={(e) => setMessage(e.target.value)}
               style={{
                 width: "100%",
                 marginTop: "16px",
-                height: "100px",
+                maxHeight: "200px",
+                minHeight: "100px",
+                resize: "vertical",
                 border: errorMessage ? "1px solid red" : "1px solid #ccc",
               }}
             />
