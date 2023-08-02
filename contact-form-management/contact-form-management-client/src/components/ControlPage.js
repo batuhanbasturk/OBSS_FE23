@@ -1,13 +1,11 @@
-import React from "react";
-import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../services/logout";
-import { checkLogin } from "../services/checklogin";
+import { useUserContext } from "../context/UserContext";
 
 import Profile from "./Profile";
 
 const ControlPage = () => {
-  const [userData, setUserData] = useState({});
+  const { userData } = useUserContext();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -18,23 +16,10 @@ const ControlPage = () => {
       localStorage.removeItem("token");
       navigate("/login");
     } catch (error) {
-      // bu error'un ne zaman tetiklendiğini sor
       console.error(error);
     }
   };
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    const checker = async () => {
-      try {
-        const userData = await checkLogin(token);
-        setUserData(userData);
-        console.log(userData);
-      } catch (error) {
-        navigate(`/login?error=${encodeURIComponent(error)}`);
-      }
-    };
-    checker();
-  }, []);
+
   return (
     <div>
       <Profile userData={userData} />

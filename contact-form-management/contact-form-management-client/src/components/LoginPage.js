@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { login } from "../services/login";
-
+import { useUserContext } from "../context/UserContext";
 import { Grid, Box, TextField, Button } from "@mui/material";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
@@ -12,15 +12,21 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const [usernameError, setUsernameError] = useState("");
   const [passwordError, setPasswordError] = useState("");
-  const navigate = useNavigate();
 
+  const navigate = useNavigate();
   const location = useLocation();
   const errorMessage = new URLSearchParams(location.search).get("error");
+
+  const { setUserData } = useUserContext();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const token = await login(username, password);
+      const fullData = await login(username, password);
+      const user = fullData.user;
+      const token = fullData.token;
+      setUserData(user);
+
       localStorage.setItem("token", token);
       if (!token) {
         navigate("/login");
@@ -90,7 +96,11 @@ const LoginPage = () => {
             />
           </Grid>
         </Grid>
-        {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
+        {errorMessage && (
+          <Box style={{ color: "red", textAlign: "center" }}>
+            {errorMessage}
+          </Box>
+        )}
         <Button
           type="submit"
           variant="contained"
