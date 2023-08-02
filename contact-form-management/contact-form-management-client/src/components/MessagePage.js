@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { fetchMessages } from "../services/fetchMessages";
+import Navbar from "./Navbar";
 import {
   Table,
   TableBody,
@@ -51,6 +52,7 @@ const MessagePage = () => {
 
   return (
     <div>
+      <Navbar />
       <h1>Contact Form Messages</h1>
       <TableContainer component={Paper}>
         <Table>

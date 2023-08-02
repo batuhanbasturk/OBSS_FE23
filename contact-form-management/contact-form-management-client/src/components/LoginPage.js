@@ -33,7 +33,7 @@ const LoginPage = () => {
         return;
       }
 
-      navigate("/control");
+      navigate("/welcome");
     } catch (err) {
       if (err.includes("Username")) {
         setUsernameError(err);
