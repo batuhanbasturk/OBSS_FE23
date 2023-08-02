@@ -21,6 +21,8 @@ import {
   Box,
   InputLabel,
   FormHelperText,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 
 const ContactForm = () => {
@@ -34,6 +36,9 @@ const ContactForm = () => {
   const [errorCountry, setErrorCountry] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+
   // Fetch countries
   useEffect(() => {
     const getCountries = async () => {
@@ -44,6 +49,16 @@ const ContactForm = () => {
     getCountries();
   }, []);
 
+  // Snackbar handlers
+  const handleSnackbarOpen = (message) => {
+    setSnackbarMessage(message);
+    setSnackbarOpen(true);
+  };
+
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
+  };
+
   // Form submission handler
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -51,6 +66,10 @@ const ContactForm = () => {
     const formData = { name, gender, country, message };
     try {
       await addMessage(formData);
+      handleSnackbarOpen("Form submitted successfully!");
+      setName("");
+      setCountry("");
+      setMessage("");
     } catch (error) {
       if (error.includes("Name")) {
         setErrorName(error);
@@ -161,6 +180,19 @@ const ContactForm = () => {
               >
                 Submit
               </Button>
+              <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={3000}
+                onClose={handleSnackbarClose}
+              >
+                <Alert
+                  onClose={handleSnackbarClose}
+                  severity="success"
+                  sx={{ width: "100%" }}
+                >
+                  {snackbarMessage}
+                </Alert>
+              </Snackbar>
             </Box>
           </CardActions>
         </Card>

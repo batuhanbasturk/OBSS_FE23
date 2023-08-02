@@ -2,9 +2,10 @@ import { checkLogin } from "../services/checklogin";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useUserContext } from "../context/UserContext";
+
 const AuthorizationManager = () => {
   const navigate = useNavigate();
-  const { userData, setUserData } = useUserContext();
+  const { setUserData } = useUserContext();
   useEffect(() => {
     const token = localStorage.getItem("token");
     const checker = async () => {
