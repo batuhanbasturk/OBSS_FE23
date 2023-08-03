@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { fetchMessages } from "../services/fetchMessages";
 import Navbar from "./Navbar";
+import { useNavigate } from "react-router-dom";
+import { formatDateAndTime } from "../utils/formatDateAndTime";
+
 import {
   Table,
   TableBody,
@@ -11,8 +14,13 @@ import {
   Paper,
 } from "@mui/material";
 
-const MessagePage = () => {
+const MessagesPage = () => {
   const [messages, setMessages] = useState([]);
+  const navigate = useNavigate();
+
+  const handleViewMessageDetails = (id) => {
+    navigate(`/message/${id}`);
+  };
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -29,31 +37,9 @@ const MessagePage = () => {
     getMessages();
   }, []);
 
-  const formatDateAndTime = (dateString) => {
-    const date = new Date(dateString);
-    const optionsDate = {
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-    };
-    const optionsTime = {
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-    };
-    const formattedDate = new Intl.DateTimeFormat("en-US", optionsDate).format(
-      date
-    );
-    const formattedTime = new Intl.DateTimeFormat("en-US", optionsTime).format(
-      date
-    );
-    return `${formattedDate}\n${formattedTime}`;
-  };
-
   return (
     <div>
       <Navbar />
-      <h1>Contact Form Messages</h1>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -69,7 +55,10 @@ const MessagePage = () => {
           </TableHead>
           <TableBody>
             {messages.map((message) => (
-              <TableRow key={message.id}>
+              <TableRow
+                key={message.id}
+                onClick={() => handleViewMessageDetails(message.id)}
+              >
                 <TableCell>{message.id}</TableCell>
                 <TableCell>{message.name}</TableCell>
                 <TableCell>{message.message}</TableCell>
@@ -88,4 +77,4 @@ const MessagePage = () => {
   );
 };
 
-export default MessagePage;
+export default MessagesPage;

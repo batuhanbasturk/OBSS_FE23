@@ -13,7 +13,7 @@ const WelcomePage = () => {
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
-          height: "80vh",
+          height: "100vh",
         }}
       >
         <img src={greetings} alt="Greetings" />

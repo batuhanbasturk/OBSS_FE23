@@ -2,7 +2,8 @@ import { Route, Routes, BrowserRouter } from "react-router-dom";
 import LoginPage from "./components/LoginPage";
 import HomePage from "./components/HomePage";
 import WelcomePage from "./components/WelcomePage";
-import MessagePage from "./components/MessagePage";
+import MessagesPage from "./components/MessagesPage";
+import MessageDetailsPage from "./components/MessageDetailsPage";
 import ReportsPage from "./components/ReportsPage";
 import UserPage from "./components/UserPage";
 import NotFoundPage from "./components/NotFoundPage";
@@ -20,7 +21,19 @@ const App = () => {
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         {<Route path="/welcome" element={userData ? <WelcomePage /> : null} />}
-        {<Route path="/messages" element={userData ? <MessagePage /> : null} />}
+        {
+          <Route
+            path="/messages"
+            element={userData ? <MessagesPage /> : null}
+          />
+        }
+        {
+          <Route
+            path="/message/:id"
+            element={userData ? <MessageDetailsPage /> : null}
+          />
+        }
+
         {
           <Route
             path="/reports"

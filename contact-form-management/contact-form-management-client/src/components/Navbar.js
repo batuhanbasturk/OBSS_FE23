@@ -23,7 +23,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const pages =
     userData.role === "admin" ? ["Messages", "Users", "Reports"] : ["Messages"];
-  const settings = ["Logout"];
+  const settings = "Logout";
 
   // State to handle the anchor element for the main menu (MenuIcon) dropdown
   const [menuAnchorEl, setMenuAnchorEl] = useState(null);
