@@ -1,9 +1,12 @@
-// MessageDetailsPage.js
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getMessageById } from "../services/messageById";
 import { formatDateAndTime } from "../utils/formatDateAndTime";
 import NotFoundPage from "./NotFoundPage";
+import Navbar from "./Navbar";
+
+import Details from "../images/details.svg";
+import { Card, CardContent, Typography, Box } from "@mui/material";
 
 const MessageDetailsPage = () => {
   const { id } = useParams();
@@ -15,7 +18,6 @@ const MessageDetailsPage = () => {
     const fetchMessageById = async () => {
       try {
         const message = await getMessageById(id, token);
-        console.log(message.creationDate);
         setMessage(message);
       } catch (error) {
         setNotFoundError(error);
@@ -28,18 +30,46 @@ const MessageDetailsPage = () => {
   if (notFoundError) {
     return <NotFoundPage error={notFoundError} />;
   }
+
   return (
-    <div>
-      <h1>Message Details</h1>
-      <p>ID: {message.id}</p>
-      <p>Name: {message.name}</p>
-      <p>Message: {message.message}</p>
-      <p>Gender: {message.gender}</p>
-      <p>Country: {message.country}</p>
-      <p>Read: {message.read}</p>
-      <p>Date: {message.creationDate}</p>
-    </div>
-    //Need to solve bug about date
+    <>
+      <Navbar />
+
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "90vh",
+        }}
+      >
+        <img src={Details} alt="details" style={{ marginBottom: "20px" }} />
+        <Card variant="outlined" sx={{ maxWidth: "400px", width: "100%" }}>
+          <CardContent>
+            <Typography variant="h5" component="h2" gutterBottom>
+              ID: {message.id}
+            </Typography>
+            <Typography color="textSecondary">Name: {message.name}</Typography>
+            <Typography color="textSecondary" gutterBottom>
+              Message: {message.message}
+            </Typography>
+            <Typography color="textSecondary" gutterBottom>
+              Gender: {message.gender}
+            </Typography>
+            <Typography color="textSecondary" gutterBottom>
+              Country: {message.country}
+            </Typography>
+            <Typography color="textSecondary" gutterBottom>
+              Read: {message.read}
+            </Typography>
+            <Typography color="textSecondary" gutterBottom>
+              Date: {formatDateAndTime(message.creationDate)}
+            </Typography>
+          </CardContent>
+        </Card>
+      </Box>
+    </>
   );
 };
 

@@ -96,7 +96,7 @@ const ReportsPage = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          height: "100vh",
+          height: "90vh",
         }}
       >
         <Container maxWidth="lg" sx={{ textAlign: "center" }}>

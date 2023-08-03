@@ -24,7 +24,7 @@ const App = () => {
         {
           <Route
             path="/messages"
-            element={userData ? <MessagesPage /> : null}
+            element={userData ? <MessagesPage /> : <NotAuthorizedPage />}
           />
         }
         {
@@ -54,6 +54,7 @@ const App = () => {
             }
           />
         }
+        <Route path="/not-auth" element={<NotAuthorizedPage />} />
 
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

@@ -1,4 +1,7 @@
 const formatDateAndTime = (dateString) => {
+  if (!dateString) {
+    return "";
+  }
   const date = new Date(dateString);
   const optionsDate = {
     year: "numeric",

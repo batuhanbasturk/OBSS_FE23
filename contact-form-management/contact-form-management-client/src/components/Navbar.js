@@ -14,6 +14,10 @@ import {
   Box,
   Avatar,
   Tooltip,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import LogoImage from "../images/obss.svg";
@@ -30,6 +34,19 @@ const Navbar = () => {
 
   // State to handle the anchor element for the user's photo dropdown menu
   const [userMenuAnchorEl, setUserMenuAnchorEl] = useState(null);
+
+  // State to handle the logout dialog
+  const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
+
+  // Open the logout dialog
+  const handleLogoutDialogOpen = () => {
+    setLogoutDialogOpen(true);
+  };
+
+  // Close the logout dialog
+  const handleLogoutDialogClose = () => {
+    setLogoutDialogOpen(false);
+  };
 
   // Open the main menu dropdown
   const handleMenuOpen = (event) => {
@@ -50,12 +67,12 @@ const Navbar = () => {
   const handleLogout = async () => {
     const token = localStorage.getItem("token");
     try {
-      const logoutMessage = await logout(token);
-      window.alert(logoutMessage);
+      await logout(token);
       localStorage.removeItem("token");
       navigate("/login");
     } catch (error) {
-      console.error(error);
+      console.log(error);
+      //Should do token is required for logout than back to login page
     }
   };
 
@@ -206,11 +223,29 @@ const Navbar = () => {
 
             <MenuItem
               key={settings}
-              onClick={settings === "Logout" ? handleLogout : handleCloseMenus}
+              onClick={
+                settings === "Logout"
+                  ? handleLogoutDialogOpen
+                  : handleCloseMenus
+              }
             >
               <Typography textAlign="center">{settings}</Typography>
             </MenuItem>
           </Menu>
+          <Dialog open={logoutDialogOpen} onClose={handleLogoutDialogClose}>
+            <DialogTitle>Logout</DialogTitle>
+            <DialogContent>
+              <Typography>Are you sure you want to logout?</Typography>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleLogoutDialogClose} color="primary">
+                Cancel
+              </Button>
+              <Button onClick={handleLogout} color="primary" autoFocus>
+                Logout
+              </Button>
+            </DialogActions>
+          </Dialog>
         </Box>
       </Toolbar>
     </AppBar>
