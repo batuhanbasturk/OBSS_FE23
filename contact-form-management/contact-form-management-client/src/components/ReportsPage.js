@@ -8,7 +8,6 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 import Navbar from "./Navbar";
-import NotFoundPage from "./NotFoundPage";
 
 const ReportsPage = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
