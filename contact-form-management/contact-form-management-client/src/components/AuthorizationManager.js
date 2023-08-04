@@ -2,9 +2,12 @@ import { checkLogin } from "../api/checklogin";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useUserContext } from "../context/UserContext";
+import { useLocation } from "react-router-dom";
+import NotFoundPage from "./NotFoundPage";
 
 const AuthorizationManager = ({ children }) => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const { setUserData } = useUserContext();
   const [checked, setChecked] = useState(false);
@@ -24,7 +27,15 @@ const AuthorizationManager = ({ children }) => {
       checker();
     }
   }, [navigate, setUserData]);
-  return checked && <>{children}</>;
+  // homepage , loginpage, notFound,notauth'u routelasın
+
+  return checked ||
+    location.pathname === "/login" ||
+    location.pathname === "/" ? (
+    <>{children}</>
+  ) : (
+    <NotFoundPage />
+  );
 };
 
 export default AuthorizationManager;

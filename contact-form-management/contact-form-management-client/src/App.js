@@ -22,6 +22,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
+
           {
             <Route
               path="/welcome"
@@ -85,6 +86,7 @@ const App = () => {
               }
             />
           }
+
           <Route path="/not-auth" element={<NotAuthorizedPage />} />
 
           <Route path="*" element={<NotFoundPage />} />
