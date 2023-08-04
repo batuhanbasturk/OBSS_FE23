@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { fetchMessages } from "../services/fetchMessages";
+import { fetchMessages } from "../api/fetchMessages";
 
 import { Bar, Pie } from "react-chartjs-2";
 import { Container, Typography, Grid, Box, Button } from "@mui/material";
@@ -8,6 +8,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 import Navbar from "./Navbar";
+import NotFoundPage from "./NotFoundPage";
 
 const ReportsPage = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -96,7 +97,7 @@ const ReportsPage = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          height: "90vh",
+          height: "92vh",
         }}
       >
         <Container maxWidth="lg" sx={{ textAlign: "center" }}>

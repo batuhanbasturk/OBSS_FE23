@@ -1,4 +1,4 @@
-import { checkLogin } from "../services/checklogin";
+import { checkLogin } from "../api/checklogin";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useUserContext } from "../context/UserContext";
@@ -6,6 +6,7 @@ import { useUserContext } from "../context/UserContext";
 const AuthorizationManager = () => {
   const navigate = useNavigate();
   const { setUserData } = useUserContext();
+  // boolean to check if user is logged in
   useEffect(() => {
     const token = localStorage.getItem("token");
     const checker = async () => {

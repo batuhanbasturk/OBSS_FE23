@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { fetchCountries } from "../services/fetchCountries";
-import { addMessage } from "../services/addMessage";
+import { fetchCountries } from "../api/fetchCountries";
+import { addMessage } from "../api/addMessage";
 import contact from "../images/contact.svg";
+import { useSnackbar } from "../utils/snackbarUtils";
+
 import {
   Grid,
   Typography,
@@ -21,8 +23,6 @@ import {
   Box,
   InputLabel,
   FormHelperText,
-  Snackbar,
-  Alert,
 } from "@mui/material";
 
 const ContactForm = () => {
@@ -36,8 +36,7 @@ const ContactForm = () => {
   const [errorCountry, setErrorCountry] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const { handleSnackbarOpen, SnackbarComponent } = useSnackbar();
 
   // Fetch countries
   useEffect(() => {
@@ -48,16 +47,6 @@ const ContactForm = () => {
 
     getCountries();
   }, []);
-
-  // Snackbar handlers
-  const handleSnackbarOpen = (message) => {
-    setSnackbarMessage(message);
-    setSnackbarOpen(true);
-  };
-
-  const handleSnackbarClose = () => {
-    setSnackbarOpen(false);
-  };
 
   // Form submission handler
   const handleSubmit = async (e) => {
@@ -112,7 +101,7 @@ const ContactForm = () => {
               fullWidth
               value={name}
               onChange={(e) => setName(e.target.value)}
-              maxLength={50}
+              inputProps={{ maxLength: 50 }}
               helperText={errorName}
             />
             <FormControl component="fieldset" sx={{ mt: 2 }}>
@@ -155,6 +144,7 @@ const ContactForm = () => {
               placeholder="Message"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
+              inputProps={{ maxLength: 500 }}
               style={{
                 width: "100%",
                 marginTop: "16px",
@@ -180,19 +170,7 @@ const ContactForm = () => {
               >
                 Submit
               </Button>
-              <Snackbar
-                open={snackbarOpen}
-                autoHideDuration={3000}
-                onClose={handleSnackbarClose}
-              >
-                <Alert
-                  onClose={handleSnackbarClose}
-                  severity="success"
-                  sx={{ width: "100%" }}
-                >
-                  {snackbarMessage}
-                </Alert>
-              </Snackbar>
+              <SnackbarComponent />
             </Box>
           </CardActions>
         </Card>

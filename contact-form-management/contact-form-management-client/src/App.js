@@ -5,7 +5,9 @@ import WelcomePage from "./components/WelcomePage";
 import MessagesPage from "./components/MessagesPage";
 import MessageDetailsPage from "./components/MessageDetailsPage";
 import ReportsPage from "./components/ReportsPage";
-import UserPage from "./components/UserPage";
+import UsersPage from "./components/UsersPage";
+import UserDetailsPage from "./components/UserDetailsPage";
+import UserForm from "./components/UserForm";
 import NotFoundPage from "./components/NotFoundPage";
 import NotAuthorizedPage from "./components/NotAuthorizedPage";
 import { useUserContext } from "./context/UserContext";
@@ -50,7 +52,27 @@ const App = () => {
           <Route
             path="/users"
             element={
-              userData.role === "admin" ? <UserPage /> : <NotAuthorizedPage />
+              userData.role === "admin" ? <UsersPage /> : <NotAuthorizedPage />
+            }
+          />
+        }
+        {
+          <Route
+            path="/user/:id"
+            element={
+              userData.role === "admin" ? (
+                <UserDetailsPage />
+              ) : (
+                <NotAuthorizedPage />
+              )
+            }
+          />
+        }
+        {
+          <Route
+            path="/user/add"
+            element={
+              userData.role === "admin" ? <UserForm /> : <NotAuthorizedPage />
             }
           />
         }

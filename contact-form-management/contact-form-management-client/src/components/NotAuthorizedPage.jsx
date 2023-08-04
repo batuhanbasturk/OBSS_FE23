@@ -20,10 +20,10 @@ const NotAuthorizedPage = ({ error }) => {
         variant="contained"
         color="primary"
         onClick={() => {
-          error ? navigate("/") : navigate("/welcome");
+          error ? navigate("/welcome") : navigate("/");
         }}
       >
-        {error ? "Go to Homepage" : "Go to Welcome"}
+        {error ? "Go to Welcome Page" : "Go to Home Page"}
       </Button>
     </Container>
   );

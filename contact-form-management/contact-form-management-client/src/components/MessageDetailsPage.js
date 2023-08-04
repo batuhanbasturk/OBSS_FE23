@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getMessageById } from "../services/messageById";
-import { formatDateAndTime } from "../utils/formatDateAndTime";
+import { getMessageById } from "../api/messageById";
+import { formatDateAndTime } from "../utils/formatDateAndTimeUtils";
 import NotFoundPage from "./NotFoundPage";
 import Navbar from "./Navbar";
 
@@ -34,14 +34,13 @@ const MessageDetailsPage = () => {
   return (
     <>
       <Navbar />
-
       <Box
         sx={{
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
-          height: "90vh",
+          height: "92vh",
         }}
       >
         <img src={Details} alt="details" style={{ marginBottom: "20px" }} />

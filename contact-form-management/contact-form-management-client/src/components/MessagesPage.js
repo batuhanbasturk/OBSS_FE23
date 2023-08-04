@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { fetchMessages } from "../services/fetchMessages";
+import { fetchMessages } from "../api/fetchMessages";
 import Navbar from "./Navbar";
 import { useNavigate } from "react-router-dom";
-import { formatDateAndTime } from "../utils/formatDateAndTime";
+import { formatDateAndTime } from "../utils/formatDateAndTimeUtils";
 import { useUserContext } from "../context/UserContext";
-import NotAuthorizedPage from "./NotAuthorizedPage";
-import { deleteMessage } from "../services/deleteMessage";
+import NotFoundPage from "./NotFoundPage";
+import { deleteMessage } from "../api/deleteMessage";
+import { readMessage } from "../api/readMessage";
 
 import {
   Table,
@@ -16,7 +17,9 @@ import {
   TableRow,
   Paper,
   Button,
+  Typography,
 } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 import ReadIcon from "@mui/icons-material/Visibility";
 
 const MessagesPage = () => {
@@ -25,8 +28,14 @@ const MessagesPage = () => {
   const navigate = useNavigate();
   const { userData } = useUserContext();
 
-  const handleViewMessageDetails = (id) => {
-    navigate(`/message/${id}`);
+  const handleViewMessageDetails = async (id) => {
+    const token = localStorage.getItem("token");
+    try {
+      await readMessage(id, token);
+      navigate(`/message/${id}`);
+    } catch (error) {
+      setErrorMessage(error);
+    }
   };
 
   const handleDeleteMessage = async (id) => {
@@ -57,7 +66,7 @@ const MessagesPage = () => {
   }, []);
 
   if (errorMessage) {
-    return <NotAuthorizedPage error={errorMessage} />;
+    return <NotFoundPage error={errorMessage} />;
   }
   return (
     <>
@@ -66,22 +75,66 @@ const MessagesPage = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>View</TableCell>
-              <TableCell>ID</TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell>Message</TableCell>
-              <TableCell>Gender</TableCell>
-              <TableCell>Country</TableCell>
-              <TableCell>Read</TableCell>
-              <TableCell>Date</TableCell>
-              <TableCell>Delete</TableCell>
+              <TableCell>
+                <Typography
+                  variant="subtitle1"
+                  fontWeight="bold"
+                  textAlign={"center"}
+                >
+                  View
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography variant="subtitle1" fontWeight="bold">
+                  ID
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography variant="subtitle1" fontWeight="bold">
+                  Name
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography variant="subtitle1" fontWeight="bold">
+                  Message
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography variant="subtitle1" fontWeight="bold">
+                  Gender
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography variant="subtitle1" fontWeight="bold">
+                  Country
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography variant="subtitle1" fontWeight="bold">
+                  Read
+                </Typography>
+              </TableCell>
+              <TableCell>
+                <Typography variant="subtitle1" fontWeight="bold">
+                  Date
+                </Typography>
+              </TableCell>
+              {userData.role === "admin" && (
+                <TableCell>
+                  <Typography variant="subtitle1" fontWeight="bold">
+                    Delete
+                  </Typography>
+                </TableCell>
+              )}
             </TableRow>
           </TableHead>
           <TableBody>
             {messages.map((message) => (
               <TableRow key={message.id}>
                 <TableCell onClick={() => handleViewMessageDetails(message.id)}>
-                  <ReadIcon />
+                  <Button>
+                    <ReadIcon />
+                  </Button>
                 </TableCell>
                 <TableCell>{message.id}</TableCell>
                 <TableCell>{message.name}</TableCell>
@@ -94,12 +147,8 @@ const MessagesPage = () => {
                 </TableCell>
                 {userData.role === "admin" && (
                   <TableCell>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={() => handleDeleteMessage(message.id)}
-                    >
-                      Delete
+                    <Button onClick={() => handleDeleteMessage(message.id)}>
+                      <DeleteIcon />
                     </Button>
                   </TableCell>
                 )}

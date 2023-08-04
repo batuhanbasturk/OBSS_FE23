@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useUserContext } from "../context/UserContext";
-import { logout } from "../services/logout";
+import { logout } from "../api/logout";
 import { useNavigate } from "react-router-dom";
 import {
   Button,
@@ -77,7 +77,10 @@ const Navbar = () => {
   };
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: "#043c5c" }}>
+    <AppBar
+      position="static"
+      sx={{ backgroundColor: "#043c5c", height: "8vh" }}
+    >
       <Toolbar disableGutters>
         <Avatar
           alt="Logo"
