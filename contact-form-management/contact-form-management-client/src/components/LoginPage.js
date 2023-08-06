@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { login } from "../api/login";
 import { useUserContext } from "../context/UserContext";
@@ -6,6 +6,10 @@ import { Grid, Box, TextField, Button } from "@mui/material";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import logo from "../images/obss.png";
+
+import { useLanguageContext } from "../context/LanguageContext";
+import trTranslations from "../translations/tr";
+import enTranslations from "../translations/en";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
@@ -18,6 +22,8 @@ const LoginPage = () => {
   const errorMessage = new URLSearchParams(location.search).get("error");
 
   const { setUserData } = useUserContext();
+  const { language } = useLanguageContext();
+  const translations = language === "tr" ? trTranslations : enTranslations;
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -70,7 +76,7 @@ const LoginPage = () => {
           <Grid item xs>
             <TextField
               error={Boolean(usernameError)}
-              label="Username"
+              label={translations.loginPage.usernameLabel}
               variant="outlined"
               fullWidth
               value={username}
@@ -86,7 +92,7 @@ const LoginPage = () => {
           <Grid item xs>
             <TextField
               error={Boolean(passwordError)}
-              label="Password"
+              label={translations.loginPage.passwordLabel}
               variant="outlined"
               type="password"
               fullWidth
@@ -109,7 +115,7 @@ const LoginPage = () => {
             background: "linear-gradient(315deg, #003f5e, #22a9e0)",
           }}
         >
-          Login
+          {translations.loginPage.loginButton}
         </Button>
       </Box>
     </Grid>

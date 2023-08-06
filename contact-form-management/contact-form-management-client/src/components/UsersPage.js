@@ -6,6 +6,10 @@ import { fetchUsers } from "../api/fetchUsers";
 import NotFoundPage from "./NotFoundPage";
 import Navbar from "./Navbar";
 
+import { useLanguageContext } from "../context/LanguageContext";
+import trTranslations from "../translations/tr";
+import enTranslations from "../translations/en";
+
 import {
   Table,
   TableBody,
@@ -24,6 +28,8 @@ import PersonAddIcon from "@mui/icons-material/PersonAdd";
 
 const UserPage = () => {
   const navigate = useNavigate();
+  const { language } = useLanguageContext();
+  const translations = language === "tr" ? trTranslations : enTranslations;
 
   const [users, setUsers] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
@@ -68,34 +74,36 @@ const UserPage = () => {
                 <Typography
                   variant="subtitle1"
                   fontWeight="bold"
-                  sx={{ paddingLeft: 3 }}
+                  sx={
+                    language === "en" ? { paddingLeft: 2 } : { paddingLeft: 0 }
+                  }
                 >
-                  Edit
+                  {translations.usersPage.edit}
                 </Typography>
               </TableCell>
               <TableCell>
                 <Typography variant="subtitle1" fontWeight="bold">
-                  ID
+                  {translations.usersPage.id}
                 </Typography>
               </TableCell>
               <TableCell>
                 <Typography variant="subtitle1" fontWeight="bold">
-                  Username
+                  {translations.usersPage.username}
                 </Typography>
               </TableCell>
               <TableCell>
                 <Typography variant="subtitle1" fontWeight="bold">
-                  Role
+                  {translations.usersPage.role}
                 </Typography>
               </TableCell>
               <TableCell>
                 <Typography variant="subtitle1" fontWeight="bold">
-                  Password
+                  {translations.usersPage.password}
                 </Typography>
               </TableCell>
               <TableCell>
                 <Typography variant="subtitle1" fontWeight="bold">
-                  Image
+                  {translations.usersPage.image}
                 </Typography>
               </TableCell>
             </TableRow>
@@ -114,7 +122,7 @@ const UserPage = () => {
                 <TableCell>{user.password}</TableCell>
                 <TableCell>
                   <Avatar
-                    alt="User"
+                    alt={translations.usersPage.image}
                     src={user.base64Photo}
                     sx={{ width: 40, height: 40 }}
                   />
@@ -125,6 +133,7 @@ const UserPage = () => {
         </Table>
       </TableContainer>
       <Button sx={{ margin: 2 }} onClick={handleAddUser}>
+        {translations.usersPage.add}
         <PersonAddIcon />
       </Button>
     </>

@@ -5,6 +5,10 @@ import { formatDateAndTime } from "../utils/formatDateAndTimeUtils";
 import NotFoundPage from "./NotFoundPage";
 import Navbar from "./Navbar";
 
+import { useLanguageContext } from "../context/LanguageContext";
+import trTranslations from "../translations/tr";
+import enTranslations from "../translations/en";
+
 import Details from "../images/details.svg";
 import { Card, CardContent, Typography, Box } from "@mui/material";
 
@@ -12,6 +16,9 @@ const MessageDetailsPage = () => {
   const { id } = useParams();
   const [message, setMessage] = useState({});
   const [notFoundError, setNotFoundError] = useState("");
+
+  const { language } = useLanguageContext();
+  const translations = language === "tr" ? trTranslations : enTranslations;
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -40,30 +47,33 @@ const MessageDetailsPage = () => {
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
-          height: "92vh",
+          height: "90vh",
         }}
       >
         <img src={Details} alt="details" style={{ marginBottom: "20px" }} />
         <Card variant="outlined" sx={{ maxWidth: "400px", width: "100%" }}>
           <CardContent>
             <Typography variant="h5" component="h2" gutterBottom>
-              ID: {message.id}
+              {translations.messagesPage.id}: {message.id}
             </Typography>
-            <Typography color="textSecondary">Name: {message.name}</Typography>
-            <Typography color="textSecondary" gutterBottom>
-              Message: {message.message}
-            </Typography>
-            <Typography color="textSecondary" gutterBottom>
-              Gender: {message.gender}
+            <Typography color="textSecondary">
+              {translations.messagesPage.name}: {message.name}
             </Typography>
             <Typography color="textSecondary" gutterBottom>
-              Country: {message.country}
+              {translations.messagesPage.message} : {message.message}
             </Typography>
             <Typography color="textSecondary" gutterBottom>
-              Read: {message.read}
+              {translations.messagesPage.gender}: {message.gender}
             </Typography>
             <Typography color="textSecondary" gutterBottom>
-              Date: {formatDateAndTime(message.creationDate)}
+              {translations.messagesPage.country}: {message.country}
+            </Typography>
+            <Typography color="textSecondary" gutterBottom>
+              {translations.messagesPage.read}: {message.read}
+            </Typography>
+            <Typography color="textSecondary" gutterBottom>
+              {translations.messagesPage.date}:{" "}
+              {formatDateAndTime(message.creationDate)}
             </Typography>
           </CardContent>
         </Card>

@@ -27,7 +27,6 @@ const AuthorizationManager = ({ children }) => {
       checker();
     }
   }, [navigate, setUserData]);
-  // homepage , loginpage, notFound,notauth'u routelasın
 
   return checked ||
     location.pathname === "/login" ||

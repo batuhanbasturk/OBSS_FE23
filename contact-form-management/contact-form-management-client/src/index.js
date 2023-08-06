@@ -3,14 +3,17 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { UserProvider } from "./context/UserContext";
+import { LanguageProvider } from "./context/LanguageContext";
 import "chart.js/auto";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <UserProvider>
-      <App />
-    </UserProvider>
+    <LanguageProvider>
+      <UserProvider>
+        <App />
+      </UserProvider>
+    </LanguageProvider>
   </React.StrictMode>
 );
 

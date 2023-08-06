@@ -5,6 +5,10 @@ import Navbar from "./Navbar";
 import { MuiFileInput } from "mui-file-input";
 import useFileInput from "../utils/base64PhotoUtils";
 
+import { useLanguageContext } from "../context/LanguageContext";
+import trTranslations from "../translations/tr";
+import enTranslations from "../translations/en";
+
 import {
   Grid,
   Typography,
@@ -27,6 +31,8 @@ const UserForm = () => {
   const [photoError, setPhotoError] = useState("");
 
   const navigate = useNavigate();
+  const { language } = useLanguageContext();
+  const translations = language === "tr" ? trTranslations : enTranslations;
 
   const { file, base64Photo, handleChange } = useFileInput();
 
@@ -59,7 +65,7 @@ const UserForm = () => {
         container
         justifyContent="center"
         alignItems="center"
-        style={{ height: "92vh" }}
+        style={{ height: "90vh" }}
       >
         <Grid item xs={10} sm={6} md={5}>
           <Card>
@@ -76,10 +82,10 @@ const UserForm = () => {
                 align="center"
                 sx={{ color: "#154c79", marginBottom: 4 }}
               >
-                Create User
+                {translations.usersPage.userFormTitle}
               </Typography>
               <TextField
-                label="Username"
+                label={translations.usersPage.username}
                 variant="outlined"
                 error={Boolean(usernameError)}
                 fullWidth
@@ -90,7 +96,7 @@ const UserForm = () => {
                 sx={{ marginBottom: 2 }}
               />
               <TextField
-                label="Password"
+                label={translations.usersPage.password}
                 variant="outlined"
                 error={Boolean(passwordError)}
                 fullWidth
@@ -101,7 +107,7 @@ const UserForm = () => {
                 sx={{ marginBottom: 2 }}
               />
               <TextField
-                label="Role"
+                label={translations.usersPage.role}
                 variant="outlined"
                 defaultValue="Reader"
                 fullWidth
@@ -124,7 +130,7 @@ const UserForm = () => {
                   sx={{ marginBottom: 2 }}
                   onClick={handleSubmit}
                 >
-                  Create
+                  {translations.usersPage.createButton}
                 </Button>
               </Box>
             </CardActions>

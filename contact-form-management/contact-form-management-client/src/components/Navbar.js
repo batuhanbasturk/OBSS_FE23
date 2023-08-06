@@ -1,8 +1,13 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useUserContext } from "../context/UserContext";
 import { logout } from "../api/logout";
 import { useNavigate } from "react-router-dom";
+
+import { useLanguageContext } from "../context/LanguageContext";
+import trTranslations from "../translations/tr";
+import enTranslations from "../translations/en";
+
 import {
   Button,
   Menu,
@@ -24,10 +29,13 @@ import LogoImage from "../images/obss.svg";
 
 const Navbar = () => {
   const { userData } = useUserContext();
+  const { language } = useLanguageContext();
+  const translations = language === "tr" ? trTranslations : enTranslations;
   const navigate = useNavigate();
+
   const pages =
-    userData.role === "admin" ? ["Messages", "Users", "Reports"] : ["Messages"];
-  const settings = "Logout";
+    userData.role === "admin" ? ["messages", "users", "reports"] : ["messages"];
+  const settings = translations.navbar.logout;
 
   // State to handle the anchor element for the main menu (MenuIcon) dropdown
   const [menuAnchorEl, setMenuAnchorEl] = useState(null);
@@ -79,7 +87,7 @@ const Navbar = () => {
   return (
     <AppBar
       position="static"
-      sx={{ backgroundColor: "#043c5c", height: "8vh" }}
+      sx={{ backgroundColor: "#043c5c", height: "7vh" }}
     >
       <Toolbar disableGutters>
         <Avatar
@@ -114,7 +122,6 @@ const Navbar = () => {
         <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
           <IconButton
             size="large"
-            aria-label="account of current user"
             aria-controls="menu-appbar"
             aria-haspopup="true"
             onClick={handleMenuOpen}
@@ -147,7 +154,9 @@ const Navbar = () => {
                 to={`/${page.toLowerCase()}`}
                 onClick={handleCloseMenus}
               >
-                <Typography textAlign="center">{page}</Typography>
+                <Typography textAlign="center">
+                  {translations.navbar[page]}
+                </Typography>
               </MenuItem>
             ))}
           </Menu>
@@ -161,7 +170,7 @@ const Navbar = () => {
             height: 30,
             display: { xs: "flex", md: "none" },
             mr: 1,
-            ml: 2, // Added left padding
+            ml: 2,
           }}
         />
         <Typography
@@ -191,14 +200,14 @@ const Navbar = () => {
               to={`/${page.toLowerCase()}`}
               sx={{ my: 2, color: "white", display: "block", mx: 2 }}
             >
-              {page}
+              {translations.navbar[page]}
             </Button>
           ))}
         </Box>
 
         <Box sx={{ flexGrow: 0, pr: 2 }}>
-          <Tooltip title="Open settings">
-            <IconButton onClick={handleUserMenuOpen} sx={{ p: 0 }}>
+          <Tooltip title={translations.navbar.settings}>
+            <IconButton onClick={handleUserMenuOpen} sx={{ p: 0, mb: 1 }}>
               <Avatar
                 alt="User"
                 src={userData.base64Photo}
@@ -227,25 +236,27 @@ const Navbar = () => {
             <MenuItem
               key={settings}
               onClick={
-                settings === "Logout"
+                settings === translations.navbar.logout
                   ? handleLogoutDialogOpen
                   : handleCloseMenus
               }
             >
-              <Typography textAlign="center">{settings}</Typography>
+              <Typography textAlign="center">
+                {translations.navbar.logout}
+              </Typography>
             </MenuItem>
           </Menu>
           <Dialog open={logoutDialogOpen} onClose={handleLogoutDialogClose}>
-            <DialogTitle>Logout</DialogTitle>
+            <DialogTitle>{translations.navbar.logout}</DialogTitle>
             <DialogContent>
-              <Typography>Are you sure you want to logout?</Typography>
+              <Typography>{translations.navbar.logoutDialogContent}</Typography>
             </DialogContent>
             <DialogActions>
               <Button onClick={handleLogoutDialogClose} color="primary">
-                Cancel
+                {translations.navbar.logoutDialogCancelButton}
               </Button>
               <Button onClick={handleLogout} color="primary" autoFocus>
-                Logout
+                {translations.navbar.logoutDialogLogoutButton}
               </Button>
             </DialogActions>
           </Dialog>

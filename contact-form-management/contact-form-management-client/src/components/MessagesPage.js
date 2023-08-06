@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { fetchMessages } from "../api/fetchMessages";
 import Navbar from "./Navbar";
 import { useNavigate } from "react-router-dom";
@@ -7,6 +7,10 @@ import { useUserContext } from "../context/UserContext";
 import NotFoundPage from "./NotFoundPage";
 import { deleteMessage } from "../api/deleteMessage";
 import { readMessage } from "../api/readMessage";
+
+import { useLanguageContext } from "../context/LanguageContext";
+import trTranslations from "../translations/tr";
+import enTranslations from "../translations/en";
 
 import {
   Table,
@@ -25,8 +29,11 @@ import ReadIcon from "@mui/icons-material/Visibility";
 const MessagesPage = () => {
   const [messages, setMessages] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
+
   const navigate = useNavigate();
   const { userData } = useUserContext();
+  const { language } = useLanguageContext();
+  const translations = language === "tr" ? trTranslations : enTranslations;
 
   const handleViewMessageDetails = async (id) => {
     const token = localStorage.getItem("token");
@@ -79,50 +86,50 @@ const MessagesPage = () => {
                 <Typography
                   variant="subtitle1"
                   fontWeight="bold"
-                  textAlign={"center"}
+                  textAlign={language === "en" ? "center" : "left"}
                 >
-                  View
+                  {translations.messagesPage.view}
                 </Typography>
               </TableCell>
               <TableCell>
                 <Typography variant="subtitle1" fontWeight="bold">
-                  ID
+                  {translations.messagesPage.id}
                 </Typography>
               </TableCell>
               <TableCell>
                 <Typography variant="subtitle1" fontWeight="bold">
-                  Name
+                  {translations.messagesPage.name}
                 </Typography>
               </TableCell>
               <TableCell>
                 <Typography variant="subtitle1" fontWeight="bold">
-                  Message
+                  {translations.messagesPage.message}
                 </Typography>
               </TableCell>
               <TableCell>
                 <Typography variant="subtitle1" fontWeight="bold">
-                  Gender
+                  {translations.messagesPage.gender}
                 </Typography>
               </TableCell>
               <TableCell>
                 <Typography variant="subtitle1" fontWeight="bold">
-                  Country
+                  {translations.messagesPage.country}
                 </Typography>
               </TableCell>
               <TableCell>
                 <Typography variant="subtitle1" fontWeight="bold">
-                  Read
+                  {translations.messagesPage.read}
                 </Typography>
               </TableCell>
               <TableCell>
                 <Typography variant="subtitle1" fontWeight="bold">
-                  Date
+                  {translations.messagesPage.date}
                 </Typography>
               </TableCell>
               {userData.role === "admin" && (
                 <TableCell>
                   <Typography variant="subtitle1" fontWeight="bold">
-                    Delete
+                    {translations.messagesPage.delete}
                   </Typography>
                 </TableCell>
               )}

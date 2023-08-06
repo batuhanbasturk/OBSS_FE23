@@ -1,8 +1,12 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { fetchCountries } from "../api/fetchCountries";
 import { addMessage } from "../api/addMessage";
 import contact from "../images/contact.svg";
 import { useSnackbar } from "../utils/snackbarUtils";
+
+import { useLanguageContext } from "../context/LanguageContext";
+import trTranslations from "../translations/tr";
+import enTranslations from "../translations/en";
 
 import {
   Grid,
@@ -36,6 +40,9 @@ const ContactForm = () => {
   const [errorCountry, setErrorCountry] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
+  const { language } = useLanguageContext();
+  const translations = language === "tr" ? trTranslations : enTranslations;
+
   const { handleSnackbarOpen, SnackbarComponent } = useSnackbar();
 
   // Fetch countries
@@ -55,7 +62,7 @@ const ContactForm = () => {
     const formData = { name, gender, country, message };
     try {
       await addMessage(formData);
-      handleSnackbarOpen("Form submitted successfully!");
+      handleSnackbarOpen(translations.contactForm.successMessage);
       setName("");
       setCountry("");
       setMessage("");
@@ -92,10 +99,10 @@ const ContactForm = () => {
               sx={{ color: "#154c79" }}
               gutterBottom
             >
-              Contact Form
+              {translations.contactForm.title}
             </Typography>
             <TextField
-              label="Name"
+              label={translations.contactForm.nameLabel}
               variant="outlined"
               error={Boolean(errorName)}
               fullWidth
@@ -105,28 +112,30 @@ const ContactForm = () => {
               helperText={errorName}
             />
             <FormControl component="fieldset" sx={{ mt: 2 }}>
-              <FormLabel component="legend">Gender</FormLabel>
+              <FormLabel component="legend">
+                {translations.contactForm.genderLabel}
+              </FormLabel>
               <RadioGroup
                 row
                 value={gender}
                 onChange={(e) => setGender(e.target.value)}
               >
                 <FormControlLabel
-                  value="male"
+                  value={"male"}
                   control={<Radio />}
-                  label="Male"
+                  label={translations.contactForm.maleOption}
                 />
                 <FormControlLabel
-                  value="female"
+                  value={"female"}
                   control={<Radio />}
-                  label="Female"
+                  label={translations.contactForm.femaleOption}
                 />
               </RadioGroup>
             </FormControl>
             <FormControl fullWidth error={Boolean(errorCountry)} sx={{ mt: 2 }}>
-              <InputLabel>Select your country</InputLabel>
+              <InputLabel>{translations.contactForm.countryLabel}</InputLabel>
               <Select
-                label="Select your country"
+                label={translations.contactForm.countryLabel}
                 value={country}
                 onChange={(e) => setCountry(e.target.value)}
                 displayEmpty
@@ -141,7 +150,7 @@ const ContactForm = () => {
             </FormControl>
             <TextareaAutosize
               aria-label="Message"
-              placeholder="Message"
+              placeholder={translations.contactForm.messageLabel}
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               inputProps={{ maxLength: 500 }}
@@ -168,7 +177,7 @@ const ContactForm = () => {
                 sx={{ marginBottom: 2 }}
                 onClick={handleSubmit}
               >
-                Submit
+                {translations.contactForm.submitButton}
               </Button>
               <SnackbarComponent />
             </Box>

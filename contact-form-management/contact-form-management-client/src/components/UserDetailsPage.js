@@ -10,6 +10,10 @@ import NotFoundPage from "./NotFoundPage";
 import useFileInput from "../utils/base64PhotoUtils";
 import { MuiFileInput } from "mui-file-input";
 
+import { useLanguageContext } from "../context/LanguageContext";
+import trTranslations from "../translations/tr";
+import enTranslations from "../translations/en";
+
 import {
   Box,
   Typography,
@@ -35,13 +39,16 @@ const UserDetailsPage = () => {
   const { file, base64Photo, handleChange } = useFileInput();
   const { handleSnackbarOpen, SnackbarComponent } = useSnackbar();
 
+  const { language } = useLanguageContext();
+  const translations = language === "tr" ? trTranslations : enTranslations;
+
   const handleUpdateUser = async () => {
     const token = localStorage.getItem("token");
     try {
       const data = { username, password, base64Photo };
       const user = await updateUser(token, id, data);
       setUser(user);
-      handleSnackbarOpen("Updated user successfully");
+      handleSnackbarOpen(translations.usersPage.updateSnackbarMessage);
     } catch (error) {
       if (error === "Password is required") {
         setPasswordError(error);
@@ -81,21 +88,21 @@ const UserDetailsPage = () => {
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
-          height: "92vh",
+          height: "90vh",
         }}
       >
         <Card variant="outlined" sx={{ maxWidth: "400px", width: "100%" }}>
           <CardContent>
             <Avatar
-              alt="User"
+              alt={translations.usersPage.image}
               src={user.base64Photo}
               sx={{ width: 200, height: 200, margin: "auto" }}
             />
             <Typography variant="h5" component="h2" gutterBottom>
-              ID: {user.id}
+              {translations.usersPage.id}: {user.id}
             </Typography>
             <TextField
-              label="Username"
+              label={translations.usersPage.username}
               variant="outlined"
               value={user.username}
               fullWidth
@@ -106,7 +113,7 @@ const UserDetailsPage = () => {
               }}
             />
             <TextField
-              label="Password"
+              label={translations.usersPage.password}
               variant="outlined"
               value={password}
               error={Boolean(passwordError)}
@@ -117,7 +124,7 @@ const UserDetailsPage = () => {
               inputProps={{ maxLength: 10 }}
             />
             <TextField
-              label="Role"
+              label={translations.usersPage.role}
               variant="outlined"
               value={user.role}
               fullWidth
@@ -139,9 +146,11 @@ const UserDetailsPage = () => {
               </Typography>
             )}
             <Typography color="textSecondary" gutterBottom></Typography>
-            <Button variant="contained" onClick={handleUpdateUser}>
-              Save Changes
-            </Button>
+            <Box display="flex" justifyContent="center">
+              <Button variant="contained" onClick={handleUpdateUser}>
+                {translations.usersPage.updateButton}
+              </Button>
+            </Box>
             <SnackbarComponent />
           </CardContent>
         </Card>

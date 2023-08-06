@@ -12,12 +12,14 @@ import NotFoundPage from "./components/NotFoundPage";
 import NotAuthorizedPage from "./components/NotAuthorizedPage";
 import { useUserContext } from "./context/UserContext";
 import AuthorizationManager from "./components/AuthorizationManager";
+import LanguageNavbar from "./components/LanguageNavbar";
 
 const App = () => {
   const { userData } = useUserContext();
 
   return (
     <BrowserRouter>
+      <LanguageNavbar />
       <AuthorizationManager>
         <Routes>
           <Route path="/" element={<HomePage />} />

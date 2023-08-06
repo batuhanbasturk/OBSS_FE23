@@ -7,6 +7,10 @@ import { Container, Typography, Grid, Box, Button } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
+import { useLanguageContext } from "../context/LanguageContext";
+import trTranslations from "../translations/tr";
+import enTranslations from "../translations/en";
+
 import Navbar from "./Navbar";
 
 const ReportsPage = () => {
@@ -15,6 +19,8 @@ const ReportsPage = () => {
 
   const [messages, setMessages] = useState([]);
   const navigate = useNavigate();
+  const { language } = useLanguageContext();
+  const translations = language === "tr" ? trTranslations : enTranslations;
 
   // Chart data
   const getVisibleCountries = () => {
@@ -96,7 +102,7 @@ const ReportsPage = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          height: "92vh",
+          height: "90vh",
         }}
       >
         <Container maxWidth="lg" sx={{ textAlign: "center" }}>
@@ -104,7 +110,7 @@ const ReportsPage = () => {
             <Grid item xs={12}>
               <Box sx={{ p: 2 }}>
                 <Typography variant="h4" gutterBottom>
-                  Message Count by Country
+                  {translations.reportsPage.barChartTitle}
                 </Typography>
                 <Box sx={{ maxHeight: "300px", overflowY: "auto" }}>
                   <Bar
@@ -112,7 +118,7 @@ const ReportsPage = () => {
                       labels: getVisibleCountries(),
                       datasets: [
                         {
-                          label: "Message Count",
+                          label: translations.reportsPage.barChartLabel,
                           data: countryChartData.data.slice(
                             currentIndex,
                             currentIndex + countriesToShow
@@ -158,7 +164,7 @@ const ReportsPage = () => {
             </Grid>
             <Grid item xs={12}>
               <Typography variant="h4" gutterBottom>
-                Message Count by Gender
+                {translations.reportsPage.pieChartTitle}
               </Typography>
               <Box
                 sx={{

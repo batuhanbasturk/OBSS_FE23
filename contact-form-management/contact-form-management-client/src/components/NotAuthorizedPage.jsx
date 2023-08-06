@@ -1,4 +1,7 @@
 import { useNavigate } from "react-router-dom";
+import { useLanguageContext } from "../context/LanguageContext";
+import trTranslations from "../translations/tr";
+import enTranslations from "../translations/en";
 import { Button, Container, Typography } from "@mui/material";
 import notAuthorized from "../images/notAuthorized.svg";
 import {
@@ -9,11 +12,14 @@ import {
 
 const NotAuthorizedPage = ({ error }) => {
   const navigate = useNavigate();
+  const { language } = useLanguageContext();
+  const translations = language === "tr" ? trTranslations : enTranslations;
+
   return (
     <Container sx={containerStyle}>
       <img src={notAuthorized} alt="not-auth" sx={imageStyle} />
       <Typography variant="h5" component="h2" sx={titleStyle}>
-        {error ? error : "Not Authorized"}
+        {error ? error : translations.NotAuthorizedPage.notAuthorized}
       </Typography>
 
       <Button
@@ -23,7 +29,7 @@ const NotAuthorizedPage = ({ error }) => {
           error ? navigate("/welcome") : navigate("/");
         }}
       >
-        {error ? "Go to Welcome Page" : "Go to Home Page"}
+        {translations.NotAuthorizedPage.navigateTitle}
       </Button>
     </Container>
   );
