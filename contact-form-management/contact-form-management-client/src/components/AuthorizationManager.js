@@ -1,16 +1,12 @@
 import { checkLogin } from "../api/checklogin";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useUserContext } from "../context/UserContext";
-import { useLocation } from "react-router-dom";
-import NotFoundPage from "./NotFoundPage";
 
-const AuthorizationManager = ({ children }) => {
+const AuthorizationManager = () => {
   const navigate = useNavigate();
-  const location = useLocation();
 
-  const { setUserData } = useUserContext();
-  const [checked, setChecked] = useState(false);
+  const { setUserData, setChecked } = useUserContext();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -20,21 +16,16 @@ const AuthorizationManager = ({ children }) => {
         setUserData(fullData);
         setChecked(true);
       } catch (error) {
+        setChecked(true);
         navigate(`/login?error=${encodeURIComponent(error)}`);
       }
     };
     if (token) {
       checker();
+    } else {
+      setChecked(true);
     }
-  }, [navigate, setUserData]);
-
-  return checked ||
-    location.pathname === "/login" ||
-    location.pathname === "/" ? (
-    <>{children}</>
-  ) : (
-    <NotFoundPage />
-  );
+  }, [navigate, setUserData, setChecked]);
 };
 
 export default AuthorizationManager;

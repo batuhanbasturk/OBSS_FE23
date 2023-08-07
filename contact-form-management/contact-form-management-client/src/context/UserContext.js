@@ -4,9 +4,12 @@ const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const [userData, setUserData] = useState({});
+  const [checked, setChecked] = useState(false);
 
   return (
-    <UserContext.Provider value={{ userData, setUserData }}>
+    <UserContext.Provider
+      value={{ userData, setUserData, checked, setChecked }}
+    >
       {children}
     </UserContext.Provider>
   );

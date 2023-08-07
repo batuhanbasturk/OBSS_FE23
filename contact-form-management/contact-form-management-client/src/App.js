@@ -15,85 +15,76 @@ import AuthorizationManager from "./components/AuthorizationManager";
 import LanguageNavbar from "./components/LanguageNavbar";
 
 const App = () => {
-  const { userData } = useUserContext();
+  const { userData, checked } = useUserContext();
+  const routesjsx = checked ? (
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/login" element={<LoginPage />} />
+
+      {<Route path="/welcome" element={userData ? <WelcomePage /> : null} />}
+      {
+        <Route
+          path="/messages"
+          element={userData ? <MessagesPage /> : <NotAuthorizedPage />}
+        />
+      }
+      {
+        <Route
+          path="/message/:id"
+          element={userData ? <MessageDetailsPage /> : null}
+        />
+      }
+
+      {
+        <Route
+          path="/reports"
+          element={
+            userData.role === "admin" ? <ReportsPage /> : <NotAuthorizedPage />
+          }
+        />
+      }
+      {
+        <Route
+          path="/users"
+          element={
+            userData.role === "admin" ? <UsersPage /> : <NotAuthorizedPage />
+          }
+        />
+      }
+      {
+        <Route
+          path="/user/:id"
+          element={
+            userData.role === "admin" ? (
+              <UserDetailsPage />
+            ) : (
+              <NotAuthorizedPage />
+            )
+          }
+        />
+      }
+      {
+        <Route
+          path="/user/add"
+          element={
+            userData.role === "admin" ? <UserForm /> : <NotAuthorizedPage />
+          }
+        />
+      }
+
+      <Route path="/not-auth" element={<NotAuthorizedPage />} />
+
+      <Route path="*" element={<NotFoundPage />} />
+    </Routes>
+  ) : (
+    <>Loading...</>
+  );
 
   return (
     <BrowserRouter>
       <LanguageNavbar />
-      <AuthorizationManager>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/login" element={<LoginPage />} />
-
-          {
-            <Route
-              path="/welcome"
-              element={userData ? <WelcomePage /> : null}
-            />
-          }
-          {
-            <Route
-              path="/messages"
-              element={userData ? <MessagesPage /> : <NotAuthorizedPage />}
-            />
-          }
-          {
-            <Route
-              path="/message/:id"
-              element={userData ? <MessageDetailsPage /> : null}
-            />
-          }
-
-          {
-            <Route
-              path="/reports"
-              element={
-                userData.role === "admin" ? (
-                  <ReportsPage />
-                ) : (
-                  <NotAuthorizedPage />
-                )
-              }
-            />
-          }
-          {
-            <Route
-              path="/users"
-              element={
-                userData.role === "admin" ? (
-                  <UsersPage />
-                ) : (
-                  <NotAuthorizedPage />
-                )
-              }
-            />
-          }
-          {
-            <Route
-              path="/user/:id"
-              element={
-                userData.role === "admin" ? (
-                  <UserDetailsPage />
-                ) : (
-                  <NotAuthorizedPage />
-                )
-              }
-            />
-          }
-          {
-            <Route
-              path="/user/add"
-              element={
-                userData.role === "admin" ? <UserForm /> : <NotAuthorizedPage />
-              }
-            />
-          }
-
-          <Route path="/not-auth" element={<NotAuthorizedPage />} />
-
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
-      </AuthorizationManager>
+      <AuthorizationManager />
+      {routesjsx}
     </BrowserRouter>
   );
 };
