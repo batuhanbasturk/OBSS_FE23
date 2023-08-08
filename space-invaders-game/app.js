@@ -1,5 +1,7 @@
 const canvas = document.querySelector("canvas");
 const c = canvas.getContext("2d");
+const killedSound = document.getElementById("invaderKilledSound");
+const shootSound = document.getElementById("shootSound");
 
 canvas.width = window.innerWidth;
 canvas.height = canvas.width * 0.5;
@@ -136,7 +138,7 @@ class Grid {
       y: 0,
     };
     this.move = {
-      x: canvas.width / 1300,
+      x: canvas.width / 250,
       y: 0,
     };
     this.saucers = [];
@@ -162,7 +164,10 @@ class Grid {
     }
   }
   update() {
+    //her position güncellediğinde counter'ı 1 arttır
+
     this.position.x += this.move.x;
+
     this.position.y += this.move.y;
 
     //for every frame until the saucers reach the end of the canvas
@@ -172,8 +177,29 @@ class Grid {
       this.move.x = -this.move.x;
       this.move.y = canvas.height / 13;
     }
-    this.saucers.forEach((saucer) => {
+    this.saucers.forEach((saucer, i) => {
       saucer.update({ move: this.move });
+
+      projectiles.forEach((projectile, j) => {
+        if (
+          //still working on this
+          // checks if lasers right side hit the saucers left side
+          projectile.position.x + projectile.width >= saucer.position.x &&
+          // checks if lasers left side hit the saucers right side
+          projectile.position.x <= saucer.position.x + saucer.width &&
+          // checks if lasers top side hit the saucers bottom side
+          projectile.position.y <= saucer.position.y + saucer.height &&
+          // checks if lasers bottom side hit the saucers top side
+          projectile.position.y + projectile.height >= saucer.position.y
+        ) {
+          setTimeout(() => {
+            projectiles.splice(j, 1);
+            killedSound.volume = 0.1;
+            killedSound.play();
+            this.saucers.splice(i, 1);
+          }, 0);
+        }
+      });
     });
   }
 }
@@ -244,7 +270,7 @@ addEventListener("keydown", (e) => {
             },
           })
         );
-        const shootSound = document.getElementById("shootSound");
+
         shootSound.volume = 0.1;
         shootSound.currentTime = 0.02;
         shootSound.play();
