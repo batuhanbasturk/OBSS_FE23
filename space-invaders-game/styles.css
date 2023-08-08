@@ -5,6 +5,58 @@ body {
   height: 100%;
   background-color: black;
 }
+.home-screen {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #000;
+  color: #fff;
+}
+.logo {
+  max-width: 100%;
+  height: auto;
+}
+
+.home-screen h1 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.home-screen button {
+  font-size: 1.5rem;
+  padding: 10px 20px;
+  background-color: yellow;
+  color: #3a004e;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
 #canvas {
-  background-image: url("https://img.freepik.com/premium-photo/night-sky-stars-galaxies-sky-dusk_494741-58778.jpg");
+  background-image: url("images/canvas.jpg");
+  display: none;
+}
+
+.touch-controls {
+  justify-content: center;
+  display: none;
+}
+
+.touch-controls button {
+  font-size: 16px;
+  padding: 5px 20px;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 10%;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+@media (min-width: 768px) {
+  .touch-controls {
+    display: none;
+  }
 }

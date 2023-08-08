@@ -7,7 +7,16 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <div class="home-screen">
+      <img src="./images/logo.png" alt="Space Invaders" class="logo" />
+      <button id="startButton">Start Game</button>
+    </div>
     <canvas id="canvas"></canvas>
+    <div class="touch-controls">
+      <button id="btnLeft">Left</button>
+      <button id="btnRight">Right</button>
+      <button id="btnFire">Fire</button>
+    </div>
 
     <audio id="shootSound" src="./sounds/shoot.wav"></audio>
     <audio id="saucerKilledSound" src="./sounds/invaderkilled.wav"></audio>

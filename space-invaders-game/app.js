@@ -1,10 +1,20 @@
+const homeScreen = document.querySelector(".home-screen");
+const startButton = document.getElementById("startButton");
 const canvas = document.querySelector("canvas");
 const c = canvas.getContext("2d");
 const killedSound = document.getElementById("saucerKilledSound");
 const shootSound = document.getElementById("shootSound");
+const touchControls = document.querySelector(".touch-controls");
 
 canvas.width = window.innerWidth;
 canvas.height = canvas.width * 0.5;
+
+startButton.addEventListener("click", () => {
+  homeScreen.style.display = "none";
+  touchControls.style.display = "flex";
+  canvas.style.display = "block";
+  animate();
+});
 
 //player class
 class Player {
@@ -314,10 +324,57 @@ function animate() {
       );
     }
   }
-  console.log(frame);
 }
-animate();
 
+// mobile/tablet controls
+const btnLeft = document.getElementById("btnLeft");
+const btnRight = document.getElementById("btnRight");
+const btnFire = document.getElementById("btnFire");
+
+btnLeft.addEventListener("touchstart", () => {
+  keys.ArrowLeft.pressed = true;
+  player.switchImage();
+});
+
+btnLeft.addEventListener("touchend", () => {
+  keys.ArrowLeft.pressed = false;
+});
+
+btnRight.addEventListener("touchstart", () => {
+  keys.ArrowRight.pressed = true;
+  player.switchImage();
+});
+
+btnRight.addEventListener("touchend", () => {
+  keys.ArrowRight.pressed = false;
+});
+
+btnFire.addEventListener("touchstart", () => {
+  if (canFire) {
+    canFire = false;
+    projectiles.push(
+      new Projectile({
+        position: {
+          x: player.position.x + player.width / 2,
+          y: player.position.y,
+        },
+        move: {
+          x: 0,
+          y: -canvas.height / 75,
+        },
+      })
+    );
+
+    shootSound.volume = 0.1;
+    shootSound.currentTime = 0.02;
+    shootSound.play();
+    setTimeout(() => {
+      canFire = true;
+    }, 500);
+  }
+});
+
+// keyboard controls for desktop
 addEventListener("keydown", (e) => {
   switch (e.key) {
     case "ArrowLeft":
