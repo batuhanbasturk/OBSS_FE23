@@ -81,6 +81,29 @@ class Projectile {
     this.position.y += this.move.y;
   }
 }
+
+class SaucerProjectile {
+  constructor({ position, move }) {
+    this.position = position;
+    this.move = move;
+    this.height = canvas.height / 50;
+    this.width = canvas.width / 200;
+  }
+  draw() {
+    c.beginPath();
+    c.rect(this.position.x, this.position.y, this.width, this.height);
+    c.fillStyle = "red";
+    c.fill();
+    c.closePath();
+  }
+  update() {
+    this.draw();
+
+    this.position.x += this.move.x;
+    this.position.y += this.move.y;
+  }
+}
+
 //saucer class
 class Saucer {
   constructor({ position, type }) {
@@ -125,6 +148,20 @@ class Saucer {
       this.position.x += move.x;
       this.position.y += move.y;
     }
+  }
+  shoot(saucerProjectiles) {
+    saucerProjectiles.push(
+      new SaucerProjectile({
+        position: {
+          x: this.position.x + this.width / 2,
+          y: this.position.y + this.height,
+        },
+        move: {
+          x: 0,
+          y: canvas.height / 150,
+        },
+      })
+    );
   }
 }
 //grid class for saucers
@@ -221,11 +258,14 @@ class Grid {
 const player = new Player();
 const grid = new Grid();
 const projectiles = [];
+const saucerProjectiles = [];
 const keys = {
   ArrowLeft: { pressed: false },
   ArrowRight: { pressed: false },
 };
 let canFire = true;
+let frame = 0;
+let randomFire = Math.floor(Math.random() * 101) + 100;
 
 function animate() {
   requestAnimationFrame(animate);
@@ -234,6 +274,7 @@ function animate() {
   player.update();
 
   grid.update();
+  // spawn InvaderProjectiles
 
   projectiles.forEach((projectile, index) => {
     //remove projectiles that are out of the screen
@@ -241,6 +282,14 @@ function animate() {
       projectiles.splice(index, 1);
     } else {
       projectile.update();
+    }
+  });
+  saucerProjectiles.forEach((saucerProjectile) => {
+    //remove projectiles that are out of the screen
+    if (saucerProjectile.position.y + saucerProjectile.height > canvas.height) {
+      saucerProjectiles.splice(saucerProjectile, 1);
+    } else {
+      saucerProjectile.update();
     }
   });
   //move player
@@ -254,6 +303,18 @@ function animate() {
   } else {
     player.move.x = 0;
   }
+  frame++;
+  //frame counter for random fire of saucers and saucer3s
+  // only if there are saucers left on the grid and the player is alive
+  if (frame % randomFire === 0 && grid.saucers.length > 0) {
+    const saucer3s = grid.saucers.filter((saucer) => saucer.type === "saucer3");
+    if (saucer3s.length > 0) {
+      saucer3s[Math.floor(Math.random() * saucer3s.length)].shoot(
+        saucerProjectiles
+      );
+    }
+  }
+  console.log(frame);
 }
 animate();
 
