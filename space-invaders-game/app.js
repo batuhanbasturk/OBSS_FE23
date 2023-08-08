@@ -1,6 +1,6 @@
 const canvas = document.querySelector("canvas");
 const c = canvas.getContext("2d");
-const killedSound = document.getElementById("invaderKilledSound");
+const killedSound = document.getElementById("saucerKilledSound");
 const shootSound = document.getElementById("shootSound");
 
 canvas.width = window.innerWidth;
@@ -15,10 +15,7 @@ class Player {
     };
 
     this.imageIndex = 0;
-    this.images = [
-      "./icons/baseshipa.ico",
-      "./icons/baseshipb.ico", // Örnek olarak ikinci bir görüntü ekledik
-    ];
+    this.images = ["./icons/baseshipa.ico", "./icons/baseshipb.ico"];
     const image = new Image();
     image.src = this.images[this.imageIndex];
 
@@ -47,7 +44,7 @@ class Player {
       this.position.x += this.move.x;
     }
   }
-  //switch image
+  //switch image upon keypress
   switchImage() {
     this.imageIndex = (this.imageIndex + 1) % this.images.length;
     const newImageSrc = this.images[this.imageIndex];
@@ -138,7 +135,7 @@ class Grid {
       y: 0,
     };
     this.move = {
-      x: canvas.width / 250,
+      x: canvas.width / 800,
       y: 0,
     };
     this.saucers = [];
@@ -164,10 +161,7 @@ class Grid {
     }
   }
   update() {
-    //her position güncellediğinde counter'ı 1 arttır
-
     this.position.x += this.move.x;
-
     this.position.y += this.move.y;
 
     //for every frame until the saucers reach the end of the canvas
@@ -182,7 +176,6 @@ class Grid {
 
       projectiles.forEach((projectile, j) => {
         if (
-          //still working on this
           // checks if lasers right side hit the saucers left side
           projectile.position.x + projectile.width >= saucer.position.x &&
           // checks if lasers left side hit the saucers right side
@@ -193,10 +186,30 @@ class Grid {
           projectile.position.y + projectile.height >= saucer.position.y
         ) {
           setTimeout(() => {
-            projectiles.splice(j, 1);
-            killedSound.volume = 0.1;
-            killedSound.play();
-            this.saucers.splice(i, 1);
+            //checks if the saucer is still in the array with check i get delay
+            const saucerFound = this.saucers.find(
+              (saucerDelay) => saucerDelay === saucer
+            );
+            const projectileFound = projectiles.find(
+              (projectileDelay) => projectileDelay === projectile
+            );
+            //if both are still in the array remove them
+            if (saucerFound && projectileFound) {
+              projectiles.splice(j, 1);
+              killedSound.volume = 0.1;
+              killedSound.play();
+              this.saucers.splice(i, 1);
+            }
+            // if column is empty resize the grid
+            if (this.saucers.length > 0) {
+              const firstSaucer = this.saucers[0];
+              const lastSaucer = this.saucers[this.saucers.length - 1];
+              grid.width =
+                lastSaucer.position.x -
+                firstSaucer.position.x +
+                lastSaucer.width;
+              grid.position.x = firstSaucer.position.x;
+            }
           }, 0);
         }
       });
