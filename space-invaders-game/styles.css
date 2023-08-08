@@ -1,0 +1,10 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background-color: black;
+}
+#canvas {
+  background-image: url("https://img.freepik.com/premium-photo/night-sky-stars-galaxies-sky-dusk_494741-58778.jpg");
+}
