@@ -1,16 +1,64 @@
 const homeScreen = document.querySelector(".home-screen");
 const startButton = document.getElementById("startButton");
-let gameContainer = document.getElementById("canvas");
-let gameOverScreen = document.querySelector(".game-over");
-let playAgainButton = document.getElementById("playAgainButton");
+const gameContainer = document.getElementById("canvas");
+
+const gameWinScreen = document.querySelector(".game-win");
+const winPlayAgainButton = document.querySelector(".game-win .playAgainButton");
+const winExitButton = document.querySelector(".game-win .exitGameButton");
+
+const gameOverScreen = document.querySelector(".game-over");
+const losePlayAgainButton = document.querySelector(
+  ".game-over .playAgainButton"
+);
+const loseExitButton = document.querySelector(".game-over .exitGameButton");
+
 const canvas = document.querySelector("canvas");
 const c = canvas.getContext("2d");
 const killedSound = document.getElementById("saucerKilledSound");
 const shootSound = document.getElementById("shootSound");
+const playerKilledSound = document.getElementById("playerKilledSound");
 const touchControls = document.querySelector(".touch-controls");
 
 canvas.width = window.innerWidth;
 canvas.height = canvas.width * 0.5;
+
+function startGame() {
+  homeScreen.style.display = "none";
+  if (window.innerWidth < 1024) {
+    touchControls.style.display = "flex";
+  }
+  gameOverScreen.style.display = "none";
+  gameWinScreen.style.display = "none";
+  canvas.style.display = "block";
+  resetVariables();
+  animate();
+}
+
+function handleGameLoss() {
+  cancelAnimationFrame(animationFrame);
+  gameContainer.style.display = "none";
+  touchControls.style.display = "none";
+  gameOverScreen.style.display = "flex";
+}
+function handleGameWin() {
+  cancelAnimationFrame(animationFrame);
+  gameContainer.style.display = "none";
+  touchControls.style.display = "none";
+  gameWinScreen.style.display = "flex";
+}
+function homeScreenDisplay() {
+  homeScreen.style.display = "flex";
+  touchControls.style.display = "none";
+  gameOverScreen.style.display = "none";
+  gameWinScreen.style.display = "none";
+  canvas.style.display = "none";
+}
+
+startButton.addEventListener("click", startGame);
+winPlayAgainButton.addEventListener("click", startGame);
+losePlayAgainButton.addEventListener("click", startGame);
+winExitButton.addEventListener("click", homeScreenDisplay);
+loseExitButton.addEventListener("click", homeScreenDisplay);
 
 //player class
 class Player {
@@ -19,6 +67,8 @@ class Player {
       x: 0,
       y: 0,
     };
+
+    this.lives = 3;
 
     this.imageIndex = 0;
     this.images = ["./icons/baseshipa.ico", "./icons/baseshipb.ico"];
@@ -246,6 +296,9 @@ class Grid {
               killedSound.volume = 0.1;
               killedSound.play();
               this.saucers.splice(i, 1);
+              if (this.saucers.length === 0) {
+                handleGameWin();
+              }
             }
             // if column is empty resize the grid
             if (this.saucers.length > 0) {
@@ -319,7 +372,17 @@ function animate() {
     ) {
       setTimeout(() => {
         saucerProjectiles.splice(saucerProjectile, 1);
-        handleGameLoss();
+        //if player has more than 1 life remove one else game over
+        if (player.lives > 1) {
+          player.lives--;
+        } else {
+          playerKilledSound.volume = 0.1;
+          playerKilledSound.currentTime = 0.02;
+          playerKilledSound.play();
+          setTimeout(() => {
+            handleGameLoss();
+          }, 200);
+        }
       }, 0);
     }
   });
@@ -446,21 +509,3 @@ addEventListener("keyup", (e) => {
       break;
   }
 });
-
-function startGame() {
-  homeScreen.style.display = "none";
-  touchControls.style.display = "flex";
-  gameOverScreen.style.display = "none";
-  canvas.style.display = "block";
-  resetVariables();
-  animate();
-}
-
-function handleGameLoss() {
-  cancelAnimationFrame(animationFrame);
-  gameContainer.style.display = "none"; // Hide the game container
-  touchControls.style.display = "none";
-  gameOverScreen.style.display = "flex"; // Show the game over screen
-}
-startButton.addEventListener("click", startGame);
-playAgainButton.addEventListener("click", startGame);

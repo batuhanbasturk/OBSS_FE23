@@ -19,9 +19,21 @@
     </div>
     <div class="game-over">
       <img src="./images/game-over.jpg" alt="Game Over" class="logo" />
-      <button id="playAgainButton">Play Again</button>
+      <div>
+        <button class="playAgainButton">Play Again</button>
+        <button class="exitGameButton">Exit game</button>
+      </div>
     </div>
-
+    <div>
+      <div class="game-win">
+        <img src="./images/win.png" alt="You Win" class="logo" />
+        <div>
+          <button class="playAgainButton">Play Again</button>
+          <button class="exitGameButton">Exit game</button>
+        </div>
+      </div>
+    </div>
+    <audio id="playerKilledSound" src="./sounds/explosion.wav"></audio>
     <audio id="shootSound" src="./sounds/shoot.wav"></audio>
     <audio id="saucerKilledSound" src="./sounds/invaderkilled.wav"></audio>
     <script src="app.js"></script>

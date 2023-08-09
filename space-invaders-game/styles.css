@@ -6,7 +6,8 @@ body {
   background-color: black;
 }
 .home-screen,
-.game-over {
+.game-over,
+.game-win {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -15,33 +16,34 @@ body {
   background-color: #000;
   color: #fff;
 }
-.game-over {
+.game-over,
+.game-win {
   display: none;
 }
 .logo {
   max-width: 100%;
+  max-height: 50%;
   height: auto;
-}
-
-.home-screen h1 {
-  font-size: 2rem;
-  margin-bottom: 20px;
+  padding-bottom: 1rem;
 }
 
 .home-screen button,
-.game-over button {
+.game-over button,
+.game-win button {
   font-size: 1.5rem;
-  padding: 0.5rem 1.2rem;
+  padding: 0.5rem 1rem;
   font-weight: bold;
-
   border: none;
-  border-radius: 0.8rem;
+  border-radius: 0.5rem;
   cursor: pointer;
 }
-.home-screen button {
+
+.home-screen button,
+.game-win button {
   background-color: rgb(255, 251, 0);
   color: #45005c;
 }
+
 .game-over button {
   background-color: rgb(255, 221, 0);
   color: rgb(245, 66, 96);
@@ -66,10 +68,4 @@ body {
   border-radius: 10%;
   cursor: pointer;
   margin-right: 10px;
-}
-
-@media (min-width: 768px) {
-  .touch-controls {
-    display: none;
-  }
 }
