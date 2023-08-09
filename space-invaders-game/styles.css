@@ -5,7 +5,8 @@ body {
   height: 100%;
   background-color: black;
 }
-.home-screen {
+.home-screen,
+.game-over {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -13,6 +14,9 @@ body {
   height: 100vh;
   background-color: #000;
   color: #fff;
+}
+.game-over {
+  display: none;
 }
 .logo {
   max-width: 100%;
@@ -24,14 +28,23 @@ body {
   margin-bottom: 20px;
 }
 
-.home-screen button {
+.home-screen button,
+.game-over button {
   font-size: 1.5rem;
-  padding: 10px 20px;
-  background-color: yellow;
-  color: #3a004e;
+  padding: 0.5rem 1.2rem;
+  font-weight: bold;
+
   border: none;
-  border-radius: 5px;
+  border-radius: 0.8rem;
   cursor: pointer;
+}
+.home-screen button {
+  background-color: rgb(255, 251, 0);
+  color: #45005c;
+}
+.game-over button {
+  background-color: rgb(255, 221, 0);
+  color: rgb(245, 66, 96);
 }
 
 #canvas {

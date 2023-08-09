@@ -1,5 +1,8 @@
 const homeScreen = document.querySelector(".home-screen");
 const startButton = document.getElementById("startButton");
+let gameContainer = document.getElementById("canvas");
+let gameOverScreen = document.querySelector(".game-over");
+let playAgainButton = document.getElementById("playAgainButton");
 const canvas = document.querySelector("canvas");
 const c = canvas.getContext("2d");
 const killedSound = document.getElementById("saucerKilledSound");
@@ -8,13 +11,6 @@ const touchControls = document.querySelector(".touch-controls");
 
 canvas.width = window.innerWidth;
 canvas.height = canvas.width * 0.5;
-
-startButton.addEventListener("click", () => {
-  homeScreen.style.display = "none";
-  touchControls.style.display = "flex";
-  canvas.style.display = "block";
-  animate();
-});
 
 //player class
 class Player {
@@ -220,6 +216,10 @@ class Grid {
     }
     this.saucers.forEach((saucer, i) => {
       saucer.update({ move: this.move });
+      //if saucer reaches the player
+      if (saucer.position.y + saucer.height >= player.position.y) {
+        handleGameLoss();
+      }
 
       projectiles.forEach((projectile, j) => {
         if (
@@ -265,20 +265,22 @@ class Grid {
 }
 
 //variables
-const player = new Player();
-const grid = new Grid();
-const projectiles = [];
-const saucerProjectiles = [];
-const keys = {
-  ArrowLeft: { pressed: false },
-  ArrowRight: { pressed: false },
-};
-let canFire = true;
-let frame = 0;
-let randomFire = Math.floor(Math.random() * 101) + 100;
+function resetVariables() {
+  player = new Player();
+  grid = new Grid();
+  projectiles = [];
+  saucerProjectiles = [];
+  keys = {
+    ArrowLeft: { pressed: false },
+    ArrowRight: { pressed: false },
+  };
+  canFire = true;
+  frame = 0;
+  randomFire = Math.floor(Math.random() * 101) + 100;
+}
 
 function animate() {
-  requestAnimationFrame(animate);
+  animationFrame = requestAnimationFrame(animate);
   c.clearRect(0, 0, canvas.width, canvas.height);
 
   player.update();
@@ -297,9 +299,28 @@ function animate() {
   saucerProjectiles.forEach((saucerProjectile) => {
     //remove projectiles that are out of the screen
     if (saucerProjectile.position.y + saucerProjectile.height > canvas.height) {
-      saucerProjectiles.splice(saucerProjectile, 1);
+      setTimeout(() => {
+        saucerProjectiles.splice(saucerProjectile, 1);
+      }, 0);
     } else {
       saucerProjectile.update();
+    }
+
+    //check if saucerProjectile hit the player
+    if (
+      //
+      saucerProjectile.position.x + saucerProjectile.width >=
+        player.position.x &&
+      saucerProjectile.position.x <= player.position.x + player.width &&
+      saucerProjectile.position.y + saucerProjectile.height >=
+        player.position.y &&
+      saucerProjectile.position.y <=
+        player.position.y + player.height - saucerProjectile.height
+    ) {
+      setTimeout(() => {
+        saucerProjectiles.splice(saucerProjectile, 1);
+        handleGameLoss();
+      }, 0);
     }
   });
   //move player
@@ -425,3 +446,21 @@ addEventListener("keyup", (e) => {
       break;
   }
 });
+
+function startGame() {
+  homeScreen.style.display = "none";
+  touchControls.style.display = "flex";
+  gameOverScreen.style.display = "none";
+  canvas.style.display = "block";
+  resetVariables();
+  animate();
+}
+
+function handleGameLoss() {
+  cancelAnimationFrame(animationFrame);
+  gameContainer.style.display = "none"; // Hide the game container
+  touchControls.style.display = "none";
+  gameOverScreen.style.display = "flex"; // Show the game over screen
+}
+startButton.addEventListener("click", startGame);
+playAgainButton.addEventListener("click", startGame);
