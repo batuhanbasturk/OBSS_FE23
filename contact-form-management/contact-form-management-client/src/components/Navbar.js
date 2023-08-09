@@ -1,13 +1,14 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+//navigation
+import { useNavigate, Link } from "react-router-dom";
+//API
+import { logout } from "../api/login/logout";
+//Context
 import { useUserContext } from "../context/UserContext";
-import { logout } from "../api/logout";
-import { useNavigate } from "react-router-dom";
-
 import { useLanguageContext } from "../context/LanguageContext";
 import trTranslations from "../translations/tr";
 import enTranslations from "../translations/en";
-
+//UI
 import {
   Button,
   Menu,
@@ -32,7 +33,7 @@ const Navbar = () => {
   const { language } = useLanguageContext();
   const translations = language === "tr" ? trTranslations : enTranslations;
   const navigate = useNavigate();
-
+  //
   const pages =
     userData.role === "admin" ? ["messages", "users", "reports"] : ["messages"];
   const settings = translations.navbar.logout;
@@ -90,6 +91,7 @@ const Navbar = () => {
       sx={{ backgroundColor: "#043c5c", height: "7vh" }}
     >
       <Toolbar disableGutters>
+        {/* Logo */}
         <Avatar
           alt="Logo"
           src={LogoImage}
@@ -101,6 +103,7 @@ const Navbar = () => {
             ml: 2,
           }}
         />
+        {/* Welcome page navigator */}
         <Typography
           variant="h6"
           noWrap
@@ -118,7 +121,7 @@ const Navbar = () => {
         >
           OBSS
         </Typography>
-
+        {/* Mobile menu dropdown */}
         <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
           <IconButton
             size="large"
@@ -147,6 +150,7 @@ const Navbar = () => {
               display: { xs: "block", md: "none" },
             }}
           >
+            {/* Mobile page navigator */}
             {pages.map((page) => (
               <MenuItem
                 key={page}
@@ -161,7 +165,7 @@ const Navbar = () => {
             ))}
           </Menu>
         </Box>
-
+        {/* Desktop menu */}
         <Avatar
           alt="Logo"
           src={LogoImage}
@@ -191,7 +195,7 @@ const Navbar = () => {
         >
           OBSS
         </Typography>
-
+        {/*navigation pages*/}
         <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
           {pages.map((page) => (
             <Button
@@ -208,6 +212,7 @@ const Navbar = () => {
         <Box sx={{ flexGrow: 0, pr: 2 }}>
           <Tooltip title={translations.navbar.settings}>
             <IconButton onClick={handleUserMenuOpen} sx={{ p: 0, mb: 1 }}>
+              {/* User's photo */}
               <Avatar
                 alt="User"
                 src={userData.base64Photo}
@@ -215,6 +220,7 @@ const Navbar = () => {
               />
             </IconButton>
           </Tooltip>
+          {/* User's photo dropdown menu */}
           <Menu
             sx={{ mt: "45px" }}
             id="menu-appbar"
@@ -231,6 +237,7 @@ const Navbar = () => {
             open={Boolean(userMenuAnchorEl)}
             onClose={handleCloseMenus}
           >
+            {/* User's username */}
             <Typography textAlign="center">{userData.username}</Typography>
 
             <MenuItem
@@ -241,11 +248,13 @@ const Navbar = () => {
                   : handleCloseMenus
               }
             >
+              {/* Logout */}
               <Typography textAlign="center">
                 {translations.navbar.logout}
               </Typography>
             </MenuItem>
           </Menu>
+          {/* Logout dialog */}
           <Dialog open={logoutDialogOpen} onClose={handleLogoutDialogClose}>
             <DialogTitle>{translations.navbar.logout}</DialogTitle>
             <DialogContent>

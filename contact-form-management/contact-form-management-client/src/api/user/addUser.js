@@ -1,11 +1,11 @@
 import axios from "axios";
-import { server } from "../constants/server";
+import { server } from "../../constants/server";
 
-export const updateUser = async (token, id, data) => {
+export const addUser = async (token, data) => {
   const { username, password, base64Photo } = data;
   try {
     const response = await axios.post(
-      `${server}/api/user/update/${id}`,
+      `${server}/api/user/add-reader`,
       {
         username,
         password,
@@ -17,7 +17,7 @@ export const updateUser = async (token, id, data) => {
         },
       }
     );
-    return response.data.data.user;
+    return response.data;
   } catch (error) {
     return Promise.reject(error.response.data.error);
   }

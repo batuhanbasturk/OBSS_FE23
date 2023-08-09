@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react";
+//navigation
 import { useNavigate } from "react-router-dom";
-import { getUserById } from "../api/userById";
-import { fetchUsers } from "../api/fetchUsers";
-
-import NotFoundPage from "./NotFoundPage";
 import Navbar from "./Navbar";
-
+//api
+import { getUserById } from "../api/user/userById";
+import { fetchUsers } from "../api/user/fetchUsers";
+//error
+import NotFoundPage from "./NotFoundPage";
+//context
 import { useLanguageContext } from "../context/LanguageContext";
 import trTranslations from "../translations/tr";
 import enTranslations from "../translations/en";
-
+//UI
 import {
   Table,
   TableBody,
@@ -22,7 +24,6 @@ import {
   Typography,
   Avatar,
 } from "@mui/material";
-
 import EditIcon from "@mui/icons-material/Edit";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 
@@ -37,6 +38,7 @@ const UserPage = () => {
   const handleAddUser = () => {
     navigate("/user/add");
   };
+
   const handleViewUserDetails = async (id) => {
     const token = localStorage.getItem("token");
     try {
@@ -46,6 +48,7 @@ const UserPage = () => {
       setErrorMessage(error);
     }
   };
+
   useEffect(() => {
     const token = localStorage.getItem("token");
 
@@ -70,6 +73,7 @@ const UserPage = () => {
         <Table>
           <TableHead>
             <TableRow>
+              {/* Edit*/}
               <TableCell>
                 <Typography
                   variant="subtitle1"
@@ -81,26 +85,31 @@ const UserPage = () => {
                   {translations.usersPage.edit}
                 </Typography>
               </TableCell>
+              {/* Id */}
               <TableCell>
                 <Typography variant="subtitle1" fontWeight="bold">
                   {translations.usersPage.id}
                 </Typography>
               </TableCell>
+              {/* Username */}
               <TableCell>
                 <Typography variant="subtitle1" fontWeight="bold">
                   {translations.usersPage.username}
                 </Typography>
               </TableCell>
+              {/* Role */}
               <TableCell>
                 <Typography variant="subtitle1" fontWeight="bold">
                   {translations.usersPage.role}
                 </Typography>
               </TableCell>
+              {/* Password */}
               <TableCell>
                 <Typography variant="subtitle1" fontWeight="bold">
                   {translations.usersPage.password}
                 </Typography>
               </TableCell>
+              {/* Image */}
               <TableCell>
                 <Typography variant="subtitle1" fontWeight="bold">
                   {translations.usersPage.image}
@@ -108,6 +117,7 @@ const UserPage = () => {
               </TableCell>
             </TableRow>
           </TableHead>
+          {/* user fetch */}
           <TableBody>
             {users.map((user) => (
               <TableRow key={user.id}>
@@ -132,6 +142,7 @@ const UserPage = () => {
           </TableBody>
         </Table>
       </TableContainer>
+      {/* Add User Button */}
       <Button sx={{ margin: 2 }} onClick={handleAddUser}>
         {translations.usersPage.add}
         <PersonAddIcon />

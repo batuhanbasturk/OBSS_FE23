@@ -1,14 +1,18 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getMessageById } from "../api/messageById";
+//api
+import { getMessageById } from "../api/message/messageById";
+//utils
 import { formatDateAndTime } from "../utils/formatDateAndTimeUtils";
+//error
 import NotFoundPage from "./NotFoundPage";
+//navigation
 import Navbar from "./Navbar";
-
+//context
 import { useLanguageContext } from "../context/LanguageContext";
 import trTranslations from "../translations/tr";
 import enTranslations from "../translations/en";
-
+//UI
 import Details from "../images/details.svg";
 import { Card, CardContent, Typography, Box } from "@mui/material";
 
@@ -24,6 +28,7 @@ const MessageDetailsPage = () => {
     const token = localStorage.getItem("token");
     const fetchMessageById = async () => {
       try {
+        //api call to get message by id
         const message = await getMessageById(id, token);
         setMessage(message);
       } catch (error) {

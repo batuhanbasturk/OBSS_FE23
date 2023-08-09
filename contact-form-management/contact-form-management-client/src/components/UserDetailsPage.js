@@ -1,19 +1,21 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { getUserById } from "../api/userById";
-import { updateUser } from "../api/updateUser";
+//api
+import { getUserById } from "../api/user/userById";
+import { updateUser } from "../api/user/updateUser";
+//utils
 import { useSnackbar } from "../utils/snackbarUtils";
-//page
+//components
 import Navbar from "./Navbar";
 import NotFoundPage from "./NotFoundPage";
 //File handler
 import useFileInput from "../utils/base64PhotoUtils";
 import { MuiFileInput } from "mui-file-input";
-
+//context
 import { useLanguageContext } from "../context/LanguageContext";
 import trTranslations from "../translations/tr";
 import enTranslations from "../translations/en";
-
+//UI
 import {
   Box,
   Typography,
@@ -35,7 +37,7 @@ const UserDetailsPage = () => {
   const [passwordError, setPasswordError] = useState("");
   const [photoError, setPhotoError] = useState("");
   const [notFoundError, setNotFoundError] = useState("");
-
+  //Photo handler
   const { file, base64Photo, handleChange } = useFileInput();
   const { handleSnackbarOpen, SnackbarComponent } = useSnackbar();
 
@@ -49,6 +51,8 @@ const UserDetailsPage = () => {
       const user = await updateUser(token, id, data);
       setUser(user);
       handleSnackbarOpen(translations.usersPage.updateSnackbarMessage);
+      setPasswordError("");
+      setPhotoError("");
     } catch (error) {
       if (error === "Password is required") {
         setPasswordError(error);
@@ -93,14 +97,17 @@ const UserDetailsPage = () => {
       >
         <Card variant="outlined" sx={{ maxWidth: "400px", width: "100%" }}>
           <CardContent>
+            {/* User Image */}
             <Avatar
               alt={translations.usersPage.image}
               src={user.base64Photo}
               sx={{ width: 200, height: 200, margin: "auto" }}
             />
+            {/* User Id */}
             <Typography variant="h5" component="h2" gutterBottom>
               {translations.usersPage.id}: {user.id}
             </Typography>
+            {/* User Name */}
             <TextField
               label={translations.usersPage.username}
               variant="outlined"
@@ -112,6 +119,7 @@ const UserDetailsPage = () => {
                 shrink: true,
               }}
             />
+            {/* User Password */}
             <TextField
               label={translations.usersPage.password}
               variant="outlined"
@@ -123,6 +131,7 @@ const UserDetailsPage = () => {
               helperText={passwordError}
               inputProps={{ maxLength: 10 }}
             />
+            {/* User Role */}
             <TextField
               label={translations.usersPage.role}
               variant="outlined"
@@ -134,18 +143,20 @@ const UserDetailsPage = () => {
                 shrink: true,
               }}
             />
-
+            {/* User Photo Update*/}
             <MuiFileInput
               value={file}
               onChange={handleChange}
               margin="normal"
             />
+            {/* Photo Error */}
             {photoError && (
               <Typography variant="body2" color="red">
                 {photoError}
               </Typography>
             )}
             <Typography color="textSecondary" gutterBottom></Typography>
+            {/* Update Button */}
             <Box display="flex" justifyContent="center">
               <Button variant="contained" onClick={handleUpdateUser}>
                 {translations.usersPage.updateButton}

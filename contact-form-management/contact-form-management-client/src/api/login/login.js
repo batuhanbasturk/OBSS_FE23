@@ -1,4 +1,4 @@
-import { server } from "../constants/server";
+import { server } from "../../constants/server";
 import axios from "axios";
 
 // POST /api/user/login: Login user.

@@ -1,14 +1,17 @@
 import { useState } from "react";
+//navigation
 import { useNavigate } from "react-router-dom";
-import { addUser } from "../api/addUser";
 import Navbar from "./Navbar";
+//api
+import { addUser } from "../api/user/addUser";
+//File handler
 import { MuiFileInput } from "mui-file-input";
 import useFileInput from "../utils/base64PhotoUtils";
-
+//context
 import { useLanguageContext } from "../context/LanguageContext";
 import trTranslations from "../translations/tr";
 import enTranslations from "../translations/en";
-
+//UI
 import {
   Grid,
   Typography,
@@ -71,12 +74,14 @@ const UserForm = () => {
           <Card>
             <CardContent>
               <Box sx={{ textAlign: "center" }}>
+                {/* Logo */}
                 <img
                   src={hire}
                   alt="logo"
                   style={{ height: 200, width: 200 }}
                 />
               </Box>
+              {/* Form title*/}
               <Typography
                 variant="h4"
                 align="center"
@@ -84,6 +89,7 @@ const UserForm = () => {
               >
                 {translations.usersPage.userFormTitle}
               </Typography>
+              {/* Username */}
               <TextField
                 label={translations.usersPage.username}
                 variant="outlined"
@@ -95,6 +101,7 @@ const UserForm = () => {
                 helperText={usernameError}
                 sx={{ marginBottom: 2 }}
               />
+              {/* Password */}
               <TextField
                 label={translations.usersPage.password}
                 variant="outlined"
@@ -106,6 +113,7 @@ const UserForm = () => {
                 helperText={passwordError}
                 sx={{ marginBottom: 2 }}
               />
+              {/* Role */}
               <TextField
                 label={translations.usersPage.role}
                 variant="outlined"
@@ -114,14 +122,16 @@ const UserForm = () => {
                 disabled
                 sx={{ marginBottom: 2 }}
               />
+              {/* Photo */}
               <MuiFileInput value={file} onChange={handleChange} />
+              {/* Photo Error */}
               {photoError && (
                 <Typography variant="body2" color="red">
                   {photoError}
                 </Typography>
               )}
             </CardContent>
-
+            {/* Create Button */}
             <CardActions>
               <Box width="100%" display="flex" justifyContent="center">
                 <Button

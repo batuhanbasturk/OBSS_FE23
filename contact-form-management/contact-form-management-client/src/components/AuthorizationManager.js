@@ -1,6 +1,9 @@
-import { checkLogin } from "../api/checklogin";
-import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+//api
+import { checkLogin } from "../api/login/checklogin";
+//navigation
+import { useNavigate } from "react-router-dom";
+//context
 import { useUserContext } from "../context/UserContext";
 
 const AuthorizationManager = () => {
@@ -17,6 +20,7 @@ const AuthorizationManager = () => {
         setChecked(true);
       } catch (error) {
         setChecked(true);
+        // navigate to login page with error message
         navigate(`/login?error=${encodeURIComponent(error)}`);
       }
     };

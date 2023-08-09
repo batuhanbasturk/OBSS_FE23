@@ -1,8 +1,10 @@
+//navigation
 import { useNavigate } from "react-router-dom";
+//context
 import { useLanguageContext } from "../context/LanguageContext";
 import trTranslations from "../translations/tr";
 import enTranslations from "../translations/en";
-
+//UI
 import { Button, Container, Typography } from "@mui/material";
 import NotFound from "../images/404.svg";
 import {
@@ -18,6 +20,7 @@ const NotFoundPage = ({ error }) => {
 
   return (
     <Container sx={containerStyle}>
+      {/* error stands for message not found, user not found specific pages */}
       <img src={NotFound} alt="404" sx={imageStyle} />
       <Typography variant="h5" component="h2" sx={titleStyle}>
         {error ? error : translations.NotFoundPage.notFound}

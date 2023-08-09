@@ -1,17 +1,21 @@
 import { useState, useEffect } from "react";
-import { fetchMessages } from "../api/fetchMessages";
-import Navbar from "./Navbar";
+//navigation
 import { useNavigate } from "react-router-dom";
-import { formatDateAndTime } from "../utils/formatDateAndTimeUtils";
-import { useUserContext } from "../context/UserContext";
+import Navbar from "./Navbar";
+//error
 import NotFoundPage from "./NotFoundPage";
-import { deleteMessage } from "../api/deleteMessage";
-import { readMessage } from "../api/readMessage";
-
+//utils
+import { formatDateAndTime } from "../utils/formatDateAndTimeUtils";
+//api
+import { fetchMessages } from "../api/message/fetchMessages";
+import { deleteMessage } from "../api/message/deleteMessage";
+import { readMessage } from "../api/message/readMessage";
+//context
+import { useUserContext } from "../context/UserContext";
 import { useLanguageContext } from "../context/LanguageContext";
 import trTranslations from "../translations/tr";
 import enTranslations from "../translations/en";
-
+//UI
 import {
   Table,
   TableBody,
@@ -82,6 +86,7 @@ const MessagesPage = () => {
         <Table>
           <TableHead>
             <TableRow>
+              {/* View */}
               <TableCell>
                 <Typography
                   variant="subtitle1"
@@ -91,41 +96,49 @@ const MessagesPage = () => {
                   {translations.messagesPage.view}
                 </Typography>
               </TableCell>
+              {/* Id */}
               <TableCell>
                 <Typography variant="subtitle1" fontWeight="bold">
                   {translations.messagesPage.id}
                 </Typography>
               </TableCell>
+              {/* Name */}
               <TableCell>
                 <Typography variant="subtitle1" fontWeight="bold">
                   {translations.messagesPage.name}
                 </Typography>
               </TableCell>
+              {/* Message */}
               <TableCell>
                 <Typography variant="subtitle1" fontWeight="bold">
                   {translations.messagesPage.message}
                 </Typography>
               </TableCell>
+              {/* Gender */}
               <TableCell>
                 <Typography variant="subtitle1" fontWeight="bold">
                   {translations.messagesPage.gender}
                 </Typography>
               </TableCell>
+              {/* Country */}
               <TableCell>
                 <Typography variant="subtitle1" fontWeight="bold">
                   {translations.messagesPage.country}
                 </Typography>
               </TableCell>
+              {/* Read status*/}
               <TableCell>
                 <Typography variant="subtitle1" fontWeight="bold">
                   {translations.messagesPage.read}
                 </Typography>
               </TableCell>
+              {/* Date */}
               <TableCell>
                 <Typography variant="subtitle1" fontWeight="bold">
                   {translations.messagesPage.date}
                 </Typography>
               </TableCell>
+              {/* Delete for only admin*/}
               {userData.role === "admin" && (
                 <TableCell>
                   <Typography variant="subtitle1" fontWeight="bold">
@@ -136,6 +149,7 @@ const MessagesPage = () => {
             </TableRow>
           </TableHead>
           <TableBody>
+            {/* message data */}
             {messages.map((message) => (
               <TableRow key={message.id}>
                 <TableCell onClick={() => handleViewMessageDetails(message.id)}>

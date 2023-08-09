@@ -1,10 +1,11 @@
+//context
 import { useUserContext } from "../context/UserContext";
 import { useLanguageContext } from "../context/LanguageContext";
 import trTranslations from "../translations/tr";
 import enTranslations from "../translations/en";
-
+//navigation
 import Navbar from "./Navbar";
-
+//UI
 import greetings from "../images/greetings.svg";
 import { Container, Typography } from "@mui/material";
 

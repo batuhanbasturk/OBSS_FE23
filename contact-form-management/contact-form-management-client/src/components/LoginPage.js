@@ -1,12 +1,15 @@
 import { useState } from "react";
+//navigation
 import { useNavigate, useLocation } from "react-router-dom";
-import { login } from "../api/login";
-import { useUserContext } from "../context/UserContext";
+//api
+import { login } from "../api/login/login";
+//UI
 import { Grid, Box, TextField, Button } from "@mui/material";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import logo from "../images/obss.png";
-
+//context
+import { useUserContext } from "../context/UserContext";
 import { useLanguageContext } from "../context/LanguageContext";
 import trTranslations from "../translations/tr";
 import enTranslations from "../translations/en";
@@ -38,7 +41,6 @@ const LoginPage = () => {
         navigate("/login");
         return;
       }
-
       navigate("/welcome");
     } catch (err) {
       if (err.includes("Username")) {
@@ -68,12 +70,14 @@ const LoginPage = () => {
           bg: "white",
         }}
       >
+        {/*Login Logo*/}
         <img src={logo} alt="logo" width="100%" style={{ paddingBottom: 20 }} />
         <Grid container alignItems="center" spacing={2}>
           <Grid item>
             <AccountBoxIcon />
           </Grid>
           <Grid item xs>
+            {/*Username*/}
             <TextField
               error={Boolean(usernameError)}
               label={translations.loginPage.usernameLabel}
@@ -90,6 +94,7 @@ const LoginPage = () => {
             <LockOpenIcon />
           </Grid>
           <Grid item xs>
+            {/*Password*/}
             <TextField
               error={Boolean(passwordError)}
               label={translations.loginPage.passwordLabel}
@@ -102,11 +107,13 @@ const LoginPage = () => {
             />
           </Grid>
         </Grid>
+        {/*Check login's error message*/}
         {errorMessage && (
           <Box style={{ color: "red", textAlign: "center" }}>
             {errorMessage}
           </Box>
         )}
+        {/*Login Button*/}
         <Button
           type="submit"
           variant="contained"

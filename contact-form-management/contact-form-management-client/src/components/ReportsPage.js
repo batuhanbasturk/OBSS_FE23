@@ -1,17 +1,19 @@
 import { useEffect, useState } from "react";
+//navigation
 import { useNavigate } from "react-router-dom";
-import { fetchMessages } from "../api/fetchMessages";
-
+import Navbar from "./Navbar";
+//api
+import { fetchMessages } from "../api/message/fetchMessages";
+//chart library
 import { Bar, Pie } from "react-chartjs-2";
+//UI
 import { Container, Typography, Grid, Box, Button } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-
+//context
 import { useLanguageContext } from "../context/LanguageContext";
 import trTranslations from "../translations/tr";
 import enTranslations from "../translations/en";
-
-import Navbar from "./Navbar";
 
 const ReportsPage = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -110,9 +112,11 @@ const ReportsPage = () => {
             <Grid item xs={12}>
               <Box sx={{ p: 2 }}>
                 <Typography variant="h4" gutterBottom>
+                  {/* Bar chart title */}
                   {translations.reportsPage.barChartTitle}
                 </Typography>
                 <Box sx={{ maxHeight: "300px", overflowY: "auto" }}>
+                  {/* Bar chart */}
                   <Bar
                     data={{
                       labels: getVisibleCountries(),
@@ -139,6 +143,7 @@ const ReportsPage = () => {
                     }}
                   />
                 </Box>
+                {/* Pagination buttons */}
                 <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
                   <Button
                     disabled={currentIndex === 0}
@@ -164,6 +169,7 @@ const ReportsPage = () => {
             </Grid>
             <Grid item xs={12}>
               <Typography variant="h4" gutterBottom>
+                {/* Pie chart title */}
                 {translations.reportsPage.pieChartTitle}
               </Typography>
               <Box
@@ -175,6 +181,7 @@ const ReportsPage = () => {
                 }}
               >
                 <Box sx={{ height: "300px", width: "300px" }}>
+                  {/* Pie chart */}
                   <Pie
                     data={{
                       labels: genderChartData.labels,

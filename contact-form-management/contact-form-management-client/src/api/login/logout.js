@@ -1,17 +1,16 @@
 import axios from "axios";
-import { server } from "../constants/server";
-
-export const checkLogin = (token) => {
+import { server } from "../../constants/server";
+export const logout = (token) => {
   return axios
     .post(
-      `${server}/api/user/check-login`,
+      `${server}/api/user/logout`,
       {},
       {
         headers: { token: token },
       }
     )
     .then((response) => {
-      return response.data.data.user;
+      return response.data.data.message;
     })
     .catch((error) => {
       return Promise.reject(error.response.data.error);

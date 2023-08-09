@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react";
+//api
 import { fetchCountries } from "../api/fetchCountries";
-import { addMessage } from "../api/addMessage";
-import contact from "../images/contact.svg";
+import { addMessage } from "../api/message/addMessage";
+//snackbar imports
 import { useSnackbar } from "../utils/snackbarUtils";
-
+// language imports
 import { useLanguageContext } from "../context/LanguageContext";
 import trTranslations from "../translations/tr";
 import enTranslations from "../translations/en";
-
+//UI imports
 import {
   Grid,
   Typography,
@@ -28,21 +29,24 @@ import {
   InputLabel,
   FormHelperText,
 } from "@mui/material";
+import contact from "../images/contact.svg";
 
 const ContactForm = () => {
+  // Form state
   const [name, setName] = useState("");
-  const [gender, setGender] = useState("male");
+  const [gender, setGender] = useState("");
   const [countries, setCountries] = useState([]);
   const [country, setCountry] = useState("");
   const [message, setMessage] = useState("");
-
+  // Error state
   const [errorName, setErrorName] = useState("");
   const [errorCountry, setErrorCountry] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-
+  const [errorGender, setErrorGender] = useState("");
+  // Language state
   const { language } = useLanguageContext();
   const translations = language === "tr" ? trTranslations : enTranslations;
-
+  // Snackbar state
   const { handleSnackbarOpen, SnackbarComponent } = useSnackbar();
 
   // Fetch countries
@@ -62,10 +66,17 @@ const ContactForm = () => {
     const formData = { name, gender, country, message };
     try {
       await addMessage(formData);
+      // success snackbar
       handleSnackbarOpen(translations.contactForm.successMessage);
+      // reset form
       setName("");
       setCountry("");
       setMessage("");
+      setGender("");
+      setErrorMessage("");
+      setErrorName("");
+      setErrorCountry("");
+      setErrorGender("");
     } catch (error) {
       if (error.includes("Name")) {
         setErrorName(error);
@@ -73,6 +84,8 @@ const ContactForm = () => {
         setErrorCountry(error);
       } else if (error.includes("Message")) {
         setErrorMessage(error);
+      } else if (error.includes("Gender")) {
+        setErrorGender(error);
       }
     }
   };
@@ -89,10 +102,12 @@ const ContactForm = () => {
     >
       <Grid item xs={10} sm={6} md={5}>
         <Box sx={{ textAlign: "center" }}>
+          {/* Logo */}
           <img src={contact} alt="logo" style={{ height: 200, width: 200 }} />
         </Box>
         <Card>
           <CardContent>
+            {/* Title */}
             <Typography
               variant="h4"
               align="center"
@@ -101,6 +116,7 @@ const ContactForm = () => {
             >
               {translations.contactForm.title}
             </Typography>
+            {/* Name */}
             <TextField
               label={translations.contactForm.nameLabel}
               variant="outlined"
@@ -111,6 +127,7 @@ const ContactForm = () => {
               inputProps={{ maxLength: 50 }}
               helperText={errorName}
             />
+            {/* Gender */}
             <FormControl component="fieldset" sx={{ mt: 2 }}>
               <FormLabel component="legend">
                 {translations.contactForm.genderLabel}
@@ -132,6 +149,10 @@ const ContactForm = () => {
                 />
               </RadioGroup>
             </FormControl>
+            {errorGender && (
+              <FormHelperText error>{errorGender}</FormHelperText>
+            )}
+            {/* Country */}
             <FormControl fullWidth error={Boolean(errorCountry)} sx={{ mt: 2 }}>
               <InputLabel>{translations.contactForm.countryLabel}</InputLabel>
               <Select
@@ -148,6 +169,7 @@ const ContactForm = () => {
               </Select>
               {errorCountry && <FormHelperText>{errorCountry}</FormHelperText>}
             </FormControl>
+            {/* Message */}
             <TextareaAutosize
               aria-label="Message"
               placeholder={translations.contactForm.messageLabel}
@@ -163,12 +185,14 @@ const ContactForm = () => {
                 border: errorMessage ? "1px solid red" : "1px solid #ccc",
               }}
             />
+            {/* Error message */}
             {errorMessage && (
               <Typography variant="caption" color="error" sx={{ mt: 1 }}>
                 {errorMessage}
               </Typography>
             )}
           </CardContent>
+          {/* Submit button */}
           <CardActions>
             <Box width="100%" display="flex" justifyContent="center">
               <Button

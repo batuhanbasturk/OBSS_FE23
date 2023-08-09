@@ -1,4 +1,5 @@
 import { Route, Routes, BrowserRouter } from "react-router-dom";
+//components
 import LoginPage from "./components/LoginPage";
 import HomePage from "./components/HomePage";
 import WelcomePage from "./components/WelcomePage";
@@ -10,6 +11,7 @@ import UserDetailsPage from "./components/UserDetailsPage";
 import UserForm from "./components/UserForm";
 import NotFoundPage from "./components/NotFoundPage";
 import NotAuthorizedPage from "./components/NotAuthorizedPage";
+//context
 import { useUserContext } from "./context/UserContext";
 import AuthorizationManager from "./components/AuthorizationManager";
 import LanguageNavbar from "./components/LanguageNavbar";

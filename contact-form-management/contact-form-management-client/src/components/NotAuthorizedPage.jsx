@@ -1,7 +1,10 @@
+//navigation
 import { useNavigate } from "react-router-dom";
+//context
 import { useLanguageContext } from "../context/LanguageContext";
 import trTranslations from "../translations/tr";
 import enTranslations from "../translations/en";
+//UI
 import { Button, Container, Typography } from "@mui/material";
 import notAuthorized from "../images/notAuthorized.svg";
 import {
@@ -12,11 +15,13 @@ import {
 
 const NotAuthorizedPage = ({ error }) => {
   const navigate = useNavigate();
+
   const { language } = useLanguageContext();
   const translations = language === "tr" ? trTranslations : enTranslations;
 
   return (
     <Container sx={containerStyle}>
+      {/* error => welcome default => home*/}
       <img src={notAuthorized} alt="not-auth" sx={imageStyle} />
       <Typography variant="h5" component="h2" sx={titleStyle}>
         {error ? error : translations.NotAuthorizedPage.notAuthorized}
