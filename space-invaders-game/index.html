@@ -5,17 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Space Invaders</title>
     <link rel="stylesheet" href="styles.css" />
+    <icon href="./icons/baseshipb.ico" rel="shortcut icon" />
   </head>
   <body>
     <div class="home-screen">
       <img src="./images/logo.png" alt="Space Invaders" class="logo" />
       <button id="startButton">Start Game</button>
     </div>
+    <div class="top-menu">
+      <span class="score">Score:<span id="score">0</span></span>
+      <button id="pauseButton">Pause</button>
+    </div>
     <canvas id="canvas"></canvas>
+
     <div class="touch-controls">
       <button id="btnLeft">Left</button>
       <button id="btnRight">Right</button>
       <button id="btnFire">Fire</button>
+    </div>
+    <div class="pause-menu">
+      <img src="./images/pause.png" alt="Pause" class="logo" />
+      <div>
+        <button id="resumeButton">Resume</button>
+        <button class="pauseExitButton">Exit Game</button>
+      </div>
     </div>
     <div class="game-over">
       <img src="./images/game-over.jpg" alt="Game Over" class="logo" />

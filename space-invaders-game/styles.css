@@ -5,9 +5,11 @@ body {
   height: 100%;
   background-color: black;
 }
+/* screens */
 .home-screen,
 .game-over,
-.game-win {
+.game-win,
+.pause-menu {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -17,19 +19,51 @@ body {
   color: #fff;
 }
 .game-over,
-.game-win {
+.game-win,
+.pause-overlay,
+.pause-menu,
+.top-menu {
   display: none;
 }
+
+.top-menu {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+.score {
+  font-size: 2vw;
+  color: #fff;
+  padding-left: 5px;
+  flex: 1;
+}
+
+#pauseButton {
+  background-color: transparent;
+  border: none;
+  color: #fff;
+  font-size: 2vw;
+  cursor: pointer;
+  margin-right: 10px;
+}
 .logo {
-  max-width: 100%;
+  max-width: 80%;
   max-height: 50%;
   height: auto;
   padding-bottom: 1rem;
 }
-
+/* button settings*/
 .home-screen button,
 .game-over button,
-.game-win button {
+.game-win button,
+.pause-menu button {
   font-size: 1.5rem;
   padding: 0.5rem 1rem;
   font-weight: bold;
@@ -38,15 +72,19 @@ body {
   cursor: pointer;
 }
 
+/* button colors*/
 .home-screen button,
 .game-win button {
   background-color: rgb(255, 251, 0);
   color: #45005c;
 }
-
 .game-over button {
   background-color: rgb(255, 221, 0);
   color: rgb(245, 66, 96);
+}
+.pause-menu button {
+  color: #000;
+  background-color: rgb(255, 251, 0);
 }
 
 #canvas {

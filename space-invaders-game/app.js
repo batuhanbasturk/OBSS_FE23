@@ -1,24 +1,37 @@
+// home screen
 const homeScreen = document.querySelector(".home-screen");
 const startButton = document.getElementById("startButton");
+// game screen
 const gameContainer = document.getElementById("canvas");
-
+// top menu
+const topMenu = document.querySelector(".top-menu");
+const pauseButton = document.getElementById("pauseButton");
+const scoreEl = document.querySelector("#score");
+// pause screen
+const pauseScreen = document.querySelector(".pause-menu");
+const resumeButton = document.getElementById("resumeButton");
+const pauseExitButton = document.querySelector(".pauseExitButton");
+// game win screen
 const gameWinScreen = document.querySelector(".game-win");
 const winPlayAgainButton = document.querySelector(".game-win .playAgainButton");
 const winExitButton = document.querySelector(".game-win .exitGameButton");
-
+// game over screen
 const gameOverScreen = document.querySelector(".game-over");
 const losePlayAgainButton = document.querySelector(
   ".game-over .playAgainButton"
 );
 const loseExitButton = document.querySelector(".game-over .exitGameButton");
-
+// touch controls
+const touchControls = document.querySelector(".touch-controls");
+//canvas
 const canvas = document.querySelector("canvas");
 const c = canvas.getContext("2d");
+//sounds
 const killedSound = document.getElementById("saucerKilledSound");
 const shootSound = document.getElementById("shootSound");
 const playerKilledSound = document.getElementById("playerKilledSound");
-const touchControls = document.querySelector(".touch-controls");
 
+//canvas resize
 canvas.width = window.innerWidth;
 canvas.height = canvas.width * 0.5;
 
@@ -28,8 +41,11 @@ function startGame() {
     touchControls.style.display = "flex";
   }
   gameOverScreen.style.display = "none";
+  pauseScreen.style.display = "none";
+  topMenu.style.display = "flex";
   gameWinScreen.style.display = "none";
   canvas.style.display = "block";
+  scoreEl.innerHTML = 0;
   resetVariables();
   animate();
 }
@@ -38,6 +54,7 @@ function handleGameLoss() {
   cancelAnimationFrame(animationFrame);
   gameContainer.style.display = "none";
   touchControls.style.display = "none";
+  topMenu.style.display = "none";
   gameOverScreen.style.display = "flex";
 }
 function handleGameWin() {
@@ -45,6 +62,7 @@ function handleGameWin() {
   gameContainer.style.display = "none";
   touchControls.style.display = "none";
   gameWinScreen.style.display = "flex";
+  topMenu.style.display = "none";
 }
 function homeScreenDisplay() {
   homeScreen.style.display = "flex";
@@ -53,12 +71,36 @@ function homeScreenDisplay() {
   gameWinScreen.style.display = "none";
   canvas.style.display = "none";
 }
+function pauseScreenDisplay() {
+  pauseScreen.style.display = "flex";
+  touchControls.style.display = "none";
+  gameContainer.style.display = "none";
+  topMenu.style.display = "none";
+  cancelAnimationFrame(animationFrame);
+}
+function pauseMenuDisplay() {
+  pauseScreen.style.display = "none";
+  if (window.innerWidth < 1024) {
+    touchControls.style.display = "flex";
+  }
+  gameContainer.style.display = "block";
+  topMenu.style.display = "flex";
+  animate();
+}
 
+//home screen
 startButton.addEventListener("click", startGame);
+
+//game win screen
 winPlayAgainButton.addEventListener("click", startGame);
-losePlayAgainButton.addEventListener("click", startGame);
 winExitButton.addEventListener("click", homeScreenDisplay);
+//game over screen
+losePlayAgainButton.addEventListener("click", startGame);
 loseExitButton.addEventListener("click", homeScreenDisplay);
+//pause screen
+pauseButton.addEventListener("click", pauseScreenDisplay);
+resumeButton.addEventListener("click", pauseMenuDisplay);
+pauseExitButton.addEventListener("click", homeScreenDisplay);
 
 //player class
 class Player {
@@ -292,6 +334,14 @@ class Grid {
             );
             //if both are still in the array remove them
             if (saucerFound && projectileFound) {
+              if (saucer.type === "saucer1") {
+                score += 10;
+              } else if (saucer.type === "saucer2") {
+                score += 20;
+              } else if (saucer.type === "saucer3") {
+                score += 40;
+              }
+              scoreEl.innerHTML = score;
               projectiles.splice(j, 1);
               killedSound.volume = 0.1;
               killedSound.play();
@@ -323,6 +373,7 @@ function resetVariables() {
   grid = new Grid();
   projectiles = [];
   saucerProjectiles = [];
+  score = 0;
   keys = {
     ArrowLeft: { pressed: false },
     ArrowRight: { pressed: false },
@@ -361,7 +412,6 @@ function animate() {
 
     //check if saucerProjectile hit the player
     if (
-      //
       saucerProjectile.position.x + saucerProjectile.width >=
         player.position.x &&
       saucerProjectile.position.x <= player.position.x + player.width &&
