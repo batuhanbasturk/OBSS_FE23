@@ -27,18 +27,14 @@ body {
 }
 
 .top-menu {
-  display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 10px;
-  top: 0;
-  left: 0;
-  right: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  z-index: 1;
+  font-family: "Press Start 2P", cursive;
 }
 
-.score {
+.score,
+.lives {
   font-size: 2vw;
   color: #fff;
   padding-left: 5px;
@@ -52,6 +48,7 @@ body {
   font-size: 2vw;
   cursor: pointer;
   margin-right: 10px;
+  font-family: "Press Start 2P", cursive;
 }
 .logo {
   max-width: 80%;
