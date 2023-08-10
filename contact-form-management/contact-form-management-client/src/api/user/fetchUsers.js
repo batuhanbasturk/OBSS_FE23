@@ -1,5 +1,5 @@
 import axios from "axios";
-import { server } from "../../constants/server";
+import { server } from "../../server/server";
 
 export const fetchUsers = async (token) => {
   try {

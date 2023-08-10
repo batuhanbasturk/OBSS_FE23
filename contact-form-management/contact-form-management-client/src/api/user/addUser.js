@@ -1,5 +1,5 @@
 import axios from "axios";
-import { server } from "../../constants/server";
+import { server } from "../../server/server";
 
 export const addUser = async (token, data) => {
   const { username, password, base64Photo } = data;

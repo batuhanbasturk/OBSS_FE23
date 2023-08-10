@@ -5,13 +5,9 @@ import { useLanguageContext } from "../context/LanguageContext";
 import trTranslations from "../translations/tr";
 import enTranslations from "../translations/en";
 //UI
-import { Button, Container, Typography } from "@mui/material";
+import styles from "../styles/errorPages.module.css";
+import { Button, Box, Typography } from "@mui/material";
 import notAuthorized from "../images/notAuthorized.svg";
-import {
-  containerStyle,
-  imageStyle,
-  titleStyle,
-} from "../constants/errorPageStyles";
 
 const NotAuthorizedPage = ({ error }) => {
   const navigate = useNavigate();
@@ -20,10 +16,10 @@ const NotAuthorizedPage = ({ error }) => {
   const translations = language === "tr" ? trTranslations : enTranslations;
 
   return (
-    <Container sx={containerStyle}>
+    <Box className={styles.container}>
       {/* error => welcome default => home*/}
-      <img src={notAuthorized} alt="not-auth" sx={imageStyle} />
-      <Typography variant="h5" component="h2" sx={titleStyle}>
+      <img src={notAuthorized} alt="not-auth" className={styles.image} />
+      <Typography variant="h5" component="h2" className={styles.title}>
         {error ? error : translations.NotAuthorizedPage.notAuthorized}
       </Typography>
 
@@ -36,7 +32,7 @@ const NotAuthorizedPage = ({ error }) => {
       >
         {translations.NotAuthorizedPage.navigateTitle}
       </Button>
-    </Container>
+    </Box>
   );
 };
 

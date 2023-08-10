@@ -1,4 +1,5 @@
 import { useLanguageContext } from "../context/LanguageContext";
+import styles from "../styles/LanguageNavbar.module.css";
 
 const LanguageNavbar = () => {
   const { language, setLanguage } = useLanguageContext();
@@ -7,27 +8,12 @@ const LanguageNavbar = () => {
     setLanguage(event.target.value);
   };
 
-  const selectStyle = {
-    color: "white",
-    background: "#043c5c",
-    height: "3vh",
-    border: "none",
-    outline: "none",
-    padding: "0 1rem",
-  };
-
   return (
-    <div
-      style={{
-        position: "relative",
-        backgroundColor: "#043c5c",
-        height: "3vh",
-      }}
-    >
+    <div className={styles.navRow}>
       <select
         value={language}
         onChange={handleLanguageChange}
-        style={selectStyle}
+        className={styles.selectStyle}
       >
         <option value="en">English</option>
         <option value="tr">Türkçe</option>

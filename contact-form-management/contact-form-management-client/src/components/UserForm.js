@@ -12,6 +12,7 @@ import { useLanguageContext } from "../context/LanguageContext";
 import trTranslations from "../translations/tr";
 import enTranslations from "../translations/en";
 //UI
+import styles from "../styles/UserForm.module.css";
 import {
   Grid,
   Typography,
@@ -68,18 +69,14 @@ const UserForm = () => {
         container
         justifyContent="center"
         alignItems="center"
-        style={{ height: "90vh" }}
+        height={"90vh"}
       >
         <Grid item xs={10} sm={6} md={5}>
-          <Card>
+          <Card className={styles.card}>
             <CardContent>
               <Box sx={{ textAlign: "center" }}>
                 {/* Logo */}
-                <img
-                  src={hire}
-                  alt="logo"
-                  style={{ height: 200, width: 200 }}
-                />
+                <img className={styles.logo} src={hire} alt="logo" />
               </Box>
               {/* Form title*/}
               <Typography

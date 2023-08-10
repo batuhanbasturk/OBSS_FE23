@@ -1,0 +1,26 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 90vh;
+}
+
+.card {
+  max-width: 400px;
+  width: 100%;
+  overflow-y: auto;
+}
+
+.userImage {
+  width: 200px !important;
+  height: 200px !important;
+  margin: 0 auto;
+}
+
+@media (max-height: 768px) {
+  .userImage {
+    width: 150px !important;
+    height: 150px !important;
+  }
+}

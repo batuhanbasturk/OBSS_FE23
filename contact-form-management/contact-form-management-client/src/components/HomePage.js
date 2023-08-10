@@ -8,7 +8,8 @@ import { useSnackbar } from "../utils/snackbarUtils";
 import { useLanguageContext } from "../context/LanguageContext";
 import trTranslations from "../translations/tr";
 import enTranslations from "../translations/en";
-//UI imports
+//UI
+import styles from "../styles/Home.module.css";
 import {
   Grid,
   Typography,
@@ -92,18 +93,15 @@ const ContactForm = () => {
 
   return (
     <Grid
-      sx={{
-        background: "linear-gradient(315deg, #003f5e, #22a9e0)",
-      }}
       container
       justifyContent="center"
       alignItems="center"
-      style={{ height: "100vh" }}
+      className={styles.container}
     >
       <Grid item xs={10} sm={6} md={5}>
-        <Box sx={{ textAlign: "center" }}>
+        <Box className={styles.logoContainer}>
           {/* Logo */}
-          <img src={contact} alt="logo" style={{ height: 200, width: 200 }} />
+          <img src={contact} alt="logo" className={styles.logoImage} />
         </Box>
         <Card>
           <CardContent>
@@ -176,18 +174,14 @@ const ContactForm = () => {
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               inputProps={{ maxLength: 500 }}
+              className={styles.textArea}
               style={{
-                width: "100%",
-                marginTop: "16px",
-                maxHeight: "200px",
-                minHeight: "100px",
-                resize: "vertical",
                 border: errorMessage ? "1px solid red" : "1px solid #ccc",
               }}
             />
             {/* Error message */}
             {errorMessage && (
-              <Typography variant="caption" color="error" sx={{ mt: 1 }}>
+              <Typography variant="caption" className={styles.errorMsg}>
                 {errorMessage}
               </Typography>
             )}

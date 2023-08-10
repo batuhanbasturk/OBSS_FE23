@@ -16,6 +16,7 @@ import { useLanguageContext } from "../context/LanguageContext";
 import trTranslations from "../translations/tr";
 import enTranslations from "../translations/en";
 //UI
+import styles from "../styles/userDetails.module.css";
 import {
   Box,
   Typography,
@@ -86,22 +87,14 @@ const UserDetailsPage = () => {
   return (
     <>
       <Navbar />
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "90vh",
-        }}
-      >
-        <Card variant="outlined" sx={{ maxWidth: "400px", width: "100%" }}>
+      <Box className={styles.container}>
+        <Card variant="outlined" className={styles.card}>
           <CardContent>
             {/* User Image */}
             <Avatar
               alt={translations.usersPage.image}
               src={user.base64Photo}
-              sx={{ width: 200, height: 200, margin: "auto" }}
+              className={styles.userImage}
             />
             {/* User Id */}
             <Typography variant="h5" component="h2" gutterBottom>

@@ -9,6 +9,7 @@ import { useLanguageContext } from "../context/LanguageContext";
 import trTranslations from "../translations/tr";
 import enTranslations from "../translations/en";
 //UI
+import styles from "../styles/Navbar.module.css";
 import {
   Button,
   Menu,
@@ -81,43 +82,27 @@ const Navbar = () => {
       navigate("/login");
     } catch (error) {
       console.log(error);
-      //Should do token is required for logout than back to login page
     }
   };
 
   return (
-    <AppBar
-      position="static"
-      sx={{ backgroundColor: "#043c5c", height: "7vh" }}
-    >
+    <AppBar position="static" className={styles.navbar}>
       <Toolbar disableGutters>
         {/* Logo */}
         <Avatar
+          className={styles.logo}
           alt="Logo"
           src={LogoImage}
-          sx={{
-            width: 30,
-            height: 30,
-            display: { xs: "none", md: "flex" },
-            mr: 2,
-            ml: 2,
-          }}
+          sx={{ display: { xs: "none", md: "flex" } }}
         />
         {/* Welcome page navigator */}
         <Typography
+          className={styles.logoText}
           variant="h6"
           noWrap
           component={Link}
           to="/welcome"
-          sx={{
-            mr: 2,
-            display: { xs: "none", md: "flex" },
-            fontFamily: "monospace",
-            fontWeight: 700,
-            letterSpacing: ".3rem",
-            color: "inherit",
-            textDecoration: "none",
-          }}
+          sx={{ display: { xs: "none", md: "flex" } }}
         >
           OBSS
         </Typography>
@@ -167,31 +152,18 @@ const Navbar = () => {
         </Box>
         {/* Desktop menu */}
         <Avatar
+          className={styles.logo}
           alt="Logo"
           src={LogoImage}
-          sx={{
-            width: 30,
-            height: 30,
-            display: { xs: "flex", md: "none" },
-            mr: 1,
-            ml: 2,
-          }}
+          sx={{ display: { xs: "flex", md: "none" } }}
         />
         <Typography
+          className={styles.logoText}
           variant="h5"
           noWrap
           component={Link}
           to="/welcome"
-          sx={{
-            mr: 2,
-            display: { xs: "flex", md: "none" },
-            flexGrow: 1,
-            fontFamily: "monospace",
-            fontWeight: 700,
-            letterSpacing: ".3rem",
-            color: "inherit",
-            textDecoration: "none",
-          }}
+          sx={{ display: { xs: "flex", md: "none" } }}
         >
           OBSS
         </Typography>
@@ -214,9 +186,9 @@ const Navbar = () => {
             <IconButton onClick={handleUserMenuOpen} sx={{ p: 0, mb: 1 }}>
               {/* User's photo */}
               <Avatar
+                className={styles.userAvatar}
                 alt="User"
                 src={userData.base64Photo}
-                sx={{ width: 50, height: 50 }}
               />
             </IconButton>
           </Tooltip>

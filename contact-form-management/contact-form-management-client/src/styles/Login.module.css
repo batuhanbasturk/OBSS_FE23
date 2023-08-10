@@ -1,0 +1,25 @@
+.loginContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  max-width: 400px;
+  width: 100%;
+  background-color: white;
+}
+
+.logoImage {
+  width: 100%;
+  padding-bottom: 20px;
+}
+
+.errorBox {
+  color: red;
+  text-align: center;
+}
+
+.loginButton {
+  background: linear-gradient(315deg, #003f5e, #22a9e0);
+}

@@ -8,6 +8,7 @@ import { Grid, Box, TextField, Button } from "@mui/material";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import logo from "../images/obss.png";
+import styles from "../styles/Login.module.css";
 //context
 import { useUserContext } from "../context/UserContext";
 import { useLanguageContext } from "../context/LanguageContext";
@@ -54,24 +55,14 @@ const LoginPage = () => {
   };
 
   return (
-    <Grid container alignItems="center" justifyContent="center" height="100vh">
+    <Grid container alignItems="center" justifyContent="center" height="97vh">
       <Box
         component="form"
         onSubmit={handleLogin}
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          gap: 2,
-          p: 3,
-          border: "1px solid #ccc",
-          borderRadius: "5px",
-          maxWidth: "400px",
-          width: "100%",
-          bg: "white",
-        }}
+        className={styles.loginContainer}
       >
         {/*Login Logo*/}
-        <img src={logo} alt="logo" width="100%" style={{ paddingBottom: 20 }} />
+        <img src={logo} alt="logo" className={styles.logoImage} />
         <Grid container alignItems="center" spacing={2}>
           <Grid item>
             <AccountBoxIcon />
@@ -108,19 +99,13 @@ const LoginPage = () => {
           </Grid>
         </Grid>
         {/*Check login's error message*/}
-        {errorMessage && (
-          <Box style={{ color: "red", textAlign: "center" }}>
-            {errorMessage}
-          </Box>
-        )}
+        {errorMessage && <Box className={styles.errorBox}>{errorMessage}</Box>}
         {/*Login Button*/}
         <Button
           type="submit"
           variant="contained"
           color="primary"
-          sx={{
-            background: "linear-gradient(315deg, #003f5e, #22a9e0)",
-          }}
+          className={styles.loginButton}
         >
           {translations.loginPage.loginButton}
         </Button>

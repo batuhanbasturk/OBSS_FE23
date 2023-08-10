@@ -1,0 +1,11 @@
+.selectStyle {
+  color: white;
+  background: #043c5c;
+  margin: 0 0.5rem;
+  border: none;
+  outline: none;
+}
+.navRow {
+  position: relative;
+  background-color: #043c5c;
+}

@@ -104,7 +104,7 @@ const ReportsPage = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          height: "90vh",
+          minHeight: "96vh",
         }}
       >
         <Container maxWidth="lg" sx={{ textAlign: "center" }}>
@@ -189,8 +189,8 @@ const ReportsPage = () => {
                         {
                           data: genderChartData.data,
                           backgroundColor: [
-                            "rgba(255, 99, 132, 0.6)",
                             "rgba(54, 162, 235, 0.6)",
+                            "rgba(255, 99, 132, 0.6)",
                           ],
                         },
                       ],

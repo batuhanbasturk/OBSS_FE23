@@ -1,0 +1,29 @@
+.container {
+  background: linear-gradient(315deg, #003f5e, #22a9e0);
+  min-height: 100vh;
+}
+.logoContainer {
+  text-align: center;
+}
+.logoImage {
+  height: 200px;
+  width: 200px;
+}
+.textArea {
+  width: 100%;
+  margin-top: 1rem;
+  max-height: 200px;
+  min-height: 100px;
+  resize: vertical;
+  border: 1px solid #ccc;
+}
+.errorMsg {
+  color: red;
+  margin-top: 0.5rem;
+}
+
+@media (max-height: 768px) {
+  .logoImage {
+    height: 140px;
+  }
+}

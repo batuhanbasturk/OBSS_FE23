@@ -5,13 +5,9 @@ import { useLanguageContext } from "../context/LanguageContext";
 import trTranslations from "../translations/tr";
 import enTranslations from "../translations/en";
 //UI
-import { Button, Container, Typography } from "@mui/material";
+import styles from "../styles/errorPages.module.css";
+import { Button, Box, Typography } from "@mui/material";
 import NotFound from "../images/404.svg";
-import {
-  containerStyle,
-  imageStyle,
-  titleStyle,
-} from "../constants/errorPageStyles";
 
 const NotFoundPage = ({ error }) => {
   const navigate = useNavigate();
@@ -19,10 +15,10 @@ const NotFoundPage = ({ error }) => {
   const translations = language === "tr" ? trTranslations : enTranslations;
 
   return (
-    <Container sx={containerStyle}>
+    <Box className={styles.container}>
       {/* error stands for message not found, user not found specific pages */}
-      <img src={NotFound} alt="404" sx={imageStyle} />
-      <Typography variant="h5" component="h2" sx={titleStyle}>
+      <img src={NotFound} alt="404" className={styles.image} />
+      <Typography variant="h5" component="h2" className={styles.title}>
         {error ? error : translations.NotFoundPage.notFound}
       </Typography>
 
@@ -35,7 +31,7 @@ const NotFoundPage = ({ error }) => {
       >
         {translations.NotFoundPage.navigateTitle}
       </Button>
-    </Container>
+    </Box>
   );
 };
 

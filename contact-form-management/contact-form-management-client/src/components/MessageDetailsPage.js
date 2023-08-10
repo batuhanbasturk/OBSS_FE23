@@ -13,6 +13,7 @@ import { useLanguageContext } from "../context/LanguageContext";
 import trTranslations from "../translations/tr";
 import enTranslations from "../translations/en";
 //UI
+import styles from "../styles/MessageDetails.module.css";
 import Details from "../images/details.svg";
 import { Card, CardContent, Typography, Box } from "@mui/material";
 
@@ -46,17 +47,9 @@ const MessageDetailsPage = () => {
   return (
     <>
       <Navbar />
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "90vh",
-        }}
-      >
-        <img src={Details} alt="details" style={{ marginBottom: "20px" }} />
-        <Card variant="outlined" sx={{ maxWidth: "400px", width: "100%" }}>
+      <Box className={styles.container}>
+        <img src={Details} alt="details" className={styles.detailsImage} />
+        <Card variant="outlined" className={styles.card}>
           <CardContent>
             <Typography variant="h5" component="h2" gutterBottom>
               {translations.messagesPage.id}: {message.id}
