@@ -16,7 +16,7 @@ class Player {
     image.onload = () => {
       this.image = image;
       this.width = canvas.width / 20;
-      this.height = canvas.height / 13;
+      this.height = canvas.height / 14;
       this.position = {
         x: canvas.width / 2 - this.width / 2,
         y: canvas.height - this.height,
@@ -48,7 +48,7 @@ class Player {
     newImage.onload = () => {
       this.image = newImage;
       this.width = canvas.width / 20;
-      this.height = canvas.height / 13;
+      this.height = canvas.height / 14;
     };
   }
 }

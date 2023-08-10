@@ -14,7 +14,7 @@ class Grid {
     const rows = 5;
     const columns = 10;
     this.width = columns * (canvas.width / 20);
-    this.height = rows * (canvas.height / 13);
+    this.height = rows * (canvas.height / 14);
 
     for (let i = 0; i < columns; i++) {
       for (let j = 0; j < rows; j++) {
@@ -23,7 +23,7 @@ class Grid {
           new Saucer({
             position: {
               x: i * (canvas.width / 20),
-              y: j * (canvas.height / 13),
+              y: j * (canvas.height / 14) + canvas.height / 14,
             },
             type: saucerType,
           })
@@ -40,12 +40,12 @@ class Grid {
 
     if (this.position.x + this.width >= canvas.width || this.position.x < 0) {
       this.move.x = -this.move.x;
-      this.move.y = canvas.height / 13;
+      this.move.y = canvas.height / 14;
     }
     this.saucers.forEach((saucer, i) => {
       saucer.update({ move: this.move });
       //if saucer reaches the player
-      if (saucer.position.y + saucer.height >= player.position.y) {
+      if (saucer.position.y + saucer.height > player.position.y) {
         // to show saucer reached y position of player
         setTimeout(() => {
           handleGameLoss();

@@ -20,7 +20,7 @@ class Saucer {
     image.onload = () => {
       this.image = image;
       this.width = canvas.width / 20;
-      this.height = canvas.height / 13;
+      this.height = canvas.height / 14;
       this.position = {
         x: position.x,
         y: position.y,
