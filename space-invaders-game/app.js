@@ -35,20 +35,16 @@ const ufoMoveSound = document.getElementById("ufoMoveSound");
 const ufoAppearedSound = document.getElementById("ufoAppearedSound");
 
 //canvas resize
+canvas.width = window.innerWidth;
 if (window.innerWidth / window.innerHeight > 2.2) {
-  canvas.width = window.innerWidth;
   canvas.height = canvas.width * 0.37;
 } else if (window.innerWidth / window.innerHeight > 1.7) {
-  canvas.width = window.innerWidth;
   canvas.height = canvas.width * 0.4;
 } else if (window.innerWidth / window.innerHeight > 1.5) {
-  canvas.width = window.innerWidth;
   canvas.height = canvas.width * 0.5;
 } else if (window.innerWidth / window.innerHeight > 1.3) {
-  canvas.width = window.innerWidth;
   canvas.height = canvas.width * 0.6;
 } else {
-  canvas.width = window.innerWidth;
   canvas.height = canvas.width * 0.7;
 }
 function startGame() {
