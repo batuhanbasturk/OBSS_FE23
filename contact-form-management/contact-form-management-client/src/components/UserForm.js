@@ -30,9 +30,11 @@ const UserForm = () => {
   const [password, setPassword] = useState("");
 
   //photo
-  const [usernameError, setUsernameError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
-  const [photoError, setPhotoError] = useState("");
+  const [errors, setErrors] = useState({
+    username: "",
+    password: "",
+    photo: "",
+  });
 
   const navigate = useNavigate();
   const { language } = useLanguageContext();
@@ -42,7 +44,12 @@ const UserForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    const newErrors = {
+      username: !username ? translations.contactForm.nameRequired : "",
+      password: !password ? translations.usersPage.passwordRequired : "",
+      photo: !file ? translations.usersPage.photoRequired : "",
+    };
+    setErrors(newErrors);
     const token = localStorage.getItem("token");
     const userData = { username, password, base64Photo };
 
@@ -50,14 +57,11 @@ const UserForm = () => {
       await addUser(token, userData);
       navigate("/users");
     } catch (error) {
-      if (error === "Username is required") {
-        setUsernameError(error);
-      } else if (error === "Password is required") {
-        setPasswordError(error);
-      } else if (error === "Photo is required") {
-        setPhotoError(error);
-      } else {
-        setUsernameError(error);
+      if (error === "Username already exists") {
+        setErrors({
+          ...errors,
+          username: translations.usersPage.usernameExists,
+        });
       }
     }
   };
@@ -90,24 +94,24 @@ const UserForm = () => {
               <TextField
                 label={translations.usersPage.username}
                 variant="outlined"
-                error={Boolean(usernameError)}
+                error={Boolean(errors.username)}
                 fullWidth
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 inputProps={{ maxLength: 10 }}
-                helperText={usernameError}
+                helperText={errors.username}
                 sx={{ marginBottom: 2 }}
               />
               {/* Password */}
               <TextField
                 label={translations.usersPage.password}
                 variant="outlined"
-                error={Boolean(passwordError)}
+                error={Boolean(errors.password)}
                 fullWidth
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 inputProps={{ maxLength: 10 }}
-                helperText={passwordError}
+                helperText={errors.password}
                 sx={{ marginBottom: 2 }}
               />
               {/* Role */}
@@ -122,9 +126,9 @@ const UserForm = () => {
               {/* Photo */}
               <MuiFileInput value={file} onChange={handleChange} />
               {/* Photo Error */}
-              {photoError && (
-                <Typography variant="body2" color="red">
-                  {photoError}
+              {errors.photo && (
+                <Typography variant="body2" className={styles.errorPhoto}>
+                  {errors.photo}
                 </Typography>
               )}
             </CardContent>

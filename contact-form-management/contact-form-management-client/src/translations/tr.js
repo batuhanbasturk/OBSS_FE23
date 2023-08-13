@@ -60,6 +60,10 @@ const trTranslations = {
     updateButton: "DEĞİŞİKLİKLERİ Kaydet",
     userFormTitle: "Kullanıcı Oluştur",
     createButton: "Oluştur",
+    usernameRequired: "Kullanıcı adı zorunludur!",
+    usernameExists: "Böyle bir kullanıcı adı zaten var!",
+    passwordRequired: "Şifre zorunludur!",
+    photoRequired: "Fotoğraf zorunludur!",
   },
   WelcomePage: {
     welcome: "Hoşgeldin",

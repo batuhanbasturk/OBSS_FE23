@@ -61,6 +61,10 @@ const enTranslations = {
     updateButton: "Save Changes",
     userFormTitle: "Create User",
     createButton: "Create",
+    usernameRequired: "Username is required!",
+    usernameExists: "Username already exists!",
+    passwordRequired: "Password is required!",
+    photoRequired: "Photo is required!",
   },
   WelcomePage: {
     welcome: "Welcome",

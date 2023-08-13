@@ -34,11 +34,13 @@ const UserDetailsPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  //photo
-  const [passwordError, setPasswordError] = useState("");
-  const [photoError, setPhotoError] = useState("");
   const [notFoundError, setNotFoundError] = useState("");
-  //Photo handler
+  const [errors, setErrors] = useState({
+    photo: "",
+    password: "",
+    notFound: "",
+  });
+  //utils
   const { file, base64Photo, handleChange } = useFileInput();
   const { handleSnackbarOpen, SnackbarComponent } = useSnackbar();
 
@@ -46,20 +48,20 @@ const UserDetailsPage = () => {
   const translations = language === "tr" ? trTranslations : enTranslations;
 
   const handleUpdateUser = async () => {
+    const newErrors = {
+      photo: !file ? translations.usersPage.photoRequired : "",
+      password: !password ? translations.usersPage.passwordRequired : "",
+    };
+    setErrors(newErrors);
+
     const token = localStorage.getItem("token");
     try {
       const data = { username, password, base64Photo };
       const user = await updateUser(token, id, data);
       setUser(user);
       handleSnackbarOpen(translations.usersPage.updateSnackbarMessage);
-      setPasswordError("");
-      setPhotoError("");
     } catch (error) {
-      if (error === "Password is required") {
-        setPasswordError(error);
-      } else if (error === "Photo is required") {
-        setPhotoError(error);
-      } else {
+      if (error === "User not found") {
         setNotFoundError(error);
       }
     }
@@ -117,11 +119,11 @@ const UserDetailsPage = () => {
               label={translations.usersPage.password}
               variant="outlined"
               value={password}
-              error={Boolean(passwordError)}
+              error={Boolean(errors.password)}
               onChange={(e) => setPassword(e.target.value)}
               fullWidth
               margin="normal"
-              helperText={passwordError}
+              helperText={errors.password}
               inputProps={{ maxLength: 10 }}
             />
             {/* User Role */}
@@ -143,9 +145,9 @@ const UserDetailsPage = () => {
               margin="normal"
             />
             {/* Photo Error */}
-            {photoError && (
-              <Typography variant="body2" color="red">
-                {photoError}
+            {errors.photo && (
+              <Typography variant="body2" className={styles.errorPhoto}>
+                {errors.photo}
               </Typography>
             )}
             <Typography color="textSecondary" gutterBottom></Typography>

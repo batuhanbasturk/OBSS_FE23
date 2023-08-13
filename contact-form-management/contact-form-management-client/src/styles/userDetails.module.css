@@ -18,6 +18,13 @@
   margin: 0 auto;
 }
 
+.errorPhoto {
+  color: #d32f2f;
+  margin-left: 14px !important;
+  font-size: 0.75rem !important;
+  letter-spacing: 0.03333em !important;
+}
+
 @media (max-height: 768px) {
   .userImage {
     width: 150px !important;

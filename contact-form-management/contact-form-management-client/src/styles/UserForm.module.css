@@ -2,7 +2,12 @@
   height: 200px;
   width: 200px;
 }
-
+.errorPhoto {
+  color: #d32f2f;
+  margin-left: 14px !important;
+  font-size: 0.75rem !important;
+  letter-spacing: 0.03333em !important;
+}
 @media (max-height: 720px) {
   .logo {
     height: 150px;
