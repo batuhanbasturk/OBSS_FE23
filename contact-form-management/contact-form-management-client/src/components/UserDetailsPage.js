@@ -157,7 +157,7 @@ const UserDetailsPage = () => {
                 {translations.usersPage.updateButton}
               </Button>
             </Box>
-            <SnackbarComponent />
+            <SnackbarComponent type="success" />
           </CardContent>
         </Card>
       </Box>

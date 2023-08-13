@@ -43,6 +43,7 @@ const enTranslations = {
     readed: "Readed",
     notReaded: "Not Readed",
     date: "Date",
+    deletedSnackbarMessage: "User's message deleted!",
   },
   reportsPage: {
     barChartTitle: "Message Count by Country",

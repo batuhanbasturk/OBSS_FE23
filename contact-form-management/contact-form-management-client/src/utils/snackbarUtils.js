@@ -15,7 +15,7 @@ export const useSnackbar = () => {
     setSnackbarOpen(false);
   };
 
-  const SnackbarComponent = () => (
+  const SnackbarComponent = ({ type }) => (
     <Snackbar
       open={snackbarOpen}
       autoHideDuration={3000}
@@ -23,7 +23,7 @@ export const useSnackbar = () => {
     >
       <Alert
         onClose={handleSnackbarClose}
-        severity="success"
+        severity={type}
         sx={{ width: "100%" }}
       >
         {snackbarMessage}

@@ -207,7 +207,7 @@ const ContactForm = () => {
               >
                 {translations.contactForm.submitButton}
               </Button>
-              <SnackbarComponent />
+              <SnackbarComponent type="success" />
             </Box>
           </CardActions>
         </Card>

@@ -42,6 +42,7 @@ const trTranslations = {
     readed: "Okundu",
     notReaded: "Okunmadı",
     date: "Tarihi",
+    deletedSnackbarMessage: "Kullanıcının mesajı silindi!",
   },
   reportsPage: {
     barChartTitle: "Ülkelere göre Mesaj Sayısı",

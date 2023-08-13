@@ -15,6 +15,8 @@ import { useUserContext } from "../context/UserContext";
 import { useLanguageContext } from "../context/LanguageContext";
 import trTranslations from "../translations/tr";
 import enTranslations from "../translations/en";
+//snackbar
+import { useSnackbar } from "../utils/snackbarUtils";
 //UI
 import {
   Table,
@@ -35,6 +37,8 @@ const MessagesPage = () => {
   const [errorMessage, setErrorMessage] = useState("");
 
   const navigate = useNavigate();
+  const { handleSnackbarOpen, SnackbarComponent } = useSnackbar();
+  //context
   const { userData } = useUserContext();
   const { language } = useLanguageContext();
   const translations = language === "tr" ? trTranslations : enTranslations;
@@ -56,6 +60,7 @@ const MessagesPage = () => {
       setMessages((prevMessages) =>
         prevMessages.filter((msg) => msg.id !== id)
       );
+      handleSnackbarOpen(translations.messagesPage.deletedSnackbarMessage);
     } catch (error) {
       setErrorMessage(error);
     }
@@ -177,6 +182,7 @@ const MessagesPage = () => {
                     </Button>
                   </TableCell>
                 )}
+                <SnackbarComponent type="info" />
               </TableRow>
             ))}
           </TableBody>
