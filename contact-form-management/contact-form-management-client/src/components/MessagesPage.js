@@ -162,7 +162,11 @@ const MessagesPage = () => {
                 <TableCell>{message.message}</TableCell>
                 <TableCell>{message.gender}</TableCell>
                 <TableCell>{message.country}</TableCell>
-                <TableCell>{message.read}</TableCell>
+                {message.read === "true" ? (
+                  <TableCell>{translations.messagesPage.readed}</TableCell>
+                ) : (
+                  <TableCell>{translations.messagesPage.notReaded}</TableCell>
+                )}
                 <TableCell style={{ whiteSpace: "pre-line" }}>
                   {formatDateAndTime(message.creationDate)}
                 </TableCell>

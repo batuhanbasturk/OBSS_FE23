@@ -67,7 +67,10 @@ const MessageDetailsPage = () => {
               {translations.messagesPage.country}: {message.country}
             </Typography>
             <Typography color="textSecondary" gutterBottom>
-              {translations.messagesPage.read}: {message.read}
+              {translations.messagesPage.read}:{" "}
+              {message.read === "true"
+                ? translations.messagesPage.readed
+                : translations.messagesPage.notReaded}
             </Typography>
             <Typography color="textSecondary" gutterBottom>
               {translations.messagesPage.date}:{" "}

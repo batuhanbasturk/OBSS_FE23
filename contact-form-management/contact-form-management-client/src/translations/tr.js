@@ -34,7 +34,9 @@ const trTranslations = {
     message: "Mesajı",
     gender: "Cinsiyeti",
     country: "Ülkesi",
-    read: "Okundu",
+    read: "Durumu",
+    readed: "Okundu",
+    notReaded: "Okunmadı",
     date: "Tarihi",
   },
   reportsPage: {

@@ -35,7 +35,9 @@ const enTranslations = {
     message: "Message",
     gender: "Gender",
     country: "Country",
-    read: "Read",
+    read: "Status",
+    readed: "Readed",
+    notReaded: "Not Readed",
     date: "Date",
   },
   reportsPage: {
