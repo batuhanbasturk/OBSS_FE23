@@ -9,6 +9,10 @@ const enTranslations = {
     messageLabel: "Message",
     submitButton: "Submit",
     successMessage: "Form submitted successfully!",
+    nameRequired: "Name is required!",
+    countryRequired: "Country is required!",
+    genderRequired: "Gender is required!",
+    messageRequired: "Message is required!",
   },
   loginPage: {
     logoAlt: "Logo",

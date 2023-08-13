@@ -18,8 +18,8 @@
   border: 1px solid #ccc;
 }
 .errorMsg {
-  color: red;
-  margin-top: 0.5rem;
+  color: #d32f2f;
+  margin-left: 14px !important;
 }
 
 @media (max-height: 768px) {

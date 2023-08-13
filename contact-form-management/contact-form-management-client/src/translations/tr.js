@@ -9,6 +9,10 @@ const trTranslations = {
     messageLabel: "Mesaj",
     submitButton: "Gönder",
     successMessage: "Form başarıyla gönderildi!",
+    nameRequired: "Adınız gereklidir!",
+    countryRequired: "Ülkeniz gereklidir!",
+    genderRequired: "Cinsiyetiniz gereklidir!",
+    messageRequired: "Mesajınız gereklidir!",
   },
   loginPage: {
     loginButton: "GİRİŞ Yap",

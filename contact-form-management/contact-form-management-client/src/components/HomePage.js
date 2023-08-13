@@ -40,10 +40,12 @@ const ContactForm = () => {
   const [country, setCountry] = useState("");
   const [message, setMessage] = useState("");
   // Error state
-  const [errorName, setErrorName] = useState("");
-  const [errorCountry, setErrorCountry] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-  const [errorGender, setErrorGender] = useState("");
+  const [errors, setErrors] = useState({
+    name: "",
+    gender: "",
+    country: "",
+    message: "",
+  });
   // Language state
   const { language } = useLanguageContext();
   const translations = language === "tr" ? trTranslations : enTranslations;
@@ -63,8 +65,15 @@ const ContactForm = () => {
   // Form submission handler
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    const newErrors = {
+      name: !name ? translations.contactForm.nameRequired : "",
+      gender: !gender ? translations.contactForm.genderRequired : "",
+      country: !country ? translations.contactForm.countryRequired : "",
+      message: !message ? translations.contactForm.messageRequired : "",
+    };
+    setErrors(newErrors);
     const formData = { name, gender, country, message };
+
     try {
       await addMessage(formData);
       // success snackbar
@@ -74,20 +83,8 @@ const ContactForm = () => {
       setCountry("");
       setMessage("");
       setGender("");
-      setErrorMessage("");
-      setErrorName("");
-      setErrorCountry("");
-      setErrorGender("");
     } catch (error) {
-      if (error.includes("Name")) {
-        setErrorName(error);
-      } else if (error.includes("Country")) {
-        setErrorCountry(error);
-      } else if (error.includes("Message")) {
-        setErrorMessage(error);
-      } else if (error.includes("Gender")) {
-        setErrorGender(error);
-      }
+      console.log(error);
     }
   };
 
@@ -103,7 +100,7 @@ const ContactForm = () => {
           {/* Logo */}
           <img src={contact} alt="logo" className={styles.logoImage} />
         </Box>
-        <Card>
+        <Card sx={{ mb: 2 }}>
           <CardContent>
             {/* Title */}
             <Typography
@@ -118,15 +115,19 @@ const ContactForm = () => {
             <TextField
               label={translations.contactForm.nameLabel}
               variant="outlined"
-              error={Boolean(errorName)}
+              error={Boolean(errors.name)}
               fullWidth
               value={name}
               onChange={(e) => setName(e.target.value)}
               inputProps={{ maxLength: 50 }}
-              helperText={errorName}
+              helperText={errors.name}
             />
             {/* Gender */}
-            <FormControl component="fieldset" sx={{ mt: 2 }}>
+            <FormControl
+              component="fieldset"
+              error={Boolean(errors.gender)}
+              sx={{ mt: 2 }}
+            >
               <FormLabel component="legend">
                 {translations.contactForm.genderLabel}
               </FormLabel>
@@ -146,12 +147,19 @@ const ContactForm = () => {
                   label={translations.contactForm.femaleOption}
                 />
               </RadioGroup>
+              {errors.gender && (
+                <Typography variant="caption" className={styles.errorMsg}>
+                  {errors.gender}
+                </Typography>
+              )}
             </FormControl>
-            {errorGender && (
-              <FormHelperText error>{errorGender}</FormHelperText>
-            )}
+
             {/* Country */}
-            <FormControl fullWidth error={Boolean(errorCountry)} sx={{ mt: 2 }}>
+            <FormControl
+              fullWidth
+              error={Boolean(errors.country)}
+              sx={{ mt: 2 }}
+            >
               <InputLabel>{translations.contactForm.countryLabel}</InputLabel>
               <Select
                 label={translations.contactForm.countryLabel}
@@ -165,7 +173,9 @@ const ContactForm = () => {
                   </MenuItem>
                 ))}
               </Select>
-              {errorCountry && <FormHelperText>{errorCountry}</FormHelperText>}
+              {errors.country && (
+                <FormHelperText>{errors.country}</FormHelperText>
+              )}
             </FormControl>
             {/* Message */}
             <TextareaAutosize
@@ -176,13 +186,13 @@ const ContactForm = () => {
               inputProps={{ maxLength: 500 }}
               className={styles.textArea}
               style={{
-                border: errorMessage ? "1px solid red" : "1px solid #ccc",
+                border: errors.message ? "1px solid #d32f2f" : "1px solid #ccc",
               }}
             />
             {/* Error message */}
-            {errorMessage && (
+            {errors.message && (
               <Typography variant="caption" className={styles.errorMsg}>
-                {errorMessage}
+                {errors.message}
               </Typography>
             )}
           </CardContent>
