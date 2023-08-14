@@ -53,6 +53,12 @@ const animateBoss = () => {
         if (boss.live > 1) {
           boss.live--;
         } else {
+          score += 9999;
+          //scoreboards update
+          scoreEl.innerHTML = score;
+          winScoreDisplay.innerHTML = score;
+          lossScoreDisplay.innerHTML = score;
+
           killedSound.play();
           setTimeout(() => {
             handleGameWin();

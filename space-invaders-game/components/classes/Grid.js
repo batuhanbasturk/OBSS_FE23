@@ -91,7 +91,11 @@ class Grid {
               } else if (saucer.type === "saucer6") {
                 score += 80;
               }
+              //update scoreboards
               scoreEl.innerHTML = score;
+              winScoreDisplay.innerHTML = score;
+              lossScoreDisplay.innerHTML = score;
+
               projectiles.splice(j, 1);
               killedSound.volume = 0.1;
               killedSound.play();
