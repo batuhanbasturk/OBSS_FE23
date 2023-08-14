@@ -39,6 +39,21 @@ class Boss {
       if (this.position.x + this.width >= canvas.width || this.position.x < 0) {
         this.move.x = -this.move.x;
       }
+      // change image when live is less than 20
+      if (this.live <= 20) {
+        const newImage = new Image();
+        newImage.src = "./icons/AlienMothershipDamaged.png";
+
+        newImage.onload = () => {
+          this.image = newImage;
+          this.width = canvas.width / 7;
+          this.height = canvas.height / 7;
+          this.position = {
+            x: this.position.x,
+            y: this.position.y,
+          };
+        };
+      }
       //increase fire counter
       this.fireCounter++;
       //fire projectiles every 100 fire counter

@@ -44,6 +44,7 @@
     <div class="game-over">
       <img src="./images/game-over.jpg" alt="Game Over" class="logo" />
       <div>
+        <p class="score-display">Score: <span id="winScore">0</span></p>
         <button class="playAgainButton">Play Again</button>
         <button class="exitGameButton">Exit game</button>
       </div>
@@ -52,6 +53,7 @@
       <div class="game-win">
         <img src="./images/win.png" alt="You Win" class="logo" />
         <div>
+          <p class="score-display">Score: <span id="lossScore">0</span></p>
           <button class="playAgainButton">Play Again</button>
           <button class="exitGameButton">Exit game</button>
         </div>
@@ -62,6 +64,7 @@
     <audio id="saucerKilledSound" src="./sounds/invaderkilled.wav"></audio>
     <audio id="ufoAppearedSound" src="./sounds/ufo_highpitch.wav"></audio>
     <audio id="ufoMoveSound" src="./sounds/ufo_lowpitch.wav"></audio>
+    <audio id="bossTheme" src="./sounds/boss.wav"></audio>
     <script src="./components/controls.js"></script>
     <script src="./components/BasePlayerMove.js"></script>
     <script src="./components/classes/Player.js"></script>

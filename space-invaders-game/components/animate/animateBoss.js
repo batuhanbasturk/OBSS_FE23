@@ -1,5 +1,6 @@
 const animateBoss = () => {
   boss.update();
+  bossTheme.play();
   boss.shoot(bossProjectiles);
   bossProjectiles.forEach((bossProjectile, index) => {
     //remove projectiles that are out of the screen

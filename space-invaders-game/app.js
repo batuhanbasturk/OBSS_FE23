@@ -18,12 +18,14 @@ const pauseExitButton = document.querySelector(".pauseExitButton");
 const gameWinScreen = document.querySelector(".game-win");
 const winPlayAgainButton = document.querySelector(".game-win .playAgainButton");
 const winExitButton = document.querySelector(".game-win .exitGameButton");
+const winScoreDisplay = document.querySelector("#winScore");
 // game over screen
 const gameOverScreen = document.querySelector(".game-over");
 const losePlayAgainButton = document.querySelector(
   ".game-over .playAgainButton"
 );
 const loseExitButton = document.querySelector(".game-over .exitGameButton");
+const lossScoreDisplay = document.querySelector("#lossScore");
 // touch controls
 const touchControls = document.querySelector(".touch-controls");
 //canvas
@@ -35,6 +37,7 @@ const shootSound = document.getElementById("shootSound");
 const playerKilledSound = document.getElementById("playerKilledSound");
 const ufoMoveSound = document.getElementById("ufoMoveSound");
 const ufoAppearedSound = document.getElementById("ufoAppearedSound");
+const bossTheme = document.getElementById("bossTheme");
 
 //canvas resize
 canvas.width = window.innerWidth;
@@ -72,6 +75,7 @@ function startGame(event) {
   resetVariables({ level });
   animate();
 }
+//need to improve boss theme algorithm
 
 function handleGameLoss() {
   cancelAnimationFrame(animationFrame);
@@ -79,6 +83,8 @@ function handleGameLoss() {
   touchControls.style.display = "none";
   topMenu.style.display = "none";
   gameOverScreen.style.display = "flex";
+  bossTheme.pause();
+  bossTheme.currentTime = 0;
 }
 function handleGameWin() {
   cancelAnimationFrame(animationFrame);
@@ -86,6 +92,8 @@ function handleGameWin() {
   touchControls.style.display = "none";
   gameWinScreen.style.display = "flex";
   topMenu.style.display = "none";
+  bossTheme.pause();
+  bossTheme.currentTime = 0;
 }
 function homeScreenDisplay() {
   homeScreen.style.display = "flex";
@@ -93,6 +101,8 @@ function homeScreenDisplay() {
   gameOverScreen.style.display = "none";
   gameWinScreen.style.display = "none";
   canvas.style.display = "none";
+  bossTheme.pause();
+  bossTheme.currentTime = 0;
 }
 function pauseScreenDisplay() {
   pauseScreen.style.display = "flex";
@@ -100,6 +110,7 @@ function pauseScreenDisplay() {
   gameContainer.style.display = "none";
   topMenu.style.display = "none";
   cancelAnimationFrame(animationFrame);
+  bossTheme.pause();
 }
 function pauseMenuDisplay() {
   pauseScreen.style.display = "none";

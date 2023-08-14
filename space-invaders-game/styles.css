@@ -25,7 +25,16 @@ body {
 .top-menu {
   display: none;
 }
-
+.score-display {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2vw;
+  color: #fff;
+  padding-left: 5px;
+  font-family: "Press Start 2P", cursive;
+  margin-top: 0;
+}
 .top-menu {
   position: absolute;
   top: 0;

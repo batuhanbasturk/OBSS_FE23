@@ -132,4 +132,8 @@ const animateLevel = () => {
       }
     });
   }
+  //loss score update
+  lossScoreDisplay.innerHTML = score;
+  //win score update
+  winScoreDisplay.innerHTML = score;
 };
