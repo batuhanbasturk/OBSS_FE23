@@ -14,10 +14,20 @@ import NotAuthorizedPage from "./components/NotAuthorizedPage";
 //context
 import { useUserContext } from "./context/UserContext";
 import AuthorizationManager from "./components/AuthorizationManager";
-import LanguageNavbar from "./components/LanguageNavbar";
+import SelectorBar from "./components/SelectorBar";
+import { useThemeContext } from "./context/ThemeContext";
+import { ThemeProvider, createTheme, CssBaseline } from "@mui/material";
 
 const App = () => {
   const { userData, checked } = useUserContext();
+  const { theme } = useThemeContext();
+
+  const muiTheme = createTheme({
+    palette: {
+      mode: theme,
+    },
+  });
+
   const routesjsx = checked ? (
     <Routes>
       <Route path="/" element={<HomePage />} />
@@ -84,9 +94,12 @@ const App = () => {
 
   return (
     <BrowserRouter>
-      <LanguageNavbar />
-      <AuthorizationManager />
-      {routesjsx}
+      <ThemeProvider theme={muiTheme}>
+        <CssBaseline />
+        <SelectorBar />
+        <AuthorizationManager />
+        {routesjsx}
+      </ThemeProvider>
     </BrowserRouter>
   );
 };

@@ -8,6 +8,8 @@ import { useSnackbar } from "../utils/snackbarUtils";
 import { useLanguageContext } from "../context/LanguageContext";
 import trTranslations from "../translations/tr";
 import enTranslations from "../translations/en";
+//theme
+import { useThemeContext } from "../context/ThemeContext";
 //UI
 import styles from "../styles/Home.module.css";
 import {
@@ -51,6 +53,8 @@ const ContactForm = () => {
   const translations = language === "tr" ? trTranslations : enTranslations;
   // Snackbar state
   const { handleSnackbarOpen, SnackbarComponent } = useSnackbar();
+  //theme
+  const { theme } = useThemeContext();
 
   // Fetch countries
   useEffect(() => {
@@ -93,7 +97,9 @@ const ContactForm = () => {
       container
       justifyContent="center"
       alignItems="center"
-      className={styles.container}
+      className={
+        theme === "dark" ? styles.container_dark : styles.container_light
+      }
     >
       <Grid item xs={10} sm={6} md={5}>
         <Box className={styles.logoContainer}>
@@ -103,12 +109,7 @@ const ContactForm = () => {
         <Card sx={{ mb: 2 }}>
           <CardContent>
             {/* Title */}
-            <Typography
-              variant="h4"
-              align="center"
-              sx={{ color: "#154c79" }}
-              gutterBottom
-            >
+            <Typography variant="h4" align="center" gutterBottom>
               {translations.contactForm.title}
             </Typography>
             {/* Name */}
@@ -187,11 +188,17 @@ const ContactForm = () => {
               className={styles.textArea}
               style={{
                 border: errors.message ? "1px solid #d32f2f" : "1px solid #ccc",
+                backgroundColor: theme === "dark" ? "#1e1e1e" : "#ffffff",
               }}
             />
             {/* Error message */}
             {errors.message && (
-              <Typography variant="caption" className={styles.errorMsg}>
+              <Typography
+                variant="caption"
+                className={
+                  theme === "dark" ? styles.errorMsgDark : styles.errorMsgLight
+                }
+              >
                 {errors.message}
               </Typography>
             )}

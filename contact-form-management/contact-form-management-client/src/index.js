@@ -4,6 +4,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { UserProvider } from "./context/UserContext";
 import { LanguageProvider } from "./context/LanguageContext";
+import { ThemeProvider } from "./context/ThemeContext";
 import "chart.js/auto";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -11,7 +12,9 @@ root.render(
   <React.StrictMode>
     <LanguageProvider>
       <UserProvider>
-        <App />
+        <ThemeProvider>
+          <App />
+        </ThemeProvider>
       </UserProvider>
     </LanguageProvider>
   </React.StrictMode>
