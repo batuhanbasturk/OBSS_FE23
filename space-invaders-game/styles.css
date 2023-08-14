@@ -71,7 +71,10 @@ body {
   border-radius: 0.5rem;
   cursor: pointer;
 }
-
+#boss {
+  background-color: #45005c;
+  color: #fff;
+}
 /* button colors*/
 .home-screen button,
 .game-win button {

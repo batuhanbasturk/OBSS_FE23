@@ -1,24 +1,29 @@
 //grid class for saucers
 class Grid {
-  constructor() {
+  constructor(level) {
     this.position = {
       x: 0,
       y: 0,
     };
     this.move = {
-      x: canvas.width / 800,
+      x: canvas.width / 1000,
       y: 0,
     };
     this.saucers = [];
 
     const rows = 5;
     const columns = 10;
+    let saucerType;
     this.width = columns * (canvas.width / 20);
     this.height = rows * (canvas.height / 14);
 
     for (let i = 0; i < columns; i++) {
       for (let j = 0; j < rows; j++) {
-        let saucerType = j === 0 ? "saucer3" : j < 3 ? "saucer2" : "saucer1";
+        if (level === 1) {
+          saucerType = j === 0 ? "saucer3" : j < 3 ? "saucer2" : "saucer1";
+        } else if (level === 2) {
+          saucerType = j === 0 ? "saucer6" : j < 3 ? "saucer5" : "saucer4";
+        }
         this.saucers.push(
           new Saucer({
             position: {
@@ -79,6 +84,12 @@ class Grid {
                 score += 20;
               } else if (saucer.type === "saucer3") {
                 score += 40;
+              } else if (saucer.type === "saucer4") {
+                score += 40;
+              } else if (saucer.type === "saucer5") {
+                score += 60;
+              } else if (saucer.type === "saucer6") {
+                score += 80;
               }
               scoreEl.innerHTML = score;
               projectiles.splice(j, 1);

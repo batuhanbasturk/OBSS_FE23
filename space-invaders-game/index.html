@@ -16,7 +16,11 @@
   <body>
     <div class="home-screen">
       <img src="./images/logo.png" alt="Space Invaders" class="logo" />
-      <button id="startButton">Start Game</button>
+      <button id="level1">Level 1</button>
+      <br />
+      <button id="level2">Level 2</button>
+      <br />
+      <button id="boss">BOSS</button>
     </div>
     <div class="top-menu">
       <span class="score">Score:<span id="score">0</span></span>
@@ -59,13 +63,20 @@
     <audio id="ufoAppearedSound" src="./sounds/ufo_highpitch.wav"></audio>
     <audio id="ufoMoveSound" src="./sounds/ufo_lowpitch.wav"></audio>
     <script src="./components/controls.js"></script>
+    <script src="./components/BasePlayerMove.js"></script>
     <script src="./components/classes/Player.js"></script>
     <script src="./components/classes/Saucer.js"></script>
     <script src="./components/classes/Ufo.js"></script>
+    <script src="./components/classes/Boss.js"></script>
     <script src="./components/classes/Grid.js"></script>
     <script src="./components/classes/PlayerProjectile.js"></script>
     <script src="./components/classes/SaucerProjectile.js"></script>
     <script src="./components/classes/UfoProjectile.js"></script>
+    <script src="./components/classes/BossProjectile.js"></script>
+    <script src="./components/animate/animateBoss.js"></script>
+    <script src="./components/animate/animateLevel.js"></script>
+    <script src="./components/animate/animate.js"></script>
+    <script src="./components/variable/resetVariables.js"></script>
     <script src="app.js"></script>
   </body>
 </html>

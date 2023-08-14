@@ -6,11 +6,13 @@ class Saucer {
       y: 0,
     };
     this.type = type;
-
     this.imageSources = {
-      saucer1: "./icons/saucer1a.ico",
-      saucer2: "./icons/saucer2a.ico",
-      saucer3: "./icons/saucer3a.ico",
+      saucer1: "./icons/saucer1.ico",
+      saucer2: "./icons/saucer2.ico",
+      saucer3: "./icons/saucer3.ico",
+      saucer4: "./icons/saucer4.png",
+      saucer5: "./icons/saucer5.png",
+      saucer6: "./icons/saucer6.png",
     };
 
     const image = new Image();
