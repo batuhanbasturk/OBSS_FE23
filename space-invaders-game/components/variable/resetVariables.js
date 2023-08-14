@@ -9,7 +9,7 @@ const resetVariables = ({ level }) => {
   };
   canFire = true;
   //saucer variables
-  if (level === 1 || level === 2) {
+  if (level !== 3) {
     grid = new Grid(level);
   }
   saucerProjectiles = [];

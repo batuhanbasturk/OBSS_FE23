@@ -9,14 +9,22 @@ class Grid {
       x: canvas.width / 1000,
       y: 0,
     };
+    let saucerType;
     this.saucers = [];
+    this.saucerPoints = {
+      saucer1: 10,
+      saucer2: 20,
+      saucer3: 40,
+      saucer4: 40,
+      saucer5: 60,
+      saucer6: 80,
+    };
 
     const rows = 5;
     const columns = 10;
-    let saucerType;
     this.width = columns * (canvas.width / 20);
     this.height = rows * (canvas.height / 14);
-
+    //creates saucers
     for (let i = 0; i < columns; i++) {
       for (let j = 0; j < rows; j++) {
         if (level === 1) {
@@ -78,23 +86,11 @@ class Grid {
             );
             //if both are still in the array remove them
             if (saucerFound && projectileFound) {
-              if (saucer.type === "saucer1") {
-                score += 10;
-              } else if (saucer.type === "saucer2") {
-                score += 20;
-              } else if (saucer.type === "saucer3") {
-                score += 40;
-              } else if (saucer.type === "saucer4") {
-                score += 40;
-              } else if (saucer.type === "saucer5") {
-                score += 60;
-              } else if (saucer.type === "saucer6") {
-                score += 80;
-              }
+              score += this.saucerPoints[saucer.type];
               //update scoreboards
-              scoreEl.innerHTML = score;
               winScoreDisplay.innerHTML = score;
               lossScoreDisplay.innerHTML = score;
+              scoreEl.innerHTML = score;
 
               projectiles.splice(j, 1);
               killedSound.volume = 0.1;

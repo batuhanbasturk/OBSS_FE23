@@ -12,4 +12,6 @@ const animate = () => {
   //move player
   movePlayer();
   frame++;
+  winScoreDisplay.innerHTML = score;
+  lossScoreDisplay.innerHTML = score;
 };
