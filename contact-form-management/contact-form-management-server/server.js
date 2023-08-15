@@ -190,6 +190,39 @@ app.post("/api/message/add", express.json(), async (req, res) => {
   writeDataToFile("data/messages.json", currentMessages);
   res.status(200).send({ data: { message: newMessage } });
 });
+//pagination for messages
+app.get("/api/messages-with-pagination", async (req, res) => {
+  const authCheck = await checkTokenAndRole(req, res, ["admin", "reader"]);
+  if (!authCheck) {
+    return;
+  }
+
+  // Pagination parameters from the client
+  const { page, pageSize, sortBy, sortOrder } = req.query;
+
+  let messages = await readDataFromFile("data/messages.json");
+
+  // Sorting
+  if (
+    sortBy &&
+    ["name", "gender", "creationDate", "country", "id"].includes(sortBy)
+  ) {
+    messages.sort((a, b) => {
+      const aValue = String(a[sortBy]);
+      const bValue = String(b[sortBy]);
+      return sortOrder === "asc"
+        ? aValue.localeCompare(bValue)
+        : bValue.localeCompare(aValue);
+    });
+  }
+
+  // Pagination
+  const startIndex = (page - 1) * pageSize;
+  const endIndex = startIndex + Number(pageSize);
+  const paginatedMessages = messages.slice(startIndex, endIndex);
+
+  res.status(200).send({ data: { messages: paginatedMessages } });
+});
 
 // GET messages
 app.get("/api/messages", async (req, res) => {

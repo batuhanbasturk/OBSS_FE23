@@ -7,9 +7,9 @@ import NotFoundPage from "./NotFoundPage";
 //utils
 import { formatDateAndTime } from "../utils/formatDateAndTimeUtils";
 //api
-import { fetchMessages } from "../api/message/fetchMessages";
 import { deleteMessage } from "../api/message/deleteMessage";
 import { readMessage } from "../api/message/readMessage";
+import { fetchMessagesWithPagination } from "../api/message/messagesWithPagination";
 //context
 import { useUserContext } from "../context/UserContext";
 import { useLanguageContext } from "../context/LanguageContext";
@@ -28,6 +28,8 @@ import {
   Paper,
   Button,
   Typography,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ReadIcon from "@mui/icons-material/Visibility";
@@ -36,12 +38,29 @@ const MessagesPage = () => {
   const [messages, setMessages] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
 
+  const [pagination, setPagination] = useState({ page: 1, pageSize: 5 });
+  const [sorting, setSorting] = useState({ sortBy: "id", sortOrder: "asc" });
+
   const navigate = useNavigate();
   const { handleSnackbarOpen, SnackbarComponent } = useSnackbar();
   //context
   const { userData } = useUserContext();
   const { language } = useLanguageContext();
   const translations = language === "tr" ? trTranslations : enTranslations;
+
+  const nextPage = () => {
+    setPagination((prevPagination) => ({
+      ...prevPagination,
+      page: prevPagination.page + 1,
+    }));
+  };
+
+  const previousPage = () => {
+    setPagination((prevPagination) => ({
+      ...prevPagination,
+      page: prevPagination.page - 1,
+    }));
+  };
 
   const handleViewMessageDetails = async (id) => {
     const token = localStorage.getItem("token");
@@ -70,16 +89,18 @@ const MessagesPage = () => {
     const token = localStorage.getItem("token");
 
     const getMessages = async () => {
-      try {
-        const messagesData = await fetchMessages(token);
-        setMessages(messagesData);
-      } catch (error) {
-        setErrorMessage(error);
-      }
+      const response = await fetchMessagesWithPagination(
+        pagination.page,
+        pagination.pageSize,
+        sorting.sortBy,
+        sorting.sortOrder,
+        token
+      );
+      setMessages(response);
     };
 
     getMessages();
-  }, []);
+  }, [pagination, sorting]);
 
   if (errorMessage) {
     return <NotFoundPage error={errorMessage} />;
@@ -87,6 +108,49 @@ const MessagesPage = () => {
   return (
     <>
       <Navbar />
+      <Select
+        value={sorting.sortBy}
+        onChange={(e) => {
+          setSorting((prevSorting) => ({
+            ...prevSorting,
+            sortBy: e.target.value,
+          }));
+        }}
+      >
+        <MenuItem value="id">{translations.messagesPage.id}</MenuItem>
+        <MenuItem value="name">{translations.messagesPage.name}</MenuItem>
+        <MenuItem value="gender">{translations.messagesPage.gender}</MenuItem>
+        <MenuItem value="creationDate">
+          {translations.messagesPage.date}
+        </MenuItem>
+        <MenuItem value="country">{translations.messagesPage.country}</MenuItem>
+      </Select>
+      <Select
+        value={sorting.sortOrder}
+        onChange={(e) => {
+          setSorting((prevSorting) => ({
+            ...prevSorting,
+            sortOrder: e.target.value,
+          }));
+        }}
+      >
+        <MenuItem value="asc">{translations.messagesPage.asc}</MenuItem>
+        <MenuItem value="desc">{translations.messagesPage.desc}</MenuItem>
+      </Select>
+      <Select
+        value={pagination.pageSize}
+        onChange={(e) => {
+          setPagination((prevPagination) => ({
+            ...prevPagination,
+            pageSize: e.target.value,
+          }));
+        }}
+      >
+        <MenuItem value="5">5</MenuItem>
+        <MenuItem value="10">10</MenuItem>
+        <MenuItem value="20">20</MenuItem>
+        <MenuItem value="100">100</MenuItem>
+      </Select>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -164,7 +228,11 @@ const MessagesPage = () => {
                 </TableCell>
                 <TableCell>{message.id}</TableCell>
                 <TableCell>{message.name}</TableCell>
-                <TableCell>{message.message}</TableCell>
+                <TableCell>
+                  {message.message.length > 30
+                    ? `${message.message.substring(0, 30)}...`
+                    : message.message}
+                </TableCell>
                 <TableCell>{message.gender}</TableCell>
                 <TableCell>{message.country}</TableCell>
                 {message.read === "true" ? (
@@ -188,6 +256,27 @@ const MessagesPage = () => {
           </TableBody>
         </Table>
       </TableContainer>
+      <Table
+        style={{ display: "flex", justifyContent: "center", marginTop: "10px" }}
+      >
+        <Button
+          onClick={previousPage}
+          disabled={pagination.page === 1}
+          color="primary"
+          variant="contained"
+          style={{ marginRight: "10px" }}
+        >
+          {translations.messagesPage.previousPage}
+        </Button>
+        <Button
+          onClick={nextPage}
+          disabled={messages.length !== pagination.pageSize}
+          color="primary"
+          variant="contained"
+        >
+          {translations.messagesPage.nextPage}
+        </Button>
+      </Table>
     </>
   );
 };

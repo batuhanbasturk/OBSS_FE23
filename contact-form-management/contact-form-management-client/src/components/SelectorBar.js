@@ -24,7 +24,7 @@ const SelectorBar = () => {
       {/* Language*/}
       <LanguageSelector
         language={language}
-        onLanguageChange={handleLanguageChange}
+        handleLanguageChange={handleLanguageChange}
       />
       {/* Theme*/}
       <ThemeSelector theme={theme} handleToggleTheme={handleToggleTheme} />
