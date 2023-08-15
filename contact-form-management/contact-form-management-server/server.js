@@ -224,6 +224,21 @@ app.get("/api/messages-with-pagination", async (req, res) => {
   res.status(200).send({ data: { messages: paginatedMessages } });
 });
 
+// pagination with scroll
+app.get("/api/messages-with-scroll", async (req, res) => {
+  const authCheck = await checkTokenAndRole(req, res, ["admin", "reader"]);
+  if (!authCheck) {
+    return;
+  }
+  const { page, pageSize } = req.query;
+  const messages = await readDataFromFile("data/messages.json");
+
+  const startIndex = (page - 1) * pageSize;
+  const endIndex = startIndex + Number(pageSize);
+  const paginatedMessages = messages.slice(startIndex, endIndex);
+
+  res.status(200).send({ data: { messages: paginatedMessages } });
+});
 // GET messages
 app.get("/api/messages", async (req, res) => {
   const authCheck = await checkTokenAndRole(req, res, ["admin", "reader"]);

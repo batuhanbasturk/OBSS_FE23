@@ -26,6 +26,7 @@ const enTranslations = {
     messages: "Messages",
     users: "Users",
     reports: "Reports",
+    messages_scroll: "Scrollable Messages",
     logoutDialogTitle: "Logout",
     logoutDialogContent: "Are you sure you want to logout?",
     logoutDialogCancelButton: "Cancel",

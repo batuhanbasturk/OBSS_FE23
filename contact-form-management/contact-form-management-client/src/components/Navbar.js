@@ -36,7 +36,9 @@ const Navbar = () => {
   const navigate = useNavigate();
   //
   const pages =
-    userData.role === "admin" ? ["messages", "users", "reports"] : ["messages"];
+    userData.role === "admin"
+      ? ["messages", "messages_scroll", "users", "reports"]
+      : ["messages", "messages_scroll"];
   const settings = translations.navbar.logout;
 
   // State to handle the anchor element for the main menu (MenuIcon) dropdown

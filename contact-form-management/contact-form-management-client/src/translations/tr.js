@@ -24,6 +24,7 @@ const trTranslations = {
     settings: "Ayarlar",
     messages: "Mesajlar",
     users: "Kullanıcılar",
+    messages_scroll: "Kaydırılır Mesajlar",
     reports: "Raporlar",
     logoutDialogTitle: "Çıkış Yap",
     logoutDialogContent: "Çıkış yapmak istediğinize emin misiniz?",

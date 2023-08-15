@@ -11,6 +11,7 @@ import UserDetailsPage from "./components/UserDetailsPage";
 import UserForm from "./components/UserForm";
 import NotFoundPage from "./components/NotFoundPage";
 import NotAuthorizedPage from "./components/NotAuthorizedPage";
+import MessagesScrollPage from "./components/MessagesScrollPage";
 //context
 import { useUserContext } from "./context/UserContext";
 import AuthorizationManager from "./components/AuthorizationManager";
@@ -38,6 +39,12 @@ const App = () => {
         <Route
           path="/messages"
           element={userData ? <MessagesPage /> : <NotAuthorizedPage />}
+        />
+      }
+      {
+        <Route
+          path="/messages_scroll"
+          element={userData ? <MessagesScrollPage /> : <NotAuthorizedPage />}
         />
       }
       {
@@ -89,7 +96,7 @@ const App = () => {
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   ) : (
-    <>Loading...</>
+    <></>
   );
 
   return (

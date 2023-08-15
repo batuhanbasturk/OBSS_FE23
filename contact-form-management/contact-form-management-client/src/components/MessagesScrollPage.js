@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 //navigation
 import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
@@ -9,7 +9,7 @@ import { formatDateAndTime } from "../utils/formatDateAndTimeUtils";
 //api
 import { deleteMessage } from "../api/message/deleteMessage";
 import { readMessage } from "../api/message/readMessage";
-import { fetchMessagesWithPagination } from "../api/message/messagesWithPagination";
+import { fetchMessagesWithPaginationScroll } from "../api/message/messagesWithPaginationScroll";
 //context
 import { useUserContext } from "../context/UserContext";
 import { useLanguageContext } from "../context/LanguageContext";
@@ -28,39 +28,25 @@ import {
   Paper,
   Button,
   Typography,
-  Select,
-  MenuItem,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ReadIcon from "@mui/icons-material/Visibility";
+import { CircularProgress } from "@mui/material";
 
-const MessagesPage = () => {
+const MessagesScrollPage = () => {
   const [messages, setMessages] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const [pagination, setPagination] = useState({ page: 1, pageSize: 5 });
-  const [sorting, setSorting] = useState({ sortBy: "id", sortOrder: "asc" });
+  const [pagination, setPagination] = useState({ page: 1, pageSize: 15 });
+  const [loading, setLoading] = useState(true);
+  const isInitialRender = useRef(true);
+
+  const { handleSnackbarOpen, SnackbarComponent } = useSnackbar();
 
   const navigate = useNavigate();
-  const { handleSnackbarOpen, SnackbarComponent } = useSnackbar();
-  //context
   const { userData } = useUserContext();
   const { language } = useLanguageContext();
   const translations = language === "tr" ? trTranslations : enTranslations;
-
-  const nextPage = () => {
-    setPagination((prevPagination) => ({
-      ...prevPagination,
-      page: prevPagination.page + 1,
-    }));
-  };
-
-  const previousPage = () => {
-    setPagination((prevPagination) => ({
-      ...prevPagination,
-      page: prevPagination.page - 1,
-    }));
-  };
 
   const handleViewMessageDetails = async (id) => {
     const token = localStorage.getItem("token");
@@ -85,22 +71,64 @@ const MessagesPage = () => {
     }
   };
 
-  useEffect(() => {
+  const nextPage = () => {
+    setPagination((prevPagination) => ({
+      ...prevPagination,
+      page: prevPagination.page + 1,
+    }));
+  };
+
+  const loadMoreMessages = async () => {
+    if (!loading) return;
+
+    setLoading(true);
     const token = localStorage.getItem("token");
 
-    const getMessages = async () => {
-      const response = await fetchMessagesWithPagination(
-        pagination.page,
-        pagination.pageSize,
-        sorting.sortBy,
-        sorting.sortOrder,
-        token
+    const message = await fetchMessagesWithPaginationScroll(
+      token,
+      pagination.page,
+      pagination.pageSize
+    );
+    console.log(message);
+    if (message.length === 0) {
+      setLoading(false);
+      return;
+    }
+    setMessages((prevMessages) => [...prevMessages, ...message]);
+  };
+  useEffect(() => {
+    function handleScroll() {
+      const scrollTop =
+        window.pageYOffset || document.documentElement.scrollTop;
+      const windowHeight = window.innerHeight;
+      const documentHeight = Math.max(
+        document.body.scrollHeight,
+        document.body.offsetHeight,
+        document.documentElement.clientHeight,
+        document.documentElement.scrollHeight,
+        document.documentElement.offsetHeight
       );
-      setMessages(response);
-    };
 
-    getMessages();
-  }, [pagination, sorting, messages]);
+      if (scrollTop + windowHeight >= documentHeight) {
+        nextPage();
+      } else {
+      }
+    }
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isInitialRender.current) {
+      isInitialRender.current = false;
+      return;
+    }
+    loadMoreMessages();
+  }, [pagination]);
 
   if (errorMessage) {
     return <NotFoundPage error={errorMessage} />;
@@ -108,55 +136,6 @@ const MessagesPage = () => {
   return (
     <>
       <Navbar />
-      <Select
-        value={sorting.sortBy}
-        onChange={(e) => {
-          setSorting((prevSorting) => ({
-            ...prevSorting,
-            sortBy: e.target.value,
-          }));
-        }}
-      >
-        <MenuItem value="id">{translations.messagesPage.id}</MenuItem>
-        <MenuItem value="name">{translations.messagesPage.name}</MenuItem>
-        <MenuItem value="gender">{translations.messagesPage.gender}</MenuItem>
-        <MenuItem value="creationDate">
-          {translations.messagesPage.date}
-        </MenuItem>
-        <MenuItem value="country">{translations.messagesPage.country}</MenuItem>
-      </Select>
-      <Select
-        value={sorting.sortOrder}
-        onChange={(e) => {
-          setSorting((prevSorting) => ({
-            ...prevSorting,
-            sortOrder: e.target.value,
-          }));
-        }}
-      >
-        <MenuItem value="asc">{translations.messagesPage.asc}</MenuItem>
-        <MenuItem value="desc">{translations.messagesPage.desc}</MenuItem>
-      </Select>
-      <Select
-        value={pagination.pageSize}
-        onChange={(e) => {
-          setPagination((prevPagination) => ({
-            ...prevPagination,
-            pageSize: e.target.value,
-          }));
-        }}
-        onClick={() => {
-          setPagination((prevPagination) => ({
-            ...prevPagination,
-            page: 1,
-          }));
-        }}
-      >
-        <MenuItem value="5">5</MenuItem>
-        <MenuItem value="10">10</MenuItem>
-        <MenuItem value="20">20</MenuItem>
-        <MenuItem value="100">100</MenuItem>
-      </Select>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -262,29 +241,13 @@ const MessagesPage = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      <div
-        style={{ display: "flex", justifyContent: "center", marginTop: "10px" }}
-      >
-        <Button
-          onClick={previousPage}
-          disabled={pagination.page === 1}
-          color="primary"
-          variant="contained"
-          style={{ marginRight: "10px" }}
-        >
-          {translations.messagesPage.previousPage}
-        </Button>
-        <Button
-          onClick={nextPage}
-          disabled={messages.length < pagination.pageSize}
-          color="primary"
-          variant="contained"
-        >
-          {translations.messagesPage.nextPage}
-        </Button>
-      </div>
+      {loading && (
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <CircularProgress />
+        </div>
+      )}
     </>
   );
 };
 
-export default MessagesPage;
+export default MessagesScrollPage;
