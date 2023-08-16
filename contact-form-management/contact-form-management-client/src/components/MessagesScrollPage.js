@@ -83,18 +83,21 @@ const MessagesScrollPage = () => {
 
     setLoading(true);
     const token = localStorage.getItem("token");
+    try {
+      const message = await fetchMessagesWithPaginationScroll(
+        token,
+        pagination.page,
+        pagination.pageSize
+      );
 
-    const message = await fetchMessagesWithPaginationScroll(
-      token,
-      pagination.page,
-      pagination.pageSize
-    );
-    console.log(message);
-    if (message.length === 0) {
-      setLoading(false);
-      return;
+      if (message.length === 0) {
+        setLoading(false);
+        return;
+      }
+      setMessages((prevMessages) => [...prevMessages, ...message]);
+    } catch (error) {
+      navigate(`/login?error=${encodeURIComponent(error)}}`);
     }
-    setMessages((prevMessages) => [...prevMessages, ...message]);
   };
   useEffect(() => {
     function handleScroll() {

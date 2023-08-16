@@ -8,20 +8,20 @@ export const fetchMessagesWithPagination = async (
   sortOrder,
   token
 ) => {
-  const response = await axios.get(`${server}/api/messages-with-pagination`, {
-    params: {
-      page,
-      pageSize,
-      sortBy,
-      sortOrder,
-    },
-    headers: {
-      token: `${token}`,
-    },
-  });
-  if (response.status === 200) {
+  try {
+    const response = await axios.get(`${server}/api/messages-with-pagination`, {
+      params: {
+        page,
+        pageSize,
+        sortBy,
+        sortOrder,
+      },
+      headers: {
+        token: `${token}`,
+      },
+    });
     return response.data.data.messages;
-  } else {
-    console.log("Something went wrong.");
+  } catch (err) {
+    return Promise.reject(err.response.data.error);
   }
 };

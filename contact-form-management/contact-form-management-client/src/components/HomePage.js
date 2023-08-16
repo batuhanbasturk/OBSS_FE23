@@ -56,16 +56,6 @@ const ContactForm = () => {
   //theme
   const { theme } = useThemeContext();
 
-  // Fetch countries
-  useEffect(() => {
-    const getCountries = async () => {
-      const countriesData = await fetchCountries();
-      setCountries(countriesData);
-    };
-
-    getCountries();
-  }, []);
-
   // Form submission handler
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -87,10 +77,16 @@ const ContactForm = () => {
       setCountry("");
       setMessage("");
       setGender("");
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
+  // Fetch countries
+  useEffect(() => {
+    const getCountries = async () => {
+      const countriesData = await fetchCountries();
+      setCountries(countriesData);
+    };
+    getCountries();
+  }, []);
 
   return (
     <Grid
@@ -214,8 +210,9 @@ const ContactForm = () => {
               >
                 {translations.contactForm.submitButton}
               </Button>
-              <SnackbarComponent type="success" />
             </Box>
+            {/* Snackbar */}
+            <SnackbarComponent type="success" />
           </CardActions>
         </Card>
       </Grid>

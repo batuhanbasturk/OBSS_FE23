@@ -89,18 +89,22 @@ const MessagesPage = () => {
     const token = localStorage.getItem("token");
 
     const getMessages = async () => {
-      const response = await fetchMessagesWithPagination(
-        pagination.page,
-        pagination.pageSize,
-        sorting.sortBy,
-        sorting.sortOrder,
-        token
-      );
-      setMessages(response);
+      try {
+        const response = await fetchMessagesWithPagination(
+          pagination.page,
+          pagination.pageSize,
+          sorting.sortBy,
+          sorting.sortOrder,
+          token
+        );
+        setMessages(response);
+      } catch (error) {
+        navigate(`/login?error=${encodeURIComponent(error)}}`);
+      }
     };
 
     getMessages();
-  }, [pagination, sorting, messages]);
+  }, [pagination, sorting, navigate]);
 
   if (errorMessage) {
     return <NotFoundPage error={errorMessage} />;

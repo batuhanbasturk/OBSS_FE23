@@ -18,6 +18,6 @@ export const fetchMessagesWithPaginationScroll = async (
     });
     return response.data.data.messages;
   } catch (err) {
-    console.log(err);
+    return Promise.reject(err.response.data.error);
   }
 };
