@@ -221,13 +221,21 @@ app.get("/api/messages-with-pagination", async (req, res) => {
     sortBy &&
     ["name", "gender", "creationDate", "country", "id"].includes(sortBy)
   ) {
-    messages.sort((a, b) => {
-      const aValue = String(a[sortBy]);
-      const bValue = String(b[sortBy]);
-      return sortOrder === "asc"
-        ? aValue.localeCompare(bValue)
-        : bValue.localeCompare(aValue);
-    });
+    if (sortBy === "id") {
+      messages.sort((a, b) => {
+        const aValue = parseInt(a[sortBy]);
+        const bValue = parseInt(b[sortBy]);
+        return sortOrder === "asc" ? aValue - bValue : bValue - aValue;
+      });
+    } else {
+      messages.sort((a, b) => {
+        const aValue = String(a[sortBy]);
+        const bValue = String(b[sortBy]);
+        return sortOrder === "asc"
+          ? aValue.localeCompare(bValue)
+          : bValue.localeCompare(aValue);
+      });
+    }
   }
 
   // Pagination
