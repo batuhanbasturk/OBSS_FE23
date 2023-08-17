@@ -114,16 +114,19 @@ const MessagesPage = () => {
 
     socket.addEventListener("message", (event) => {
       const data = JSON.parse(event.data);
-      if (data.type === "formSubmission") {
-        handleSnackbarOpen(translations.messagesPage.newMessage + data.message);
+      if (data.type === "dataUpdate") {
+        handleSnackbarOpen(
+          translations.newMessage +
+            data.message.name +
+            ": " +
+            data.message.message
+        );
       }
     });
     return () => {
-      if (socket.readyState === socket.OPEN) {
-        socket.close();
-      }
+      socket.close();
     };
-  }, [handleSnackbarOpen]);
+  }, [handleSnackbarOpen, translations.newMessage]);
 
   if (errorMessage) {
     return <NotFoundPage error={errorMessage} />;

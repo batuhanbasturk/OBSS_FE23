@@ -49,7 +49,6 @@ const enTranslations = {
     desc: "Descending",
     previousPage: "Previous",
     nextPage: "Next",
-    newMessage: "New message ",
   },
   reportsPage: {
     barChartTitle: "Message Count by Country",
@@ -84,5 +83,6 @@ const enTranslations = {
     notAuthorized: "Not Authorized",
     navigateTitle: "Go to Home Page",
   },
+  newMessage: "New message ",
 };
 export default enTranslations;

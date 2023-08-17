@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 //navigation
 import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
@@ -78,7 +78,7 @@ const MessagesScrollPage = () => {
     }));
   };
 
-  const loadMoreMessages = async () => {
+  const loadMoreMessages = useCallback(async () => {
     if (!loading) return;
 
     setLoading(true);
@@ -99,7 +99,8 @@ const MessagesScrollPage = () => {
       setTokenError(error);
       navigate("/login");
     }
-  };
+  }, [pagination, loading, navigate, setTokenError]);
+
   useEffect(() => {
     function handleScroll() {
       const scrollTop =
@@ -115,7 +116,6 @@ const MessagesScrollPage = () => {
 
       if (scrollTop + windowHeight >= documentHeight) {
         nextPage();
-      } else {
       }
     }
 
@@ -132,7 +132,7 @@ const MessagesScrollPage = () => {
       return;
     }
     loadMoreMessages();
-  }, [pagination]);
+  }, [loadMoreMessages]);
 
   if (errorMessage) {
     return <NotFoundPage error={errorMessage} />;

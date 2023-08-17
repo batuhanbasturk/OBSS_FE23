@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 //navigation
 import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
@@ -6,20 +6,25 @@ import Navbar from "./Navbar";
 import { fetchMessages } from "../api/message/fetchMessages";
 //chart library
 import { Bar, Pie } from "react-chartjs-2";
-//UI
-import { Container, Typography, Grid, Box, Button } from "@mui/material";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 //context
 import { useLanguageContext } from "../context/LanguageContext";
 import trTranslations from "../translations/tr";
 import enTranslations from "../translations/en";
+//socket
+import { w3cwebsocket as W3CWebSocket } from "websocket";
+//snackbar
+import { useSnackbar } from "../utils/snackbarUtils";
+//UI
+import { Container, Typography, Grid, Box, Button } from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 const ReportsPage = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const countriesToShow = 8;
 
   const [messages, setMessages] = useState([]);
+  const { handleSnackbarOpen, SnackbarComponent } = useSnackbar();
   const navigate = useNavigate();
   const { language } = useLanguageContext();
   const translations = language === "tr" ? trTranslations : enTranslations;
@@ -32,26 +37,51 @@ const ReportsPage = () => {
     );
   };
 
-  useEffect(() => {
+  const getMessages = useCallback(async () => {
+    console.log(navigate);
     const token = localStorage.getItem("token");
-
     if (!token) {
       navigate("/login");
       return;
     }
+    try {
+      const messagesData = await fetchMessages(token);
+      setMessages(messagesData);
+    } catch (error) {
+      console.error("Error fetching messages:", error);
+    }
+  }, [navigate]);
 
-    // Fetch messages if authenticated
-    const getMessages = async () => {
-      try {
-        const messagesData = await fetchMessages(token);
-        setMessages(messagesData);
-      } catch (error) {
-        console.error("Error fetching messages:", error);
+  useEffect(() => {
+    getMessages();
+  }, [getMessages]);
+
+  useEffect(() => {
+    const ws = new W3CWebSocket("ws://localhost:5165");
+
+    ws.onmessage = (event) => {
+      const newMessage = JSON.parse(event.data);
+      if (newMessage.type === "dataUpdate") {
+        // Append new message to existing messages and set the updated array
+        setMessages((prevMessages) => [...prevMessages, newMessage.message]);
       }
     };
-
-    getMessages();
-  }, [navigate]);
+    // Show snackbar when a new message is received
+    ws.addEventListener("message", (event) => {
+      const data = JSON.parse(event.data);
+      if (data.type === "dataUpdate") {
+        handleSnackbarOpen(
+          translations.newMessage +
+            data.message.name +
+            ": " +
+            data.message.message
+        );
+      }
+    });
+    return () => {
+      ws.close();
+    };
+  }, [translations.newMessage, handleSnackbarOpen]);
 
   // Function to calculate message count for each country
   const getMessageCountByCountry = () => {
@@ -206,6 +236,7 @@ const ReportsPage = () => {
           </Grid>
         </Container>
       </Box>
+      <SnackbarComponent type="info" />
     </>
   );
 };

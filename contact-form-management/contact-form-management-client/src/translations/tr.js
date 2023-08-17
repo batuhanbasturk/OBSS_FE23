@@ -48,7 +48,6 @@ const trTranslations = {
     desc: "Azalan",
     previousPage: "Önceki",
     nextPage: "Sonraki",
-    newMessage: "Yeni mesaj ",
   },
   reportsPage: {
     barChartTitle: "Ülkelere göre Mesaj Sayısı",
@@ -83,5 +82,6 @@ const trTranslations = {
     notAuthorized: "Yetkisiz Erişim",
     navigateTitle: "Ana Sayfaya Git",
   },
+  newMessage: "Yeni mesaj ",
 };
 export default trTranslations;

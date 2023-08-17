@@ -195,11 +195,11 @@ app.post("/api/message/add", express.json(), async (req, res) => {
 
   wss.clients.forEach((client) => {
     if (client.readyState === WebSocket.OPEN) {
-      const broadcastMessage = {
-        type: "formSubmission",
-        message: `${newMessage.name}: ${newMessage.message}`,
+      const dataUpdate = {
+        type: "dataUpdate",
+        message: newMessage,
       };
-      client.send(JSON.stringify(broadcastMessage));
+      client.send(JSON.stringify(dataUpdate));
     }
   });
   res.status(200).send({ data: { message: newMessage } });
