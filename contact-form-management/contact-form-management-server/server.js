@@ -1,5 +1,6 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
+const WebSocket = require("ws");
 const cors = require("cors");
 
 const {
@@ -20,9 +21,12 @@ app.get("/", (req, res) => {
 });
 
 // Start the server
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
+
+// Start the WebSocket server
+const wss = new WebSocket.Server({ server });
 
 // sample GET request handler (you can ignore this endpoint)
 app.get("/api/greeting", (req, res) => {
@@ -188,6 +192,16 @@ app.post("/api/message/add", express.json(), async (req, res) => {
   newMessage.read = "false";
   currentMessages.push(newMessage);
   writeDataToFile("data/messages.json", currentMessages);
+
+  wss.clients.forEach((client) => {
+    if (client.readyState === WebSocket.OPEN) {
+      const broadcastMessage = {
+        type: "formSubmission",
+        message: `${newMessage.name}: ${newMessage.message}`,
+      };
+      client.send(JSON.stringify(broadcastMessage));
+    }
+  });
   res.status(200).send({ data: { message: newMessage } });
 });
 //pagination for messages

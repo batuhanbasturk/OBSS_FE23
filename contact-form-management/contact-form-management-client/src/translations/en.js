@@ -49,6 +49,7 @@ const enTranslations = {
     desc: "Descending",
     previousPage: "Previous",
     nextPage: "Next",
+    newMessage: "New message ",
   },
   reportsPage: {
     barChartTitle: "Message Count by Country",

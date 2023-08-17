@@ -48,6 +48,7 @@ const trTranslations = {
     desc: "Azalan",
     previousPage: "Önceki",
     nextPage: "Sonraki",
+    newMessage: "Yeni mesaj ",
   },
   reportsPage: {
     barChartTitle: "Ülkelere göre Mesaj Sayısı",

@@ -17,6 +17,8 @@ import trTranslations from "../translations/tr";
 import enTranslations from "../translations/en";
 //snackbar
 import { useSnackbar } from "../utils/snackbarUtils";
+//socket
+import { w3cwebsocket as W3CWebSocket } from "websocket";
 //UI
 import {
   Table,
@@ -106,6 +108,22 @@ const MessagesPage = () => {
 
     getMessages();
   }, [pagination, sorting, navigate, setTokenError]);
+
+  useEffect(() => {
+    const socket = new W3CWebSocket("ws://localhost:5165");
+
+    socket.addEventListener("message", (event) => {
+      const data = JSON.parse(event.data);
+      if (data.type === "formSubmission") {
+        handleSnackbarOpen(translations.messagesPage.newMessage + data.message);
+      }
+    });
+    return () => {
+      if (socket.readyState === socket.OPEN) {
+        socket.close();
+      }
+    };
+  }, [handleSnackbarOpen]);
 
   if (errorMessage) {
     return <NotFoundPage error={errorMessage} />;
@@ -261,7 +279,6 @@ const MessagesPage = () => {
                     </Button>
                   </TableCell>
                 )}
-                <SnackbarComponent type="info" />
               </TableRow>
             ))}
           </TableBody>
@@ -288,6 +305,7 @@ const MessagesPage = () => {
           {translations.messagesPage.nextPage}
         </Button>
       </div>
+      <SnackbarComponent type="info" />
     </>
   );
 };
