@@ -44,7 +44,7 @@ const MessagesScrollPage = () => {
   const { handleSnackbarOpen, SnackbarComponent } = useSnackbar();
 
   const navigate = useNavigate();
-  const { userData } = useUserContext();
+  const { userData, setTokenError } = useUserContext();
   const { language } = useLanguageContext();
   const translations = language === "tr" ? trTranslations : enTranslations;
 
@@ -96,7 +96,8 @@ const MessagesScrollPage = () => {
       }
       setMessages((prevMessages) => [...prevMessages, ...message]);
     } catch (error) {
-      navigate(`/login?error=${encodeURIComponent(error)}}`);
+      setTokenError(error);
+      navigate("/login");
     }
   };
   useEffect(() => {

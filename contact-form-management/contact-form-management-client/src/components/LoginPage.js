@@ -1,6 +1,6 @@
 import { useState } from "react";
 //navigation
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 //api
 import { login } from "../api/login/login";
 //UI
@@ -22,10 +22,8 @@ const LoginPage = () => {
   const [passwordError, setPasswordError] = useState("");
 
   const navigate = useNavigate();
-  const location = useLocation();
-  const errorMessage = new URLSearchParams(location.search).get("error");
 
-  const { setUserData } = useUserContext();
+  const { setUserData, tokenError } = useUserContext();
   const { language } = useLanguageContext();
   const translations = language === "tr" ? trTranslations : enTranslations;
 
@@ -99,7 +97,7 @@ const LoginPage = () => {
           </Grid>
         </Grid>
         {/*Check login's error message*/}
-        {errorMessage && <Box className={styles.errorBox}>{errorMessage}</Box>}
+        {tokenError && <Box className={styles.errorBox}>{tokenError}</Box>}
         {/*Login Button*/}
         <Button
           type="submit"

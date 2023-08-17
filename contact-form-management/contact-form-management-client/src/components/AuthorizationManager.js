@@ -9,7 +9,7 @@ import { useUserContext } from "../context/UserContext";
 const AuthorizationManager = () => {
   const navigate = useNavigate();
 
-  const { setUserData, setChecked } = useUserContext();
+  const { setUserData, setChecked, setTokenError } = useUserContext();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -21,7 +21,9 @@ const AuthorizationManager = () => {
       } catch (error) {
         setChecked(true);
         // navigate to login page with error message
-        navigate(`/login?error=${encodeURIComponent(error)}`);
+        setTokenError(error);
+        localStorage.removeItem("token");
+        navigate(`/login`);
       }
     };
     if (token) {
@@ -29,7 +31,7 @@ const AuthorizationManager = () => {
     } else {
       setChecked(true);
     }
-  }, [navigate, setUserData, setChecked]);
+  }, [navigate, setUserData, setChecked, setTokenError]);
 };
 
 export default AuthorizationManager;

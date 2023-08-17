@@ -44,7 +44,7 @@ const MessagesPage = () => {
   const navigate = useNavigate();
   const { handleSnackbarOpen, SnackbarComponent } = useSnackbar();
   //context
-  const { userData } = useUserContext();
+  const { userData, setTokenError } = useUserContext();
   const { language } = useLanguageContext();
   const translations = language === "tr" ? trTranslations : enTranslations;
 
@@ -99,12 +99,13 @@ const MessagesPage = () => {
         );
         setMessages(response);
       } catch (error) {
-        navigate(`/login?error=${encodeURIComponent(error)}}`);
+        setTokenError(error);
+        navigate("/login");
       }
     };
 
     getMessages();
-  }, [pagination, sorting, navigate]);
+  }, [pagination, sorting, navigate, setTokenError]);
 
   if (errorMessage) {
     return <NotFoundPage error={errorMessage} />;
