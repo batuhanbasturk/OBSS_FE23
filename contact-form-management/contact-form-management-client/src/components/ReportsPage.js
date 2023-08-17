@@ -38,7 +38,6 @@ const ReportsPage = () => {
   };
 
   const getMessages = useCallback(async () => {
-    console.log(navigate);
     const token = localStorage.getItem("token");
     if (!token) {
       navigate("/login");

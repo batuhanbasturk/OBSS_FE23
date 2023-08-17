@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-//navigation
 import { useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 //api
@@ -23,9 +22,13 @@ import {
   Button,
   Typography,
   Avatar,
+  Box,
+  TextField,
+  InputAdornment,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import SearchIcon from "@mui/icons-material/Search";
 
 const UserPage = () => {
   const navigate = useNavigate();
@@ -34,6 +37,7 @@ const UserPage = () => {
 
   const [users, setUsers] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const handleAddUser = () => {
     navigate("/user/add");
@@ -69,6 +73,26 @@ const UserPage = () => {
   return (
     <>
       <Navbar />
+      <Box
+        sx={{
+          margin: 2,
+        }}
+      >
+        <TextField
+          type="text"
+          InputProps={{
+            style: { height: "5vh", width: "18rem" },
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon />
+              </InputAdornment>
+            ),
+          }}
+          label={translations.usersPage.searchPlaceholder}
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+      </Box>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -119,26 +143,30 @@ const UserPage = () => {
           </TableHead>
           {/* user fetch */}
           <TableBody>
-            {users.map((user) => (
-              <TableRow key={user.id}>
-                <TableCell onClick={() => handleViewUserDetails(user.id)}>
-                  <Button>
-                    <EditIcon />
-                  </Button>
-                </TableCell>
-                <TableCell>{user.id}</TableCell>
-                <TableCell>{user.username}</TableCell>
-                <TableCell>{user.role}</TableCell>
-                <TableCell>{user.password}</TableCell>
-                <TableCell>
-                  <Avatar
-                    alt={translations.usersPage.image}
-                    src={user.base64Photo}
-                    sx={{ width: 40, height: 40 }}
-                  />
-                </TableCell>
-              </TableRow>
-            ))}
+            {users
+              .filter((user) =>
+                user.username.toLowerCase().includes(searchQuery.toLowerCase())
+              )
+              .map((user) => (
+                <TableRow key={user.id}>
+                  <TableCell onClick={() => handleViewUserDetails(user.id)}>
+                    <Button>
+                      <EditIcon />
+                    </Button>
+                  </TableCell>
+                  <TableCell>{user.id}</TableCell>
+                  <TableCell>{user.username}</TableCell>
+                  <TableCell>{user.role}</TableCell>
+                  <TableCell>{user.password}</TableCell>
+                  <TableCell>
+                    <Avatar
+                      alt={translations.usersPage.image}
+                      src={user.base64Photo}
+                      sx={{ width: 40, height: 40 }}
+                    />
+                  </TableCell>
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
       </TableContainer>

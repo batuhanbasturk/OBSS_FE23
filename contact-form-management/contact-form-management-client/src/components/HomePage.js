@@ -145,7 +145,14 @@ const ContactForm = () => {
                 />
               </RadioGroup>
               {errors.gender && (
-                <Typography variant="caption" className={styles.errorMsg}>
+                <Typography
+                  variant="caption"
+                  className={
+                    theme === "light"
+                      ? styles.errorMsgLight
+                      : styles.errorMsgDark
+                  }
+                >
                   {errors.gender}
                 </Typography>
               )}

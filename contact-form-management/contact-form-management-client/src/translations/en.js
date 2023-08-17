@@ -71,6 +71,7 @@ const enTranslations = {
     usernameExists: "Username already exists!",
     passwordRequired: "Password is required!",
     photoRequired: "Photo is required!",
+    searchPlaceholder: "Search by username",
   },
   WelcomePage: {
     welcome: "Welcome",

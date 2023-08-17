@@ -70,6 +70,7 @@ const trTranslations = {
     usernameExists: "Böyle bir kullanıcı adı zaten var!",
     passwordRequired: "Şifre zorunludur!",
     photoRequired: "Fotoğraf zorunludur!",
+    searchPlaceholder: "Kullanıcı ara...",
   },
   WelcomePage: {
     welcome: "Hoşgeldin",
