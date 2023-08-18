@@ -42,10 +42,10 @@ const LoginPage = () => {
       }
       navigate("/welcome");
     } catch (err) {
-      if (err.includes("Username")) {
+      if (err === "Username is required") {
         setUsernameError(err);
         setPasswordError("");
-      } else if (err.includes("Password")) {
+      } else if (err === "Password is required") {
         setPasswordError(err);
         setUsernameError("");
       }
