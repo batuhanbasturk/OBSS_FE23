@@ -3,239 +3,34 @@ const jwt = require("jsonwebtoken");
 const WebSocket = require("ws");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const { JWT_SECRET_KEY, MONGODB_URI, PORT } = require("./config");
 
-const JWT_SECRET_KEY = "contact-form-manager-server-secret-key";
+const {
+  readDataFromMongo,
+  updateDataToMongo,
+  deleteDataFromMongo,
+  writeDataToMongo,
+  getNextUserId,
+  getNextMessageId,
+} = require("./utils");
+
+const { Message, User, BlacklistedTokens } = require("./models");
+const {
+  performInitialDataChecksAndInsertions,
+} = require("./initialDataInsertion");
 
 const app = express();
 app.use(cors());
-const port = 5165;
-
-// Reading from MongoDB
-async function readDataFromMongo(collectionName, fieldName) {
-  try {
-    const collection = mongoose.connection.collection(collectionName);
-    if (!fieldName) {
-      const data = await collection.find().toArray();
-      return data ? data : [];
-    } else {
-      const data = await collection.distinct(fieldName);
-      return data ? data : [];
-    }
-  } catch (err) {
-    console.error("Error reading from MongoDB:", err);
-    throw new Error("Error reading from MongoDB", err);
-  }
-}
-//update to MongoDB
-async function updateDataToMongo(collectionName, data) {
-  try {
-    const collection = mongoose.connection.collection(collectionName);
-
-    // Iterate through the data array and update each document
-    for (const document of data) {
-      const { _id, ...updateData } = document;
-      await collection.updateOne(
-        { _id },
-        { $set: updateData },
-        { upsert: true }
-      );
-    }
-    console.log("Data updated successfully to MongoDB.");
-  } catch (err) {
-    console.error("Error updating to MongoDB:", err);
-  }
-}
-
-// Deleting from MongoDB
-async function deleteDataFromMongo(collectionName, id) {
-  try {
-    const collection = mongoose.connection.collection(collectionName);
-    await collection.deleteOne({ id: id });
-    console.log("Data deleted successfully from MongoDB.");
-  } catch (err) {
-    console.error("Error deleting from MongoDB:", err);
-  }
-}
-
-// Writing to MongoDB
-async function writeDataToMongo(collectionName, id, data) {
-  try {
-    const collection = mongoose.connection.collection(collectionName);
-    await collection.updateOne({ id: id }, { $set: data }, { upsert: true });
-    console.log("Data written successfully to MongoDB.");
-  } catch (err) {
-    console.error("Error writing to MongoDB:", err);
-  }
-}
-
-async function getNextUserId() {
-  const lastIdObject = await LastId.findOne();
-  const nextUserId = lastIdObject.user + 1;
-  await LastId.updateOne(
-    { _id: lastIdObject._id },
-    { $set: { user: nextUserId } }
-  );
-  return nextUserId;
-}
-
-async function getNextMessageId() {
-  const lastIdObject = await LastId.findOne();
-  const nextMessageId = lastIdObject.message + 1;
-  await LastId.updateOne(
-    { _id: lastIdObject._id },
-    { $set: { message: nextMessageId } }
-  );
-
-  return nextMessageId;
-}
-
-const messageSchema = new mongoose.Schema({
-  id: Number,
-  name: String,
-  message: String,
-  gender: String,
-  country: String,
-  creationDate: String,
-  read: String,
-});
-
-const userSchema = new mongoose.Schema({
-  id: Number,
-  username: String,
-  password: String,
-  base64Photo: String,
-  role: String,
-});
-
-const countrySchema = new mongoose.Schema({
-  country: String,
-});
-const lastIdSchema = new mongoose.Schema({
-  user: Number,
-  message: Number,
-});
-
-const blacklistedTokensSchema = new mongoose.Schema({
-  blacklistedTokens: String,
-});
-
-//Insert initial blacklistedTokens to MongoDB
-const blacklistedTokensData = require("./data/blacklisted-tokens.json");
-const BlacklistedTokens = mongoose.model(
-  "BlacklistedTokens",
-  blacklistedTokensSchema
-);
-const transformedBlacklistedTokensData = blacklistedTokensData.map(
-  (blacklistedToken) => ({
-    blacklistedTokens: blacklistedToken,
-  })
-);
-
-// Insert initial lastId to MongoDB
-const lastIdData = require("./data/last-id.json");
-const LastId = mongoose.model("LastId", lastIdSchema);
-// Insert initial users to MongoDB
-const usersData = require("./data/users.json");
-const User = mongoose.model("User", userSchema);
-const transformedUsersData = usersData.map((user) => ({
-  id: user.id,
-  username: user.username,
-  password: user.password,
-  base64Photo: user.base64Photo,
-  role: user.role,
-}));
-
-// Insert initial messages to MongoDB
-const messagesData = require("./data/messages.json");
-const Message = mongoose.model("Message", messageSchema);
-const transformedMessagesData = messagesData.map((message) => ({
-  id: message.id,
-  name: message.name,
-  message: message.message,
-  gender: message.gender,
-  country: message.country,
-  creationDate: message.creationDate,
-  read: message.read,
-}));
-
-// Insert initial countries to MongoDB
-const countryData = require("./data/countries.json");
-const transformedCountryData = countryData.map((countryName) => ({
-  country: countryName,
-}));
-const Country = mongoose.model("Country", countrySchema);
 
 // Connect to MongoDB
 mongoose
-  .connect("mongodb://localhost:27017/contact-management-system", {
+  .connect(MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
   .then(async () => {
     console.log("Connected to MongoDB");
-
-    //For first time insert data to MongoDB
-    // Check if data already exists in MongoDB
-    const countryCount = await Country.countDocuments();
-    const messageCount = await Message.countDocuments();
-    const userCount = await User.countDocuments();
-    const lastIdCount = await LastId.countDocuments();
-    const blacklistedTokensCount = await BlacklistedTokens.countDocuments();
-
-    if (countryCount === 0) {
-      // Insert country json to mongoDB
-      Country.insertMany(transformedCountryData)
-        .then(() => {
-          console.log("Countries inserted successfully");
-        })
-        .catch((err) => {
-          console.error("Error inserting countries:", err);
-        });
-    }
-
-    if (messageCount === 0) {
-      // Insert messages json to mongoDB
-      Message.insertMany(transformedMessagesData)
-        .then(() => {
-          console.log("Messages inserted successfully");
-        })
-        .catch((err) => {
-          console.error("Error inserting messages:", err);
-        });
-    }
-
-    if (userCount === 0) {
-      // Insert users json to mongoDB
-      User.insertMany(transformedUsersData)
-        .then(() => {
-          console.log("Users inserted successfully");
-        })
-        .catch((err) => {
-          console.error("Error inserting users:", err);
-        });
-    }
-
-    if (lastIdCount === 0) {
-      // Insert lastId json to mongoDB
-      LastId.insertMany(lastIdData)
-        .then(() => {
-          console.log("LastId inserted successfully");
-        })
-        .catch((err) => {
-          console.error("Error inserting lastId:", err);
-        });
-    }
-
-    if (blacklistedTokensCount === 0) {
-      // Insert blacklistedTokens json to mongoDB
-      BlacklistedTokens.insertMany(transformedBlacklistedTokensData)
-        .then(() => {
-          console.log("BlacklistedTokens inserted successfully");
-        })
-        .catch((err) => {
-          console.error("Error inserting blacklistedTokens:", err);
-        });
-    }
+    await performInitialDataChecksAndInsertions();
   });
 
 app.get("/", (req, res) => {
@@ -243,8 +38,8 @@ app.get("/", (req, res) => {
 });
 
 // Start the server
-const server = app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+const server = app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
 
 // Start the WebSocket server
@@ -335,7 +130,7 @@ app.post("/api/user/login", express.json(), async (req, res) => {
     username: existingUser.username,
   };
   const jwtToken = jwt.sign(jwtTokenPayload, JWT_SECRET_KEY, {
-    expiresIn: "10m",
+    expiresIn: "15m",
   });
   res.status(200).send({ data: { user: existingUser, token: jwtToken } });
 });
@@ -389,9 +184,12 @@ app.post("/api/user/logout", express.json(), async (req, res) => {
   );
 
   if (!blacklistedTokens.includes(token)) {
-    blacklistedTokens.push(token);
+    const newBlacklistedToken = new BlacklistedTokens({
+      blacklistedTokens: token,
+    });
+    newBlacklistedToken.save();
   }
-  writeDataToMongo("blacklistedtokens", blacklistedTokens);
+
   res.status(200).send({ data: { message: "Logged out successfully" } });
 });
 
