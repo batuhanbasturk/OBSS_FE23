@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 //navigation
 import { useNavigate } from "react-router-dom";
 //api
@@ -20,6 +20,7 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const [usernameError, setUsernameError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [loginError, setLoginError] = useState("");
 
   const navigate = useNavigate();
 
@@ -29,6 +30,27 @@ const LoginPage = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+
+    setUsernameError("");
+    setPasswordError("");
+    setLoginError("");
+
+    let hasError = false;
+
+    if (!username) {
+      setUsernameError(translations.loginPage.usernameRequired);
+      hasError = true;
+    }
+
+    if (!password) {
+      setPasswordError(translations.loginPage.passwordRequired);
+      hasError = true;
+    }
+
+    if (hasError) {
+      return;
+    }
+
     try {
       const fullData = await login(username, password);
       const user = fullData.user;
@@ -36,18 +58,15 @@ const LoginPage = () => {
       setUserData(user);
 
       localStorage.setItem("token", token);
-      if (!token) {
-        navigate("/login");
-        return;
-      }
       navigate("/welcome");
-    } catch (err) {
-      if (err === "Username is required") {
-        setUsernameError(err);
-        setPasswordError("");
-      } else if (err === "Password is required") {
-        setPasswordError(err);
-        setUsernameError("");
+    } catch (error) {
+      if (
+        error === "Username does not exist" ||
+        error === "Password is incorrect"
+      ) {
+        setLoginError(translations.loginPage.loginError);
+      } else {
+        setLoginError("Something went wrong!");
       }
     }
   };
@@ -96,6 +115,8 @@ const LoginPage = () => {
             />
           </Grid>
         </Grid>
+        {/*Invalid login error message */}
+        {loginError && <Box className={styles.errorBox}>{loginError}</Box>}
         {/*Check login's error message*/}
         {tokenError && <Box className={styles.errorBox}>{tokenError}</Box>}
         {/*Login Button*/}

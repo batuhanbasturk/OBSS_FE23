@@ -18,6 +18,9 @@ const trTranslations = {
     loginButton: "GİRİŞ Yap",
     usernameLabel: "Kullanıcı Adı",
     passwordLabel: "Şifre",
+    usernameRequired: "Kullanıcı adı zorunludur!",
+    passwordRequired: "Şifre zorunludur!",
+    loginError: "Kullanıcı adı veya şifre hatalı!",
   },
   navbar: {
     logout: "Çıkış Yap",

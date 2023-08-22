@@ -38,7 +38,6 @@ const UserDetailsPage = () => {
   const [errors, setErrors] = useState({
     photo: "",
     password: "",
-    notFound: "",
   });
   //utils
   const { file, base64Photo, handleChange } = useFileInput();

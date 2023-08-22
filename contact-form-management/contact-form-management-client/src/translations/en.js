@@ -19,6 +19,9 @@ const enTranslations = {
     loginButton: "Login",
     usernameLabel: "Username",
     passwordLabel: "Password",
+    usernameRequired: "Username is required!",
+    passwordRequired: "Password is required!",
+    loginError: "Username or password is incorrect!",
   },
   navbar: {
     logout: "Logout",

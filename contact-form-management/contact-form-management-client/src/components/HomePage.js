@@ -82,8 +82,12 @@ const ContactForm = () => {
   // Fetch countries
   useEffect(() => {
     const getCountries = async () => {
-      const countriesData = await fetchCountries();
-      setCountries(countriesData);
+      try {
+        const countriesData = await fetchCountries();
+        setCountries(countriesData);
+      } catch (error) {
+        console.log(error);
+      }
     };
     getCountries();
   }, []);
@@ -192,6 +196,7 @@ const ContactForm = () => {
               style={{
                 border: errors.message ? "1px solid #d32f2f" : "1px solid #ccc",
                 backgroundColor: theme === "dark" ? "#1e1e1e" : "#ffffff",
+                color: theme === "dark" ? "#ffffff" : "#000000",
               }}
             />
             {/* Error message */}
