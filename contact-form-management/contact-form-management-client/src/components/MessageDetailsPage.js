@@ -14,14 +14,18 @@ import trTranslations from "../translations/tr";
 import enTranslations from "../translations/en";
 //UI
 import styles from "../styles/MessageDetails.module.css";
-import Details from "../images/details.svg";
 import { Card, CardContent, Typography, Box } from "@mui/material";
+//strapi
+import { strapi } from "../server/server";
+//images
+import { useImageContext } from "../context/ImageContext";
 
 const MessageDetailsPage = () => {
   const { id } = useParams();
   const [message, setMessage] = useState({});
   const [notFoundError, setNotFoundError] = useState("");
 
+  const { images } = useImageContext();
   const { language } = useLanguageContext();
   const translations = language === "tr" ? trTranslations : enTranslations;
 
@@ -48,7 +52,11 @@ const MessageDetailsPage = () => {
     <>
       <Navbar />
       <Box className={styles.container}>
-        <img src={Details} alt="details" className={styles.detailsImage} />
+        <img
+          src={`${strapi}${images["details"]?.url}`}
+          alt="details"
+          className={styles.detailsImage}
+        />
         <Card variant="outlined" className={styles.card}>
           <CardContent>
             <Typography variant="h5" component="h2" gutterBottom>

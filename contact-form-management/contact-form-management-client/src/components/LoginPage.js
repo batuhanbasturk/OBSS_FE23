@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 //navigation
 import { useNavigate } from "react-router-dom";
 //api
@@ -7,13 +7,16 @@ import { login } from "../api/login/login";
 import { Grid, Box, TextField, Button } from "@mui/material";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
-import logo from "../images/obss.png";
 import styles from "../styles/Login.module.css";
 //context
 import { useUserContext } from "../context/UserContext";
 import { useLanguageContext } from "../context/LanguageContext";
 import trTranslations from "../translations/tr";
 import enTranslations from "../translations/en";
+//strapi
+import { strapi } from "../server/server";
+//images
+import { useImageContext } from "../context/ImageContext";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
@@ -23,6 +26,7 @@ const LoginPage = () => {
   const [loginError, setLoginError] = useState("");
 
   const navigate = useNavigate();
+  const { images } = useImageContext();
 
   const { setUserData, tokenError } = useUserContext();
   const { language } = useLanguageContext();
@@ -79,7 +83,11 @@ const LoginPage = () => {
         className={styles.loginContainer}
       >
         {/*Login Logo*/}
-        <img src={logo} alt="logo" className={styles.logoImage} />
+        <img
+          src={`${strapi}${images["obss"]?.url}`}
+          alt="logo"
+          className={styles.logoImage}
+        />
         <Grid container alignItems="center" spacing={2}>
           <Grid item>
             <AccountBoxIcon />

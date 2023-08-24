@@ -5,17 +5,20 @@ import reportWebVitals from "./reportWebVitals";
 import { UserProvider } from "./context/UserContext";
 import { LanguageProvider } from "./context/LanguageContext";
 import { ThemeProvider } from "./context/ThemeContext";
+import { ImageProvider } from "./context/ImageContext";
 import "chart.js/auto";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <LanguageProvider>
-      <UserProvider>
-        <ThemeProvider>
-          <App />
-        </ThemeProvider>
-      </UserProvider>
+      <ImageProvider>
+        <UserProvider>
+          <ThemeProvider>
+            <App />
+          </ThemeProvider>
+        </UserProvider>
+      </ImageProvider>
     </LanguageProvider>
   </React.StrictMode>
 );

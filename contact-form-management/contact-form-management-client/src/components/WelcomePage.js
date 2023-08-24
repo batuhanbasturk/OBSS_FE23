@@ -7,18 +7,22 @@ import enTranslations from "../translations/en";
 import Navbar from "./Navbar";
 //UI
 import styles from "../styles/Welcome.module.css";
-import greetings from "../images/greetings.svg";
 import { Container, Typography } from "@mui/material";
+//strapi
+import { strapi } from "../server/server";
+//images
+import { useImageContext } from "../context/ImageContext";
 
 const WelcomePage = () => {
   const { userData } = useUserContext();
   const { language } = useLanguageContext();
+  const { images } = useImageContext();
   const translations = language === "tr" ? trTranslations : enTranslations;
   return (
     <>
       <Navbar />
       <Container className={styles.container}>
-        <img src={greetings} alt="Greetings" />
+        <img src={`${strapi}${images["greetings"]?.url}`} alt="Greetings" />
         <Typography variant="h4" component="h1" gutterBottom>
           {translations.WelcomePage.welcome} {userData.username}
         </Typography>

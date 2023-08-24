@@ -73,7 +73,8 @@ const ReportsPage = () => {
           translations.newMessage +
             data.message.name +
             ": " +
-            data.message.message
+            data.message.message,
+          "info"
         );
       }
     });
@@ -235,7 +236,7 @@ const ReportsPage = () => {
           </Grid>
         </Container>
       </Box>
-      <SnackbarComponent type="info" />
+      <SnackbarComponent />
     </>
   );
 };

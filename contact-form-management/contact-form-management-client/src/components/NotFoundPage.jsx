@@ -7,17 +7,25 @@ import enTranslations from "../translations/en";
 //UI
 import styles from "../styles/errorPages.module.css";
 import { Button, Box, Typography } from "@mui/material";
-import NotFound from "../images/404.svg";
+//strapi
+import { strapi } from "../server/server";
+//images
+import { useImageContext } from "../context/ImageContext";
 
 const NotFoundPage = ({ error }) => {
   const navigate = useNavigate();
+  const { images } = useImageContext();
   const { language } = useLanguageContext();
   const translations = language === "tr" ? trTranslations : enTranslations;
 
   return (
     <Box className={styles.container}>
       {/* error stands for message not found, user not found specific pages */}
-      <img src={NotFound} alt="404" className={styles.image} />
+      <img
+        src={`${strapi}${images["404"]?.url}`}
+        alt="404"
+        className={styles.image}
+      />
       <Typography variant="h5" component="h2" className={styles.title}>
         {error ? error : translations.NotFoundPage.notFound}
       </Typography>

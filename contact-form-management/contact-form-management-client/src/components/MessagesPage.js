@@ -81,7 +81,10 @@ const MessagesPage = () => {
       setMessages((prevMessages) =>
         prevMessages.filter((msg) => msg.id !== id)
       );
-      handleSnackbarOpen(translations.messagesPage.deletedSnackbarMessage);
+      handleSnackbarOpen(
+        translations.messagesPage.deletedSnackbarMessage,
+        "info"
+      );
     } catch (error) {
       setErrorMessage(error);
     }
@@ -119,7 +122,8 @@ const MessagesPage = () => {
           translations.newMessage +
             data.message.name +
             ": " +
-            data.message.message
+            data.message.message,
+          "info"
         );
       }
     });
@@ -308,7 +312,7 @@ const MessagesPage = () => {
           {translations.messagesPage.nextPage}
         </Button>
       </div>
-      <SnackbarComponent type="info" />
+      <SnackbarComponent />
     </>
   );
 };

@@ -7,18 +7,26 @@ import enTranslations from "../translations/en";
 //UI
 import styles from "../styles/errorPages.module.css";
 import { Button, Box, Typography } from "@mui/material";
-import notAuthorized from "../images/notAuthorized.svg";
+//strapi
+import { strapi } from "../server/server";
+//images
+import { useImageContext } from "../context/ImageContext";
 
 const NotAuthorizedPage = ({ error }) => {
   const navigate = useNavigate();
 
+  const { images } = useImageContext();
   const { language } = useLanguageContext();
   const translations = language === "tr" ? trTranslations : enTranslations;
 
   return (
     <Box className={styles.container}>
       {/* error => welcome default => home*/}
-      <img src={notAuthorized} alt="not-auth" className={styles.image} />
+      <img
+        src={`${strapi}${images["notAuthorized"]?.url}`}
+        alt="not-auth"
+        className={styles.image}
+      />
       <Typography variant="h5" component="h2" className={styles.title}>
         {error ? error : translations.NotAuthorizedPage.notAuthorized}
       </Typography>

@@ -9,6 +9,7 @@ import ReportsPage from "./components/ReportsPage";
 import UsersPage from "./components/UsersPage";
 import UserDetailsPage from "./components/UserDetailsPage";
 import UserForm from "./components/UserForm";
+import ImagePage from "./components/ImagePage";
 import NotFoundPage from "./components/NotFoundPage";
 import NotAuthorizedPage from "./components/NotAuthorizedPage";
 import MessagesScrollPage from "./components/MessagesScrollPage";
@@ -87,6 +88,14 @@ const App = () => {
           path="/user/add"
           element={
             userData.role === "admin" ? <UserForm /> : <NotAuthorizedPage />
+          }
+        />
+      }
+      {
+        <Route
+          path="/images"
+          element={
+            userData.role === "admin" ? <ImagePage /> : <NotAuthorizedPage />
           }
         />
       }

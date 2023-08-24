@@ -27,17 +27,21 @@ import {
   DialogActions,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import LogoImage from "../images/obss.svg";
+//strapi
+import { strapi } from "../server/server";
+//images
+import { useImageContext } from "../context/ImageContext";
 
 const Navbar = () => {
   const { userData } = useUserContext();
   const { language } = useLanguageContext();
+  const { images } = useImageContext();
   const translations = language === "tr" ? trTranslations : enTranslations;
   const navigate = useNavigate();
   //
   const pages =
     userData.role === "admin"
-      ? ["messages", "messages_scroll", "users", "reports"]
+      ? ["messages", "messages_scroll", "users", "reports", "images"]
       : ["messages", "messages_scroll"];
   const settings = translations.navbar.logout;
 
@@ -94,7 +98,7 @@ const Navbar = () => {
         <Avatar
           className={styles.logo}
           alt="Logo"
-          src={LogoImage}
+          src={`${strapi}${images["navLogo"]?.url}`}
           sx={{ display: { xs: "none", md: "flex" } }}
         />
         {/* Welcome page navigator */}
@@ -156,7 +160,7 @@ const Navbar = () => {
         <Avatar
           className={styles.logo}
           alt="Logo"
-          src={LogoImage}
+          src={`${strapi}${images["navLogo"]?.url}`}
           sx={{ display: { xs: "flex", md: "none" } }}
         />
         <Typography

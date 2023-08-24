@@ -65,7 +65,10 @@ const MessagesScrollPage = () => {
       setMessages((prevMessages) =>
         prevMessages.filter((msg) => msg.id !== id)
       );
-      handleSnackbarOpen(translations.messagesPage.deletedSnackbarMessage);
+      handleSnackbarOpen(
+        translations.messagesPage.deletedSnackbarMessage,
+        "info"
+      );
     } catch (error) {
       setErrorMessage(error);
     }
@@ -239,7 +242,7 @@ const MessagesScrollPage = () => {
                     </Button>
                   </TableCell>
                 )}
-                <SnackbarComponent type="info" />
+                <SnackbarComponent />
               </TableRow>
             ))}
           </TableBody>

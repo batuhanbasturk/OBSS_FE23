@@ -6,10 +6,13 @@ import { addMessage } from "../api/message/addMessage";
 import { useSnackbar } from "../utils/snackbarUtils";
 // language imports
 import { useLanguageContext } from "../context/LanguageContext";
+import { useImageContext } from "../context/ImageContext";
 import trTranslations from "../translations/tr";
 import enTranslations from "../translations/en";
 //theme
 import { useThemeContext } from "../context/ThemeContext";
+//strapi
+import { strapi } from "../server/server";
 //UI
 import styles from "../styles/Home.module.css";
 import {
@@ -32,7 +35,6 @@ import {
   InputLabel,
   FormHelperText,
 } from "@mui/material";
-import contact from "../images/contact.svg";
 
 const ContactForm = () => {
   // Form state
@@ -50,6 +52,7 @@ const ContactForm = () => {
   });
   // Language state
   const { language } = useLanguageContext();
+  const { images } = useImageContext();
   const translations = language === "tr" ? trTranslations : enTranslations;
   // Snackbar state
   const { handleSnackbarOpen, SnackbarComponent } = useSnackbar();
@@ -71,7 +74,7 @@ const ContactForm = () => {
     try {
       await addMessage(formData);
       // success snackbar
-      handleSnackbarOpen(translations.contactForm.successMessage);
+      handleSnackbarOpen(translations.contactForm.successMessage, "success");
       // reset form
       setName("");
       setCountry("");
@@ -104,7 +107,11 @@ const ContactForm = () => {
       <Grid item xs={10} sm={6} md={5}>
         <Box className={styles.logoContainer}>
           {/* Logo */}
-          <img src={contact} alt="logo" className={styles.logoImage} />
+          <img
+            src={`${strapi}${images["contact"]?.url}`}
+            alt="logo"
+            className={styles.logoImage}
+          />
         </Box>
         <Card sx={{ mb: 2 }}>
           <CardContent>
@@ -224,7 +231,7 @@ const ContactForm = () => {
               </Button>
             </Box>
             {/* Snackbar */}
-            <SnackbarComponent type="success" />
+            <SnackbarComponent />
           </CardActions>
         </Card>
       </Grid>

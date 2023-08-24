@@ -23,7 +23,10 @@ import {
   CardActions,
   Box,
 } from "@mui/material";
-import hire from "../images/hire.svg";
+//strapi
+import { strapi } from "../server/server";
+//images
+import { useImageContext } from "../context/ImageContext";
 
 const UserForm = () => {
   const [username, setUsername] = useState("");
@@ -35,7 +38,7 @@ const UserForm = () => {
     password: "",
     photo: "",
   });
-
+  const { images } = useImageContext();
   const navigate = useNavigate();
   const { language } = useLanguageContext();
   const translations = language === "tr" ? trTranslations : enTranslations;
@@ -80,7 +83,11 @@ const UserForm = () => {
             <CardContent>
               <Box sx={{ textAlign: "center" }}>
                 {/* Logo */}
-                <img className={styles.logo} src={hire} alt="logo" />
+                <img
+                  className={styles.logo}
+                  src={`${strapi}${images["hire"]?.url}`}
+                  alt="logo"
+                />
               </Box>
               {/* Form title*/}
               <Typography

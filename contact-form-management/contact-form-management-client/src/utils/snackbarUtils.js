@@ -5,9 +5,11 @@ import { Snackbar, Alert } from "@mui/material";
 export const useSnackbar = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("success");
 
-  const handleSnackbarOpen = (message) => {
+  const handleSnackbarOpen = (message, severity) => {
     setSnackbarMessage(message);
+    setSnackbarSeverity(severity);
     setSnackbarOpen(true);
   };
 
@@ -15,7 +17,7 @@ export const useSnackbar = () => {
     setSnackbarOpen(false);
   };
 
-  const SnackbarComponent = ({ type }) => (
+  const SnackbarComponent = () => (
     <Snackbar
       open={snackbarOpen}
       autoHideDuration={3000}
@@ -23,7 +25,7 @@ export const useSnackbar = () => {
     >
       <Alert
         onClose={handleSnackbarClose}
-        severity={type}
+        severity={snackbarSeverity}
         sx={{ width: "100%" }}
       >
         {snackbarMessage}

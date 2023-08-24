@@ -58,7 +58,10 @@ const UserDetailsPage = () => {
       const data = { username, password, base64Photo };
       const user = await updateUser(token, id, data);
       setUser(user);
-      handleSnackbarOpen(translations.usersPage.updateSnackbarMessage);
+      handleSnackbarOpen(
+        translations.usersPage.updateSnackbarMessage,
+        "success"
+      );
     } catch (error) {
       if (error === "User not found") {
         setNotFoundError(error);
@@ -156,7 +159,7 @@ const UserDetailsPage = () => {
                 {translations.usersPage.updateButton}
               </Button>
             </Box>
-            <SnackbarComponent type="success" />
+            <SnackbarComponent />
           </CardContent>
         </Card>
       </Box>
