@@ -13,8 +13,6 @@ import { fetchMessagesWithPagination } from "../api/message/messagesWithPaginati
 //context
 import { useUserContext } from "../context/UserContext";
 import { useLanguageContext } from "../context/LanguageContext";
-import trTranslations from "../translations/tr";
-import enTranslations from "../translations/en";
 //snackbar
 import { useSnackbar } from "../utils/snackbarUtils";
 //socket
@@ -47,8 +45,7 @@ const MessagesPage = () => {
   const { handleSnackbarOpen, SnackbarComponent } = useSnackbar();
   //context
   const { userData, setTokenError } = useUserContext();
-  const { language } = useLanguageContext();
-  const translations = language === "tr" ? trTranslations : enTranslations;
+  const { labels } = useLanguageContext();
 
   const nextPage = () => {
     setPagination((prevPagination) => ({
@@ -81,10 +78,7 @@ const MessagesPage = () => {
       setMessages((prevMessages) =>
         prevMessages.filter((msg) => msg.id !== id)
       );
-      handleSnackbarOpen(
-        translations.messagesPage.deletedSnackbarMessage,
-        "info"
-      );
+      handleSnackbarOpen(labels.deletedSnackbarMessage, "info");
     } catch (error) {
       setErrorMessage(error);
     }
@@ -119,10 +113,7 @@ const MessagesPage = () => {
       const data = JSON.parse(event.data);
       if (data.type === "dataUpdate") {
         handleSnackbarOpen(
-          translations.newMessage +
-            data.message.name +
-            ": " +
-            data.message.message,
+          labels.newMessage + data.message.name + ": " + data.message.message,
           "info"
         );
       }
@@ -130,7 +121,7 @@ const MessagesPage = () => {
     return () => {
       socket.close();
     };
-  }, [handleSnackbarOpen, translations.newMessage]);
+  }, [handleSnackbarOpen, labels.newMessage]);
 
   if (errorMessage) {
     return <NotFoundPage error={errorMessage} />;
@@ -147,13 +138,11 @@ const MessagesPage = () => {
           }));
         }}
       >
-        <MenuItem value="id">{translations.messagesPage.id}</MenuItem>
-        <MenuItem value="name">{translations.messagesPage.name}</MenuItem>
-        <MenuItem value="gender">{translations.messagesPage.gender}</MenuItem>
-        <MenuItem value="creationDate">
-          {translations.messagesPage.date}
-        </MenuItem>
-        <MenuItem value="country">{translations.messagesPage.country}</MenuItem>
+        <MenuItem value="id">{labels.idLabel}</MenuItem>
+        <MenuItem value="name">{labels.nameLabel}</MenuItem>
+        <MenuItem value="gender">{labels.genderLabel}</MenuItem>
+        <MenuItem value="creationDate">{labels.dateLabel}</MenuItem>
+        <MenuItem value="country">{labels.countryLabel}</MenuItem>
       </Select>
       <Select
         value={sorting.sortOrder}
@@ -164,8 +153,8 @@ const MessagesPage = () => {
           }));
         }}
       >
-        <MenuItem value="asc">{translations.messagesPage.asc}</MenuItem>
-        <MenuItem value="desc">{translations.messagesPage.desc}</MenuItem>
+        <MenuItem value="asc">{labels.asc}</MenuItem>
+        <MenuItem value="desc">{labels.desc}</MenuItem>
       </Select>
       <Select
         value={pagination.pageSize}
@@ -196,58 +185,58 @@ const MessagesPage = () => {
                 <Typography
                   variant="subtitle1"
                   fontWeight="bold"
-                  textAlign={language === "en" ? "center" : "left"}
+                  textAlign={labels.locale === "en" ? "center" : "left"}
                 >
-                  {translations.messagesPage.view}
+                  {labels.view}
                 </Typography>
               </TableCell>
               {/* Id */}
               <TableCell>
                 <Typography variant="subtitle1" fontWeight="bold">
-                  {translations.messagesPage.id}
+                  {labels.idLabel}
                 </Typography>
               </TableCell>
               {/* Name */}
               <TableCell>
                 <Typography variant="subtitle1" fontWeight="bold">
-                  {translations.messagesPage.name}
+                  {labels.nameLabel}
                 </Typography>
               </TableCell>
               {/* Message */}
               <TableCell>
                 <Typography variant="subtitle1" fontWeight="bold">
-                  {translations.messagesPage.message}
+                  {labels.messageLabel}
                 </Typography>
               </TableCell>
               {/* Gender */}
               <TableCell>
                 <Typography variant="subtitle1" fontWeight="bold">
-                  {translations.messagesPage.gender}
+                  {labels.genderLabel}
                 </Typography>
               </TableCell>
               {/* Country */}
               <TableCell>
                 <Typography variant="subtitle1" fontWeight="bold">
-                  {translations.messagesPage.country}
+                  {labels.countryLabel}
                 </Typography>
               </TableCell>
               {/* Read status*/}
               <TableCell>
                 <Typography variant="subtitle1" fontWeight="bold">
-                  {translations.messagesPage.read}
+                  {labels.read}
                 </Typography>
               </TableCell>
               {/* Date */}
               <TableCell>
                 <Typography variant="subtitle1" fontWeight="bold">
-                  {translations.messagesPage.date}
+                  {labels.date}
                 </Typography>
               </TableCell>
               {/* Delete for only admin*/}
               {userData.role === "admin" && (
                 <TableCell>
                   <Typography variant="subtitle1" fontWeight="bold">
-                    {translations.messagesPage.delete}
+                    {labels.delete}
                   </Typography>
                 </TableCell>
               )}
@@ -272,9 +261,9 @@ const MessagesPage = () => {
                 <TableCell>{message.gender}</TableCell>
                 <TableCell>{message.country}</TableCell>
                 {message.read === "true" ? (
-                  <TableCell>{translations.messagesPage.readed}</TableCell>
+                  <TableCell>{labels.readed}</TableCell>
                 ) : (
-                  <TableCell>{translations.messagesPage.notReaded}</TableCell>
+                  <TableCell>{labels.notReaded}</TableCell>
                 )}
                 <TableCell style={{ whiteSpace: "pre-line" }}>
                   {formatDateAndTime(message.creationDate)}
@@ -301,7 +290,7 @@ const MessagesPage = () => {
           variant="contained"
           style={{ marginRight: "10px" }}
         >
-          {translations.messagesPage.previousPage}
+          {labels.previousPage}
         </Button>
         <Button
           onClick={nextPage}
@@ -309,7 +298,7 @@ const MessagesPage = () => {
           color="primary"
           variant="contained"
         >
-          {translations.messagesPage.nextPage}
+          {labels.nextPage}
         </Button>
       </div>
       <SnackbarComponent />

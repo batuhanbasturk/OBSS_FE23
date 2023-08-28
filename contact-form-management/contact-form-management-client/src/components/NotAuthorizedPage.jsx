@@ -2,8 +2,6 @@
 import { useNavigate } from "react-router-dom";
 //context
 import { useLanguageContext } from "../context/LanguageContext";
-import trTranslations from "../translations/tr";
-import enTranslations from "../translations/en";
 //UI
 import styles from "../styles/errorPages.module.css";
 import { Button, Box, Typography } from "@mui/material";
@@ -16,8 +14,7 @@ const NotAuthorizedPage = ({ error }) => {
   const navigate = useNavigate();
 
   const { images } = useImageContext();
-  const { language } = useLanguageContext();
-  const translations = language === "tr" ? trTranslations : enTranslations;
+  const { labels } = useLanguageContext();
 
   return (
     <Box className={styles.container}>
@@ -28,7 +25,7 @@ const NotAuthorizedPage = ({ error }) => {
         className={styles.image}
       />
       <Typography variant="h5" component="h2" className={styles.title}>
-        {error ? error : translations.NotAuthorizedPage.notAuthorized}
+        {error ? error : labels.notAuthorized}
       </Typography>
 
       <Button
@@ -38,7 +35,7 @@ const NotAuthorizedPage = ({ error }) => {
           error ? navigate("/welcome") : navigate("/");
         }}
       >
-        {translations.NotAuthorizedPage.navigateTitle}
+        {labels.navigateTitle}
       </Button>
     </Box>
   );

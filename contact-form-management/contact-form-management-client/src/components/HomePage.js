@@ -7,8 +7,8 @@ import { useSnackbar } from "../utils/snackbarUtils";
 // language imports
 import { useLanguageContext } from "../context/LanguageContext";
 import { useImageContext } from "../context/ImageContext";
-import trTranslations from "../translations/tr";
-import enTranslations from "../translations/en";
+//import trTranslations from "../translations/tr";
+//import enTranslations from "../translations/en";
 //theme
 import { useThemeContext } from "../context/ThemeContext";
 //strapi
@@ -51,9 +51,9 @@ const ContactForm = () => {
     message: "",
   });
   // Language state
-  const { language } = useLanguageContext();
+  const { labels } = useLanguageContext();
   const { images } = useImageContext();
-  const translations = language === "tr" ? trTranslations : enTranslations;
+  //const translations = language === "tr" ? trTranslations : enTranslations;
   // Snackbar state
   const { handleSnackbarOpen, SnackbarComponent } = useSnackbar();
   //theme
@@ -63,10 +63,10 @@ const ContactForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newErrors = {
-      name: !name ? translations.contactForm.nameRequired : "",
-      gender: !gender ? translations.contactForm.genderRequired : "",
-      country: !country ? translations.contactForm.countryRequired : "",
-      message: !message ? translations.contactForm.messageRequired : "",
+      name: !name ? labels.nameRequired : "",
+      gender: !gender ? labels.genderRequired : "",
+      country: !country ? labels.countryRequired : "",
+      message: !message ? labels.messageRequired : "",
     };
     setErrors(newErrors);
     const formData = { name, gender, country, message };
@@ -74,7 +74,7 @@ const ContactForm = () => {
     try {
       await addMessage(formData);
       // success snackbar
-      handleSnackbarOpen(translations.contactForm.successMessage, "success");
+      handleSnackbarOpen(labels.formSuccessMessage, "success");
       // reset form
       setName("");
       setCountry("");
@@ -117,11 +117,11 @@ const ContactForm = () => {
           <CardContent>
             {/* Title */}
             <Typography variant="h4" align="center" gutterBottom>
-              {translations.contactForm.title}
+              {labels.contactTitle}
             </Typography>
             {/* Name */}
             <TextField
-              label={translations.contactForm.nameLabel}
+              label={labels.nameLabel}
               variant="outlined"
               error={Boolean(errors.name)}
               fullWidth
@@ -136,9 +136,7 @@ const ContactForm = () => {
               error={Boolean(errors.gender)}
               sx={{ mt: 2 }}
             >
-              <FormLabel component="legend">
-                {translations.contactForm.genderLabel}
-              </FormLabel>
+              <FormLabel component="legend">{labels.genderLabel}</FormLabel>
               <RadioGroup
                 row
                 value={gender}
@@ -147,12 +145,12 @@ const ContactForm = () => {
                 <FormControlLabel
                   value={"male"}
                   control={<Radio />}
-                  label={translations.contactForm.maleOption}
+                  label={labels.male}
                 />
                 <FormControlLabel
                   value={"female"}
                   control={<Radio />}
-                  label={translations.contactForm.femaleOption}
+                  label={labels.female}
                 />
               </RadioGroup>
               {errors.gender && (
@@ -175,9 +173,9 @@ const ContactForm = () => {
               error={Boolean(errors.country)}
               sx={{ mt: 2 }}
             >
-              <InputLabel>{translations.contactForm.countryLabel}</InputLabel>
+              <InputLabel>{labels.countryLabel}</InputLabel>
               <Select
-                label={translations.contactForm.countryLabel}
+                label={labels.countryLabel}
                 value={country}
                 onChange={(e) => setCountry(e.target.value)}
                 displayEmpty
@@ -195,7 +193,7 @@ const ContactForm = () => {
             {/* Message */}
             <TextareaAutosize
               aria-label="Message"
-              placeholder={translations.contactForm.messageLabel}
+              placeholder={labels.messageLabel}
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               inputProps={{ maxLength: 500 }}
@@ -227,7 +225,7 @@ const ContactForm = () => {
                 sx={{ marginBottom: 2 }}
                 onClick={handleSubmit}
               >
-                {translations.contactForm.submitButton}
+                {labels.submitButton}
               </Button>
             </Box>
             {/* Snackbar */}

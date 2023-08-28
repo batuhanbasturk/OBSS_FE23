@@ -8,8 +8,6 @@ import { fetchMessages } from "../api/message/fetchMessages";
 import { Bar, Pie } from "react-chartjs-2";
 //context
 import { useLanguageContext } from "../context/LanguageContext";
-import trTranslations from "../translations/tr";
-import enTranslations from "../translations/en";
 //socket
 import { w3cwebsocket as W3CWebSocket } from "websocket";
 //snackbar
@@ -26,8 +24,7 @@ const ReportsPage = () => {
   const [messages, setMessages] = useState([]);
   const { handleSnackbarOpen, SnackbarComponent } = useSnackbar();
   const navigate = useNavigate();
-  const { language } = useLanguageContext();
-  const translations = language === "tr" ? trTranslations : enTranslations;
+  const { labels } = useLanguageContext();
 
   // Chart data
   const getVisibleCountries = () => {
@@ -70,10 +67,7 @@ const ReportsPage = () => {
       const data = JSON.parse(event.data);
       if (data.type === "dataUpdate") {
         handleSnackbarOpen(
-          translations.newMessage +
-            data.message.name +
-            ": " +
-            data.message.message,
+          labels.newMessage + data.message.name + ": " + data.message.message,
           "info"
         );
       }
@@ -81,7 +75,7 @@ const ReportsPage = () => {
     return () => {
       ws.close();
     };
-  }, [translations.newMessage, handleSnackbarOpen]);
+  }, [labels.newMessage, handleSnackbarOpen]);
 
   // Function to calculate message count for each country
   const getMessageCountByCountry = () => {
@@ -143,7 +137,7 @@ const ReportsPage = () => {
               <Box sx={{ p: 2 }}>
                 <Typography variant="h4" gutterBottom>
                   {/* Bar chart title */}
-                  {translations.reportsPage.barChartTitle}
+                  {labels.barChartTitle}
                 </Typography>
                 <Box sx={{ maxHeight: "300px", overflowY: "auto" }}>
                   {/* Bar chart */}
@@ -152,7 +146,7 @@ const ReportsPage = () => {
                       labels: getVisibleCountries(),
                       datasets: [
                         {
-                          label: translations.reportsPage.barChartLabel,
+                          label: labels.barChartLabel,
                           data: countryChartData.data.slice(
                             currentIndex,
                             currentIndex + countriesToShow
@@ -200,7 +194,7 @@ const ReportsPage = () => {
             <Grid item xs={12}>
               <Typography variant="h4" gutterBottom>
                 {/* Pie chart title */}
-                {translations.reportsPage.pieChartTitle}
+                {labels.pieChartTitle}
               </Typography>
               <Box
                 sx={{

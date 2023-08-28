@@ -11,8 +11,6 @@ import styles from "../styles/Login.module.css";
 //context
 import { useUserContext } from "../context/UserContext";
 import { useLanguageContext } from "../context/LanguageContext";
-import trTranslations from "../translations/tr";
-import enTranslations from "../translations/en";
 //strapi
 import { strapi } from "../server/server";
 //images
@@ -29,8 +27,7 @@ const LoginPage = () => {
   const { images } = useImageContext();
 
   const { setUserData, tokenError } = useUserContext();
-  const { language } = useLanguageContext();
-  const translations = language === "tr" ? trTranslations : enTranslations;
+  const { labels } = useLanguageContext();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -42,12 +39,12 @@ const LoginPage = () => {
     let hasError = false;
 
     if (!username) {
-      setUsernameError(translations.loginPage.usernameRequired);
+      setUsernameError(labels.usernameRequired);
       hasError = true;
     }
 
     if (!password) {
-      setPasswordError(translations.loginPage.passwordRequired);
+      setPasswordError(labels.passwordRequired);
       hasError = true;
     }
 
@@ -68,7 +65,7 @@ const LoginPage = () => {
         error === "Username does not exist" ||
         error === "Password is incorrect"
       ) {
-        setLoginError(translations.loginPage.loginError);
+        setLoginError(labels.loginError);
       } else {
         setLoginError("Something went wrong!");
       }
@@ -96,7 +93,7 @@ const LoginPage = () => {
             {/*Username*/}
             <TextField
               error={Boolean(usernameError)}
-              label={translations.loginPage.usernameLabel}
+              label={labels.usernameLabel}
               variant="outlined"
               fullWidth
               value={username}
@@ -113,7 +110,7 @@ const LoginPage = () => {
             {/*Password*/}
             <TextField
               error={Boolean(passwordError)}
-              label={translations.loginPage.passwordLabel}
+              label={labels.passwordLabel}
               variant="outlined"
               type="password"
               fullWidth
@@ -134,7 +131,7 @@ const LoginPage = () => {
           color="primary"
           className={styles.loginButton}
         >
-          {translations.loginPage.loginButton}
+          {labels.loginButton}
         </Button>
       </Box>
     </Grid>

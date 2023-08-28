@@ -2,8 +2,6 @@
 import { useNavigate } from "react-router-dom";
 //context
 import { useLanguageContext } from "../context/LanguageContext";
-import trTranslations from "../translations/tr";
-import enTranslations from "../translations/en";
 //UI
 import styles from "../styles/errorPages.module.css";
 import { Button, Box, Typography } from "@mui/material";
@@ -15,8 +13,7 @@ import { useImageContext } from "../context/ImageContext";
 const NotFoundPage = ({ error }) => {
   const navigate = useNavigate();
   const { images } = useImageContext();
-  const { language } = useLanguageContext();
-  const translations = language === "tr" ? trTranslations : enTranslations;
+  const { labels } = useLanguageContext();
 
   return (
     <Box className={styles.container}>
@@ -27,7 +24,7 @@ const NotFoundPage = ({ error }) => {
         className={styles.image}
       />
       <Typography variant="h5" component="h2" className={styles.title}>
-        {error ? error : translations.NotFoundPage.notFound}
+        {error ? error : labels.notFound}
       </Typography>
 
       <Button
@@ -37,7 +34,7 @@ const NotFoundPage = ({ error }) => {
           error ? navigate("/welcome") : navigate("/");
         }}
       >
-        {translations.NotFoundPage.navigateTitle}
+        {labels.navigateTitle}
       </Button>
     </Box>
   );

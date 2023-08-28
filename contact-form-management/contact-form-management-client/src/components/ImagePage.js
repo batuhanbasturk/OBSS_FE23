@@ -1,14 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Navbar from "./Navbar";
 //api
 import { fetchImages } from "../api/image/fetchImages";
 import { deleteImage } from "../api/image/deleteImage";
 import { uploadImage } from "../api/image/uploadImage";
+import { updateImage } from "../api/image/updateImage";
 import { strapi } from "../server/server";
 //language
 import { useLanguageContext } from "../context/LanguageContext";
-import trTranslations from "../translations/tr";
-import enTranslations from "../translations/en";
 //utils
 import { useSnackbar } from "../utils/snackbarUtils";
 //UI
@@ -32,7 +31,7 @@ import {
 
 const ImagePage = () => {
   const [selectedImage, setSelectedImage] = useState(null);
-  const [customFileName, setCustomFileName] = useState("");
+  const customFileNameRef = useRef(null);
   const [images, setImages] = useState([]);
   //delete
   const [deleteConfirmationOpen, setDeleteConfirmationOpen] = useState(false);
@@ -41,8 +40,7 @@ const ImagePage = () => {
   //token
   const token = localStorage.getItem("token");
   //language
-  const { language } = useLanguageContext();
-  const translations = language === "tr" ? trTranslations : enTranslations;
+  const { labels } = useLanguageContext();
   //snackbar
   const {
     handleSnackbarOpen: handleSuccessSnackbarOpen,
@@ -79,7 +77,7 @@ const ImagePage = () => {
   };
   const handleCancel = () => {
     setSelectedImage(null);
-    setCustomFileName("");
+    customFileNameRef.current.value = "";
   };
 
   const handleImageDelete = async () => {
@@ -89,54 +87,51 @@ const ImagePage = () => {
     try {
       await deleteImage(deleteImageId);
       setDeleteConfirmationOpen(false);
-      handleSuccessSnackbarOpen(translations.imagePage.imageDeleted, "info");
+      handleSuccessSnackbarOpen(labels.imageDeleted, "info");
       fetchImagesData();
     } catch (error) {
-      handleErrorSnackbarOpen(
-        translations.imagePage.imageDeleteFailed,
-        "error"
-      );
+      handleErrorSnackbarOpen(labels.imageDeleteFailed, "error");
       setDeleteConfirmationOpen(false);
       console.error("Error deleting image:", error);
     }
   };
 
   const handleImageUpload = async () => {
-    if (!token || !selectedImage) {
-      return;
-    }
-
+    if (!token || !selectedImage) return;
+    const customFileName = customFileNameRef.current.value;
     const imageNames = images.map((image) => image.name);
     const isImageNameUsed = imageNames.includes(selectedImage.name);
     const isCustomNameUsed =
-      customFileName !== "" && imageNames.includes(customFileName);
-
-    if (isImageNameUsed || isCustomNameUsed) {
-      handleErrorSnackbarOpen(translations.imagePage.imageNameExists, "error");
-      return;
-    }
-
+      customFileName && imageNames.includes(customFileName);
+    console.log(customFileName);
+    console.log(customFileNameRef);
     try {
-      const uploadFile =
-        customFileName !== ""
-          ? new File([selectedImage], customFileName, {
-              type: selectedImage.type,
-            })
-          : selectedImage;
+      const uploadFile = new File(
+        [selectedImage],
+        customFileName || selectedImage.name,
+        {
+          type: selectedImage.type,
+        }
+      );
 
-      await uploadImage(uploadFile);
+      if (isImageNameUsed || isCustomNameUsed) {
+        const existingImage = images.find(
+          (image) =>
+            image.name === selectedImage.name || image.name === customFileName
+        );
+        if (existingImage) {
+          await updateImage(existingImage.id, uploadFile);
+        }
+      } else {
+        await uploadImage(uploadFile);
+      }
+
       fetchImagesData();
-      handleSuccessSnackbarOpen(
-        translations.imagePage.imageUploaded,
-        "success"
-      );
+      handleSuccessSnackbarOpen(labels.imageUploaded, "success");
       setSelectedImage(null);
-      setCustomFileName("");
+      customFileNameRef.current.value = "";
     } catch (error) {
-      handleErrorSnackbarOpen(
-        translations.imagePage.imageUploadFailed,
-        "error"
-      );
+      handleErrorSnackbarOpen(labels.imageUploadFailed, "error");
       console.error("Error uploading image:", error);
     }
   };
@@ -162,7 +157,7 @@ const ImagePage = () => {
       <div style={{ padding: "16px" }}>
         <Card style={{ maxWidth: "500px", margin: "0 auto" }}>
           <CardContent>
-            <h2>{translations.imagePage.uploadImage}</h2>
+            <h2>{labels.uploadImage}</h2>
             <div
               style={{
                 border: "2px dashed #aaa",
@@ -176,26 +171,28 @@ const ImagePage = () => {
               onDragOver={(e) => e.preventDefault()}
             >
               {selectedImage ? (
-                <div>
+                <div style={{ display: "flex", flexDirection: "column" }}>
                   <img
                     src={URL.createObjectURL(selectedImage)}
                     alt={selectedImage.name}
                     style={{ maxWidth: "100%", maxHeight: "200px" }}
                   />
                   <TextField
-                    label={translations.imagePage.customFileName}
-                    value={customFileName}
-                    onChange={(e) => setCustomFileName(e.target.value)}
+                    label={labels.customFileName}
+                    inputRef={customFileNameRef}
                   />
                   <p>{selectedImage.name}</p>
-                  <IconButton onClick={handleCancel}>
+                  <IconButton
+                    onClick={handleCancel}
+                    style={{ width: "fit-content", margin: "0 auto" }}
+                  >
                     <CancelIcon />
                   </IconButton>
                 </div>
               ) : (
                 <div>
                   <CloudUploadIcon fontSize="large" />
-                  <p>{translations.imagePage.dragdropImage}</p>
+                  <p>{labels.dragdropimage}</p>
                   <input
                     type="file"
                     accept="image/*"
@@ -205,7 +202,7 @@ const ImagePage = () => {
                   />
                   <label htmlFor="fileInput">
                     <Button variant="outlined" color="primary" component="span">
-                      {translations.imagePage.chooseFile}
+                      {labels.chooseFile}
                     </Button>
                   </label>
                 </div>
@@ -219,7 +216,7 @@ const ImagePage = () => {
               onClick={handleImageUpload}
               fullWidth
             >
-              {translations.imagePage.upload}
+              {labels.upload}
             </Button>
           </CardActions>
         </Card>
@@ -251,7 +248,7 @@ const ImagePage = () => {
                       handleDeleteConfirmationOpen(image.id, image.name)
                     }
                   >
-                    {translations.imagePage.delete}
+                    {labels.delete}
                   </Button>
                 </CardActions>
               </Card>
@@ -263,21 +260,18 @@ const ImagePage = () => {
         open={deleteConfirmationOpen}
         onClose={handleDeleteConfirmationClose}
       >
-        <DialogTitle>
-          {translations.imagePage.deleteConfirmationTitle}
-        </DialogTitle>
+        <DialogTitle>{labels.deleteConfirmationTitle}</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            {translations.imagePage.deleteConfirmationContent} "
-            {imageToDeleteName}"?
+            {labels.deleteConfirmationContent} "{imageToDeleteName}"?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleDeleteConfirmationClose} color="primary">
-            {translations.imagePage.deleteConfirmationCancel}
+            {labels.deleteConfirmationCancel}
           </Button>
           <Button onClick={handleImageDelete} color="primary">
-            {translations.imagePage.deleteConfirmationDelete}
+            {labels.deleteConfirmationDelete}
           </Button>
         </DialogActions>
       </Dialog>

@@ -1,9 +1,9 @@
 'use strict';
 
 /**
- * country controller
+ * label controller
  */
 
 const { createCoreController } = require('@strapi/strapi').factories;
 
-module.exports = createCoreController('api::country.country');
+module.exports = createCoreController('api::label.label');

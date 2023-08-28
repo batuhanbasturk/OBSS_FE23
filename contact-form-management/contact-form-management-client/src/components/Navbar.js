@@ -6,8 +6,6 @@ import { logout } from "../api/login/logout";
 //Context
 import { useUserContext } from "../context/UserContext";
 import { useLanguageContext } from "../context/LanguageContext";
-import trTranslations from "../translations/tr";
-import enTranslations from "../translations/en";
 //UI
 import styles from "../styles/Navbar.module.css";
 import {
@@ -34,16 +32,15 @@ import { useImageContext } from "../context/ImageContext";
 
 const Navbar = () => {
   const { userData } = useUserContext();
-  const { language } = useLanguageContext();
+  const { labels } = useLanguageContext();
   const { images } = useImageContext();
-  const translations = language === "tr" ? trTranslations : enTranslations;
   const navigate = useNavigate();
   //
   const pages =
     userData.role === "admin"
-      ? ["messages", "messages_scroll", "users", "reports", "images"]
+      ? ["messages", "messages_scroll", "users", "reports", "images", "labels"]
       : ["messages", "messages_scroll"];
-  const settings = translations.navbar.logout;
+  const settings = labels.logout;
 
   // State to handle the anchor element for the main menu (MenuIcon) dropdown
   const [menuAnchorEl, setMenuAnchorEl] = useState(null);
@@ -149,9 +146,7 @@ const Navbar = () => {
                 to={`/${page.toLowerCase()}`}
                 onClick={handleCloseMenus}
               >
-                <Typography textAlign="center">
-                  {translations.navbar[page]}
-                </Typography>
+                <Typography textAlign="center">{labels[page]}</Typography>
               </MenuItem>
             ))}
           </Menu>
@@ -182,13 +177,13 @@ const Navbar = () => {
               to={`/${page.toLowerCase()}`}
               sx={{ my: 2, color: "white", display: "block", mx: 2 }}
             >
-              {translations.navbar[page]}
+              {labels[page]}
             </Button>
           ))}
         </Box>
 
         <Box sx={{ flexGrow: 0, pr: 2 }}>
-          <Tooltip title={translations.navbar.settings}>
+          <Tooltip title={labels.settings}>
             <IconButton onClick={handleUserMenuOpen} sx={{ p: 0, mb: 1 }}>
               {/* User's photo */}
               <Avatar
@@ -221,29 +216,27 @@ const Navbar = () => {
             <MenuItem
               key={settings}
               onClick={
-                settings === translations.navbar.logout
+                settings === labels.logout
                   ? handleLogoutDialogOpen
                   : handleCloseMenus
               }
             >
               {/* Logout */}
-              <Typography textAlign="center">
-                {translations.navbar.logout}
-              </Typography>
+              <Typography textAlign="center">{labels.logout}</Typography>
             </MenuItem>
           </Menu>
           {/* Logout dialog */}
           <Dialog open={logoutDialogOpen} onClose={handleLogoutDialogClose}>
-            <DialogTitle>{translations.navbar.logout}</DialogTitle>
+            <DialogTitle>{labels.logout}</DialogTitle>
             <DialogContent>
-              <Typography>{translations.navbar.logoutDialogContent}</Typography>
+              <Typography>{labels.logoutDialogContent}</Typography>
             </DialogContent>
             <DialogActions>
               <Button onClick={handleLogoutDialogClose} color="primary">
-                {translations.navbar.logoutDialogCancelButton}
+                {labels.logoutDialogCancelButton}
               </Button>
               <Button onClick={handleLogout} color="primary" autoFocus>
-                {translations.navbar.logoutDialogLogoutButton}
+                {labels.logoutDialogLogoutButton}
               </Button>
             </DialogActions>
           </Dialog>

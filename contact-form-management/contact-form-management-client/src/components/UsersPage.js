@@ -8,8 +8,6 @@ import { fetchUsers } from "../api/user/fetchUsers";
 import NotFoundPage from "./NotFoundPage";
 //context
 import { useLanguageContext } from "../context/LanguageContext";
-import trTranslations from "../translations/tr";
-import enTranslations from "../translations/en";
 //UI
 import {
   Table,
@@ -32,8 +30,7 @@ import SearchIcon from "@mui/icons-material/Search";
 
 const UserPage = () => {
   const navigate = useNavigate();
-  const { language } = useLanguageContext();
-  const translations = language === "tr" ? trTranslations : enTranslations;
+  const { labels } = useLanguageContext();
 
   const [users, setUsers] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
@@ -88,7 +85,7 @@ const UserPage = () => {
               </InputAdornment>
             ),
           }}
-          label={translations.usersPage.searchPlaceholder}
+          label={labels.searchPlaceholder}
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
@@ -103,40 +100,42 @@ const UserPage = () => {
                   variant="subtitle1"
                   fontWeight="bold"
                   sx={
-                    language === "en" ? { paddingLeft: 2 } : { paddingLeft: 0 }
+                    labels.locale === "en"
+                      ? { paddingLeft: 2 }
+                      : { paddingLeft: 0 }
                   }
                 >
-                  {translations.usersPage.edit}
+                  {labels.edit}
                 </Typography>
               </TableCell>
               {/* Id */}
               <TableCell>
                 <Typography variant="subtitle1" fontWeight="bold">
-                  {translations.usersPage.id}
+                  {labels.idLabel}
                 </Typography>
               </TableCell>
               {/* Username */}
               <TableCell>
                 <Typography variant="subtitle1" fontWeight="bold">
-                  {translations.usersPage.username}
+                  {labels.usernameLabel}
                 </Typography>
               </TableCell>
               {/* Role */}
               <TableCell>
                 <Typography variant="subtitle1" fontWeight="bold">
-                  {translations.usersPage.role}
+                  {labels.role}
                 </Typography>
               </TableCell>
               {/* Password */}
               <TableCell>
                 <Typography variant="subtitle1" fontWeight="bold">
-                  {translations.usersPage.password}
+                  {labels.passwordLabel}
                 </Typography>
               </TableCell>
               {/* Image */}
               <TableCell>
                 <Typography variant="subtitle1" fontWeight="bold">
-                  {translations.usersPage.image}
+                  {labels.image}
                 </Typography>
               </TableCell>
             </TableRow>
@@ -160,7 +159,7 @@ const UserPage = () => {
                   <TableCell>{user.password}</TableCell>
                   <TableCell>
                     <Avatar
-                      alt={translations.usersPage.image}
+                      alt={labels.image}
                       src={user.base64Photo}
                       sx={{ width: 40, height: 40 }}
                     />
@@ -172,7 +171,7 @@ const UserPage = () => {
       </TableContainer>
       {/* Add User Button */}
       <Button sx={{ margin: 2 }} onClick={handleAddUser}>
-        {translations.usersPage.add}
+        {labels.add}
         <PersonAddIcon />
       </Button>
     </>

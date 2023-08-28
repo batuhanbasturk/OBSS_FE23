@@ -13,8 +13,6 @@ import useFileInput from "../utils/base64PhotoUtils";
 import { MuiFileInput } from "mui-file-input";
 //context
 import { useLanguageContext } from "../context/LanguageContext";
-import trTranslations from "../translations/tr";
-import enTranslations from "../translations/en";
 //UI
 import styles from "../styles/userDetails.module.css";
 import {
@@ -43,13 +41,12 @@ const UserDetailsPage = () => {
   const { file, base64Photo, handleChange } = useFileInput();
   const { handleSnackbarOpen, SnackbarComponent } = useSnackbar();
 
-  const { language } = useLanguageContext();
-  const translations = language === "tr" ? trTranslations : enTranslations;
+  const { labels } = useLanguageContext();
 
   const handleUpdateUser = async () => {
     const newErrors = {
-      photo: !file ? translations.usersPage.photoRequired : "",
-      password: !password ? translations.usersPage.passwordRequired : "",
+      photo: !file ? labels.photoRequired : "",
+      password: !password ? labels.passwordRequired : "",
     };
     setErrors(newErrors);
 
@@ -58,10 +55,7 @@ const UserDetailsPage = () => {
       const data = { username, password, base64Photo };
       const user = await updateUser(token, id, data);
       setUser(user);
-      handleSnackbarOpen(
-        translations.usersPage.updateSnackbarMessage,
-        "success"
-      );
+      handleSnackbarOpen(labels.updateSnackbarMessage, "success");
     } catch (error) {
       if (error === "User not found") {
         setNotFoundError(error);
@@ -96,17 +90,17 @@ const UserDetailsPage = () => {
           <CardContent>
             {/* User Image */}
             <Avatar
-              alt={translations.usersPage.image}
+              alt={labels.image}
               src={user.base64Photo}
               className={styles.userImage}
             />
             {/* User Id */}
             <Typography variant="h5" component="h2" gutterBottom>
-              {translations.usersPage.id}: {user.id}
+              {labels.idLabel}: {user.id}
             </Typography>
             {/* User Name */}
             <TextField
-              label={translations.usersPage.username}
+              label={labels.usernameLabel}
               variant="outlined"
               value={user.username}
               fullWidth
@@ -118,7 +112,7 @@ const UserDetailsPage = () => {
             />
             {/* User Password */}
             <TextField
-              label={translations.usersPage.password}
+              label={labels.passwordLabel}
               variant="outlined"
               value={password}
               error={Boolean(errors.password)}
@@ -130,7 +124,7 @@ const UserDetailsPage = () => {
             />
             {/* User Role */}
             <TextField
-              label={translations.usersPage.role}
+              label={labels.role}
               variant="outlined"
               value={user.role}
               fullWidth
@@ -156,7 +150,7 @@ const UserDetailsPage = () => {
             {/* Update Button */}
             <Box display="flex" justifyContent="center">
               <Button variant="contained" onClick={handleUpdateUser}>
-                {translations.usersPage.updateButton}
+                {labels.updateButton}
               </Button>
             </Box>
             <SnackbarComponent />

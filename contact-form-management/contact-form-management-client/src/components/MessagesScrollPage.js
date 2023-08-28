@@ -13,8 +13,6 @@ import { fetchMessagesWithPaginationScroll } from "../api/message/messagesWithPa
 //context
 import { useUserContext } from "../context/UserContext";
 import { useLanguageContext } from "../context/LanguageContext";
-import trTranslations from "../translations/tr";
-import enTranslations from "../translations/en";
 //snackbar
 import { useSnackbar } from "../utils/snackbarUtils";
 //UI
@@ -45,8 +43,7 @@ const MessagesScrollPage = () => {
 
   const navigate = useNavigate();
   const { userData, setTokenError } = useUserContext();
-  const { language } = useLanguageContext();
-  const translations = language === "tr" ? trTranslations : enTranslations;
+  const { labels } = useLanguageContext();
 
   const handleViewMessageDetails = async (id) => {
     const token = localStorage.getItem("token");
@@ -65,10 +62,7 @@ const MessagesScrollPage = () => {
       setMessages((prevMessages) =>
         prevMessages.filter((msg) => msg.id !== id)
       );
-      handleSnackbarOpen(
-        translations.messagesPage.deletedSnackbarMessage,
-        "info"
-      );
+      handleSnackbarOpen(labels.deletedSnackbarMessage, "info");
     } catch (error) {
       setErrorMessage(error);
     }
@@ -152,58 +146,58 @@ const MessagesScrollPage = () => {
                 <Typography
                   variant="subtitle1"
                   fontWeight="bold"
-                  textAlign={language === "en" ? "center" : "left"}
+                  textAlign={labels.locale === "en" ? "center" : "left"}
                 >
-                  {translations.messagesPage.view}
+                  {labels.view}
                 </Typography>
               </TableCell>
               {/* Id */}
               <TableCell>
                 <Typography variant="subtitle1" fontWeight="bold">
-                  {translations.messagesPage.id}
+                  {labels.idLabel}
                 </Typography>
               </TableCell>
               {/* Name */}
               <TableCell>
                 <Typography variant="subtitle1" fontWeight="bold">
-                  {translations.messagesPage.name}
+                  {labels.nameLabel}
                 </Typography>
               </TableCell>
               {/* Message */}
               <TableCell>
                 <Typography variant="subtitle1" fontWeight="bold">
-                  {translations.messagesPage.message}
+                  {labels.messageLabel}
                 </Typography>
               </TableCell>
               {/* Gender */}
               <TableCell>
                 <Typography variant="subtitle1" fontWeight="bold">
-                  {translations.messagesPage.gender}
+                  {labels.genderLabel}
                 </Typography>
               </TableCell>
               {/* Country */}
               <TableCell>
                 <Typography variant="subtitle1" fontWeight="bold">
-                  {translations.messagesPage.country}
+                  {labels.countryLabel}
                 </Typography>
               </TableCell>
               {/* Read status*/}
               <TableCell>
                 <Typography variant="subtitle1" fontWeight="bold">
-                  {translations.messagesPage.read}
+                  {labels.read}
                 </Typography>
               </TableCell>
               {/* Date */}
               <TableCell>
                 <Typography variant="subtitle1" fontWeight="bold">
-                  {translations.messagesPage.date}
+                  {labels.date}
                 </Typography>
               </TableCell>
               {/* Delete for only admin*/}
               {userData.role === "admin" && (
                 <TableCell>
                   <Typography variant="subtitle1" fontWeight="bold">
-                    {translations.messagesPage.delete}
+                    {labels.delete}
                   </Typography>
                 </TableCell>
               )}
@@ -228,9 +222,9 @@ const MessagesScrollPage = () => {
                 <TableCell>{message.gender}</TableCell>
                 <TableCell>{message.country}</TableCell>
                 {message.read === "true" ? (
-                  <TableCell>{translations.messagesPage.readed}</TableCell>
+                  <TableCell>{labels.readed}</TableCell>
                 ) : (
-                  <TableCell>{translations.messagesPage.notReaded}</TableCell>
+                  <TableCell>{labels.notReaded}</TableCell>
                 )}
                 <TableCell style={{ whiteSpace: "pre-line" }}>
                   {formatDateAndTime(message.creationDate)}

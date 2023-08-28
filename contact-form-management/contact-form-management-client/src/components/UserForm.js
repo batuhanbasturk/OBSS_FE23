@@ -9,8 +9,6 @@ import { MuiFileInput } from "mui-file-input";
 import useFileInput from "../utils/base64PhotoUtils";
 //context
 import { useLanguageContext } from "../context/LanguageContext";
-import trTranslations from "../translations/tr";
-import enTranslations from "../translations/en";
 //UI
 import styles from "../styles/UserForm.module.css";
 import {
@@ -40,17 +38,16 @@ const UserForm = () => {
   });
   const { images } = useImageContext();
   const navigate = useNavigate();
-  const { language } = useLanguageContext();
-  const translations = language === "tr" ? trTranslations : enTranslations;
+  const { labels } = useLanguageContext();
 
   const { file, base64Photo, handleChange } = useFileInput();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newErrors = {
-      username: !username ? translations.contactForm.nameRequired : "",
-      password: !password ? translations.usersPage.passwordRequired : "",
-      photo: !file ? translations.usersPage.photoRequired : "",
+      username: !username ? labels.usernameRequired : "",
+      password: !password ? labels.passwordRequired : "",
+      photo: !file ? labels.photoRequired : "",
     };
     setErrors(newErrors);
     const token = localStorage.getItem("token");
@@ -63,7 +60,7 @@ const UserForm = () => {
       if (error === "Username already exists") {
         setErrors({
           ...errors,
-          username: translations.usersPage.usernameExists,
+          username: labels.usernameExists,
         });
       }
     }
@@ -95,11 +92,11 @@ const UserForm = () => {
                 align="center"
                 sx={{ color: "#154c79", marginBottom: 4 }}
               >
-                {translations.usersPage.userFormTitle}
+                {labels.userFormTitle}
               </Typography>
               {/* Username */}
               <TextField
-                label={translations.usersPage.username}
+                label={labels.usernameLabel}
                 variant="outlined"
                 error={Boolean(errors.username)}
                 fullWidth
@@ -111,7 +108,7 @@ const UserForm = () => {
               />
               {/* Password */}
               <TextField
-                label={translations.usersPage.password}
+                label={labels.passwordLabel}
                 variant="outlined"
                 error={Boolean(errors.password)}
                 fullWidth
@@ -123,7 +120,7 @@ const UserForm = () => {
               />
               {/* Role */}
               <TextField
-                label={translations.usersPage.role}
+                label={labels.role}
                 variant="outlined"
                 defaultValue="Reader"
                 fullWidth
@@ -148,7 +145,7 @@ const UserForm = () => {
                   sx={{ marginBottom: 2 }}
                   onClick={handleSubmit}
                 >
-                  {translations.usersPage.createButton}
+                  {labels.createButton}
                 </Button>
               </Box>
             </CardActions>

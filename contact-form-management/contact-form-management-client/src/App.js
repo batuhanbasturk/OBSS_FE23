@@ -10,6 +10,7 @@ import UsersPage from "./components/UsersPage";
 import UserDetailsPage from "./components/UserDetailsPage";
 import UserForm from "./components/UserForm";
 import ImagePage from "./components/ImagePage";
+import LabelPage from "./components/LabelPage";
 import NotFoundPage from "./components/NotFoundPage";
 import NotAuthorizedPage from "./components/NotAuthorizedPage";
 import MessagesScrollPage from "./components/MessagesScrollPage";
@@ -96,6 +97,14 @@ const App = () => {
           path="/images"
           element={
             userData.role === "admin" ? <ImagePage /> : <NotAuthorizedPage />
+          }
+        />
+      }
+      {
+        <Route
+          path="/labels"
+          element={
+            userData.role === "admin" ? <LabelPage /> : <NotAuthorizedPage />
           }
         />
       }
