@@ -1,70 +1,48 @@
-# Getting Started with Create React App
+# Fighter Aircraft Status System
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+In this project, I had a chance to work on React, WebSocket and Electron technologies.
+In the css part, I used features such as rotate, transform and position absolute.
 
-## Available Scripts
+![aircraft](https://github.com/batuhanbasturk/OBSS_FE23/assets/81568088/b5a09b83-83d2-4811-9848-1047a35ce5d0)
 
-In the project directory, you can run:
+## App.js
+I have processed the data coming from my WebSocket connection into my component's states in my backend. I added start and stop buttons to initiate and stop this data. I passed these received data as props to my components to perform the necessary operations.
 
-### `npm start`
+## Components
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### `Plane`
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+#### Plane SVG Layout
 
-### `npm test`
+* Used an existing SVG element with a fixed width and height to represent the plane container.
+* Implemented the rotational adjustment of the plane based on the plane_angle data received from WebSocket.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### `Speedometer`
 
-### `npm run build`
+#### Speedometer SVG Layout
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+* Used an existing SVG element with a fixed width and height to represent the speedometer and arrow container.
+* Implemented the rotational adjustment of the Arrow based on the speed data received from WebSocket.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### `Battery`
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+#### Battery SVG Layout
+* Used an existing SVG element with a fixed width and height to represent the battery container.
+* Inside the SVG, added four rectangles, each one representing 25% of the battery capacity.
+* The height of these rectangles is determined by the data received from the WebSocket.
 
-### `npm run eject`
+#### Color Indication
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+* Used CSS to change the color of the rectangles based on the battery level.
+* If the battery level is greater than 50%, applied a green fill color to all rectangles.
+* If the battery level is between 25% and 50%, applied a yellow fill color.
+* If the battery level is less than 25%, applied a red fill color.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+#### Blinking Effect
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+* Defined a CSS animation that toggles the visibility of the SVG element to create a blinking effect.
+* Triggered this animation when the battery level drops below 20%.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
