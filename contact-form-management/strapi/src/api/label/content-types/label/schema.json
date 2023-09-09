@@ -64,6 +64,14 @@
         }
       }
     },
+    "country": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
     "messageLabel": {
       "type": "string",
       "pluginOptions": {

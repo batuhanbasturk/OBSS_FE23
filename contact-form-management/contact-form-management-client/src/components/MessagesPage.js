@@ -129,6 +129,7 @@ const MessagesPage = () => {
   return (
     <>
       <Navbar />
+      {/* Sorting */}
       <Select
         value={sorting.sortBy}
         onChange={(e) => {
@@ -141,7 +142,7 @@ const MessagesPage = () => {
         <MenuItem value="id">{labels.idLabel}</MenuItem>
         <MenuItem value="name">{labels.nameLabel}</MenuItem>
         <MenuItem value="gender">{labels.genderLabel}</MenuItem>
-        <MenuItem value="creationDate">{labels.dateLabel}</MenuItem>
+        <MenuItem value="creationDate">{labels.date}</MenuItem>
         <MenuItem value="country">{labels.country}</MenuItem>
       </Select>
       <Select
@@ -156,6 +157,7 @@ const MessagesPage = () => {
         <MenuItem value="asc">{labels.asc}</MenuItem>
         <MenuItem value="desc">{labels.desc}</MenuItem>
       </Select>
+      {/* Pagination */}
       <Select
         value={pagination.pageSize}
         onChange={(e) => {
