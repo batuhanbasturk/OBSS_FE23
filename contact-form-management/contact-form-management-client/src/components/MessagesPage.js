@@ -142,7 +142,7 @@ const MessagesPage = () => {
         <MenuItem value="name">{labels.nameLabel}</MenuItem>
         <MenuItem value="gender">{labels.genderLabel}</MenuItem>
         <MenuItem value="creationDate">{labels.dateLabel}</MenuItem>
-        <MenuItem value="country">{labels.countryLabel}</MenuItem>
+        <MenuItem value="country">{labels.country}</MenuItem>
       </Select>
       <Select
         value={sorting.sortOrder}

@@ -69,7 +69,7 @@ const MessageDetailsPage = () => {
               {labels.genderLabel}: {message.gender}
             </Typography>
             <Typography color="textSecondary" gutterBottom>
-              {labels.countryLabel}: {message.country}
+              {labels.country}: {message.country}
             </Typography>
             <Typography color="textSecondary" gutterBottom>
               {labels.read}:{" "}

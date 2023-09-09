@@ -178,7 +178,7 @@ const MessagesScrollPage = () => {
               {/* Country */}
               <TableCell>
                 <Typography variant="subtitle1" fontWeight="bold">
-                  {labels.countryLabel}
+                  {labels.country}
                 </Typography>
               </TableCell>
               {/* Read status*/}
